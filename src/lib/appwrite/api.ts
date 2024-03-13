@@ -10,16 +10,6 @@ import {
 
 export async function createMemberAccount(member: INewMember) {
   try {
-    const uploadedFile = await uploadFile(member.file[0])
-
-    if (!uploadedFile) throw Error
-
-    const fileUrl = getFilePreview(uploadedFile.$id)
-    if (!fileUrl) {
-      await deleteFile(uploadedFile.$id)
-      throw Error
-    }
-
     const newAccount = await account.create(
       ID.unique(),
       member.email,
@@ -28,13 +18,17 @@ export async function createMemberAccount(member: INewMember) {
 
     if (!newAccount) throw Error
 
+    const avatarUrl = avatars.getInitials(
+      `${member.firstName} ${member.lastName}`
+    )
+
     const newMember = await saveMemberToDB({
       accountId: newAccount.$id,
       email: newAccount.email,
       firstName: member.firstName,
       lastName: member.lastName,
-      primaryRole: member.primaryRole,
-      avatarUrl: fileUrl,
+      avatarUrl,
+      avatarId: ID.unique(),
     })
 
     return newMember
@@ -49,8 +43,8 @@ export async function saveMemberToDB(member: {
   email: string
   firstName: string
   lastName: string
-  primaryRole: string
   avatarUrl: URL
+  avatarId: string
 }) {
   try {
     const newMember = await databases.createDocument(
@@ -97,6 +91,7 @@ export async function getCurrentMember() {
 
     return currentMember.documents[0]
   } catch (error) {
+    console.log(error)
     return null
   }
 }
@@ -106,6 +101,7 @@ export async function getAccount() {
     const currentAccount = await account.get()
     return currentAccount
   } catch (error) {
+    console.log(error)
     return null
   }
 }
@@ -176,6 +172,15 @@ export async function updateMember(member: IUpdateMember) {
         lastName: member.lastName,
         email: member.email,
         primaryRole: member.primaryRole,
+        seniority: member.seniority,
+        workStatus: member.workStatus,
+        rate: member.rate,
+        timezone: member.timezone,
+        availability: member.availability,
+        website: member.website,
+        linkedin: member.linkedin,
+        skills: member.skills,
+        domains: member.domains,
         avatarUrl: avatar.avatarUrl,
         avatarId: avatar.avatarId,
       }

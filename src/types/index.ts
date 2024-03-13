@@ -3,8 +3,6 @@ export type INewMember = {
   password: string
   firstName: string
   lastName: string
-  file: File[]
-  primaryRole: string
 }
 
 export type IMember = {
@@ -18,24 +16,34 @@ export type IMember = {
   seniority: string
   workStatus: string
   rate: string
-  timezone?: string
-  skills: ISkill[]
+  timezone: string
+  availability: string
+  website: string
+  linkedin: string
+  skills: string[]
+  domains: string[]
   clients: IClient[]
   contractSigned: boolean
   applicationStatus: "form completed" | "1on1 done" | "accepted" | "rejected"
+  meeting: string
 }
 
 export type IUpdateMember = {
   memberId: string
-  firstName?: string
-  lastName?: string
-  email?: string
-  primaryRole?: string
-  seniority?: string
-  workStatus?: string
-  rate?: string
-  timezone?: string
-  skills?: ISkill[]
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  primaryRole?: string | null
+  seniority?: string | null
+  workStatus?: string | null
+  rate?: string | null
+  timezone?: string | null
+  availability?: string | null
+  website?: string | null
+  linkedin?: string | null
+  skills?: string[] | null
+  domains?: string[] | null
+  meeting?: string | null
   avatarUrl?: URL | string
   avatarId: string
   file: File[]
@@ -63,7 +71,7 @@ export type IResource = {
   type: "design" | "document" | "other"
 }
 
-export type ISkill = {
+export type IOption = {
   label: string
   value: string
 }

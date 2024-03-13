@@ -1,51 +1,130 @@
 export const domains = [
   {
-    id: "fintech / defi",
+    value: "FinTech / DeFi",
     label: "FinTech / DeFi",
   },
   {
-    id: "medtech",
+    value: "MedTech",
     label: "MedTech",
   },
   {
-    id: "retail tech",
+    value: "Retail Tech",
     label: "Retail Tech",
   },
   {
-    id: "banking / crypto",
+    value: "Banking / Crypto",
     label: "Banking / Crypto",
   },
   {
-    id: "ai",
+    value: "AI",
     label: "AI",
   },
   {
-    id: "logistics",
+    value: "Logistics",
     label: "Logistics",
   },
   {
-    id: "edtech",
+    value: "EdTech",
     label: "EdTech",
   },
   {
-    id: "fashion tech",
+    value: "Fashion Tech",
     label: "Fashion Tech",
   },
   {
-    id: "sports tech",
+    value: "Sports Tech",
     label: "Sports Tech",
   },
   {
-    id: "media + adtech",
+    value: "Media + AdTech",
     label: "Media + AdTech",
   },
   {
-    id: "dapps + nft",
+    value: "dApps + NFT",
     label: "dApps + NFT",
   },
   {
-    id: "other",
+    value: "Other",
     label: "Other",
+  },
+]
+
+export const roles = [
+  {
+    value: "graphic designer",
+    label: "Graphic Designer",
+  },
+  {
+    value: "content creator",
+    label: "Content Creator",
+  },
+  {
+    value: "product designer",
+    label: "Product Designer",
+  },
+  {
+    value: "developer",
+    label: "Developer",
+  },
+  {
+    value: "marketer",
+    label: "Marketer",
+  },
+  {
+    value: "product manager",
+    label: "Product Manager",
+  },
+  {
+    value: "project manager",
+    label: "Project Manager",
+  },
+  {
+    value: "operation/sales",
+    label: "Operation/Sales",
+  },
+  {
+    value: "blockchain developer",
+    label: "Blockchain Developer",
+  },
+  {
+    value: "nft artist",
+    label: "NFT Artist",
+  },
+  {
+    value: "defi specialist",
+    label: "DeFi Specialist",
+  },
+  {
+    value: "tokenomics expert",
+    label: "Tokenomics Expert",
+  },
+  {
+    value: "crypto analyst",
+    label: "Crypto Analyst",
+  },
+  {
+    value: "dao manager",
+    label: "DAO Manager",
+  },
+  {
+    value: "community manager",
+    label: "Community Manager",
+  },
+  {
+    value: "machine learning engineer",
+    label: "Machine Learning Engineer",
+  },
+  {
+    value: "growth hacker",
+    label: "Growth Hacker",
+  },
+  {
+    value: "ai ethics researcher",
+    label: "AI Ethics Researcher",
+  },
+  {
+    value: "prompt engineer",
+    label: "Prompt Engineer",
   },
 ]
 

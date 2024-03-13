@@ -30,8 +30,6 @@ const SignUpForm = () => {
     defaultValues: {
       firstName: "",
       lastName: "",
-      primaryRole: "",
-      file: [],
       email: "",
       password: "",
     },
@@ -59,7 +57,6 @@ const SignUpForm = () => {
 
       if (!session) {
         toast.error("Something went wrong. Please try again.")
-        navigate("/sign-in")
         return
       }
 

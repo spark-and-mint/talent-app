@@ -16,10 +16,15 @@ export const INITIAL_MEMBER: IMember = {
   workStatus: "",
   rate: "",
   timezone: "",
+  availability: "",
+  website: "",
+  linkedin: "",
   skills: [],
+  domains: [],
   clients: [],
   contractSigned: false,
   applicationStatus: "form completed",
+  meeting: "",
 }
 
 const INITIAL_STATE = {
@@ -68,9 +73,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           rate: currentAccount.rate,
           timezone: currentAccount.timezone,
           skills: currentAccount.skills,
+          domains: currentAccount.domains,
           clients: currentAccount.clients,
+          linkedin: currentAccount.linkedin,
+          availability: currentAccount.availability,
+          website: currentAccount.website,
           contractSigned: currentAccount.contractSigned,
           applicationStatus: currentAccount.applicationStatus,
+          meeting: currentAccount.meeting,
         })
         setIsAuthenticated(true)
         return true

@@ -11,17 +11,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { toast } from "sonner"
-import { Button } from "@/components/ui"
-import { Loader } from "@/components/shared"
+import { Button, Input } from "@/components/ui"
 import { ProfileValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
-import { RotateCw } from "lucide-react"
+import { ExternalLinkIcon, RotateCw } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import StarSvg from "@/svg/StarSvg"
-import { useEffect } from "react"
-import MultipleSelector, { Option } from "@/components/ui/multi-select"
+import { useEffect, useState } from "react"
+import MultipleSelector from "@/components/ui/multi-select"
 import {
   Select,
   SelectContent,
@@ -32,16 +31,19 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { skills, domains } from "@/lib/constants"
-import { Checkbox } from "@/components/ui/checkbox"
+import { IOption } from "@/types"
+import Calendly from "@/components/shared/Calendly"
+import FormLoader from "@/components/shared/FormLoader"
 
-const OPTIONS: Option[] = skills
+const skillOptions: IOption[] = skills
+const domainOptions: IOption[] = domains
 
-const mockSearch = async (value: string): Promise<Option[]> => {
+const mockSearch = async (value: string): Promise<IOption[]> => {
   return new Promise((resolve) => {
     if (!value) {
-      resolve(OPTIONS)
+      resolve(skillOptions)
     }
-    const res = OPTIONS.filter((option) =>
+    const res = skillOptions.filter((option) =>
       option.value.toLowerCase().includes(value.toLowerCase())
     )
     resolve(res)
@@ -51,6 +53,7 @@ const mockSearch = async (value: string): Promise<Option[]> => {
 const ProfilePage = () => {
   const profileFound = true
   const { member, setMember, isLoading } = useMemberContext()
+  const [meetingBooked, setMeetingBooked] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
@@ -60,14 +63,22 @@ const ProfilePage = () => {
       workStatus: member.workStatus,
       rate: member.rate,
       timezone: member.timezone,
-      skills: member.skills?.map((skill: Option) => ({
-        value: skill.value,
-        label: skill.label,
+      skills: member.skills?.map((skill: string) => ({
+        value: skill,
+        label: skill,
       })),
+      domains: member.domains?.map((domain: string) => ({
+        value: domain,
+        label: domain,
+      })),
+      availability: member.availability,
+      website: member.website,
+      linkedin: member.linkedin,
+      meeting: member.meeting,
       file: [],
     },
   })
-  const { reset } = form
+  const { reset, clearErrors, setValue } = form
 
   const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
     useUpdateMember()
@@ -78,6 +89,8 @@ const ProfilePage = () => {
       memberId: member.id,
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
+      skills: values.skills?.map((skill) => skill.value),
+      domains: values.domains?.map((domain) => domain.value),
     })
 
     if (!updatedMember) {
@@ -91,8 +104,18 @@ const ProfilePage = () => {
       firstName: updatedMember?.firstName,
       lastName: updatedMember?.lastName,
       email: updatedMember?.email,
+      seniority: updatedMember?.seniority,
+      workStatus: updatedMember?.workStatus,
+      rate: updatedMember?.rate,
+      timezone: updatedMember?.timezone,
+      availability: updatedMember?.availability,
+      website: updatedMember?.website,
+      linkedin: updatedMember?.linkedin,
+      skills: updatedMember?.skills,
+      domains: updatedMember?.domains,
       primaryRole: updatedMember?.primaryRole,
       avatarUrl: updatedMember?.avatarUrl,
+      avatarId: updatedMember?.avatarId,
     })
   }
 
@@ -101,12 +124,26 @@ const ProfilePage = () => {
       reset({
         ...member,
         file: [],
+        skills: member.skills?.map((skill: string) => ({
+          value: skill,
+          label: skill,
+        })),
+        domains: member.domains?.map((domain: string) => ({
+          value: domain,
+          label: domain,
+        })),
       })
     }
   }, [member, reset])
 
+  useEffect(() => {
+    if (meetingBooked) {
+      setValue("meeting", meetingBooked, { shouldValidate: true })
+    }
+  }, [meetingBooked, clearErrors, setValue])
+
   if (isLoading) {
-    return <Loader />
+    return <FormLoader />
   }
 
   return (
@@ -238,7 +275,7 @@ const ProfilePage = () => {
                     <MultipleSelector
                       value={field.value}
                       onChange={field.onChange}
-                      defaultOptions={OPTIONS}
+                      defaultOptions={skillOptions}
                       onSearch={async (value) => {
                         const res = await mockSearch(value)
                         return res
@@ -261,50 +298,24 @@ const ProfilePage = () => {
             <FormField
               control={form.control}
               name="domains"
-              render={() => (
+              render={({ field }) => (
                 <FormItem>
-                  <div className="mb-4">
-                    <FormLabel className="text-base">
-                      Share more about the domains you've worked in
-                    </FormLabel>
-                    <FormDescription>
-                      We recommend selecting domains you're fairly comfortable
-                      in vs. ones your only dabbled in.
-                    </FormDescription>
-                  </div>
-                  {domains.map((item) => (
-                    <FormField
-                      key={item.id}
-                      control={form.control}
-                      name="domains"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={item.id}
-                            className="flex flex-row items-center space-x-3 space-y-0 pb-1"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(item.id)}
-                                // onCheckedChange={(checked) => {
-                                //   return checked
-                                //     ? field.onChange([...field.value, item.id])
-                                //     : field.onChange(
-                                //         field.value?.filter(
-                                //           (value) => value !== item.id
-                                //         )
-                                //       )
-                                // }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {item.label}
-                            </FormLabel>
-                          </FormItem>
-                        )
-                      }}
+                  <FormLabel>
+                    Share more about the domains you've worked in
+                  </FormLabel>
+                  <FormDescription>
+                    We recommend selecting domains you're fairly comfortable in
+                    vs. ones your only dabbled in.
+                  </FormDescription>
+                  <FormControl>
+                    <MultipleSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                      defaultOptions={domainOptions}
+                      hidePlaceholderWhenSelected
+                      placeholder="Choose as many as you like..."
                     />
-                  ))}
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -444,6 +455,118 @@ const ProfilePage = () => {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="availability"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    How many hours per week are you available?
+                  </FormLabel>
+                  <FormDescription>
+                    Indicate your general availability for work each week.
+                    Please note that the mininum required availability is 10
+                    hours per week.
+                  </FormDescription>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={member.availability}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your hourly rate..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="10">10 hrs/week</SelectItem>
+                      <SelectItem value="20">20 hrs/week</SelectItem>
+                      <SelectItem value="30">30 hrs/week</SelectItem>
+                      <SelectItem value="40">40 hrs/week</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="website"
+              defaultValue={member.website}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Do you have a portfolio or personal website you can share?
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="https://vitalik.ca"
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="linkedin"
+              defaultValue={member.linkedin}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Please share your LinkedIn profile address if you have one
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="https://linkedin.com/in/barmstrong/"
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="meeting"
+              defaultValue={member.meeting}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {meetingBooked
+                      ? "Meeting booked!"
+                      : "Book a meeting with Jason to discuss your profile"}
+                  </FormLabel>
+                  <FormControl>
+                    <div>
+                      <Input
+                        type="text"
+                        {...field}
+                        value={field.value || ""}
+                        className="hidden"
+                      />
+                      {meetingBooked ? (
+                        <Button variant="secondary">
+                          Link to meeting
+                          <ExternalLinkIcon className="h-4 w-4 ml-2" />
+                        </Button>
+                      ) : (
+                        <Calendly setMeetingBooked={setMeetingBooked} />
+                      )}
+                    </div>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

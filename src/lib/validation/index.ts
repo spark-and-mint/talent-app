@@ -7,10 +7,6 @@ export const SignUpValidation = z.object({
   lastName: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters." }),
-  primaryRole: z
-    .string()
-    .min(2, { message: "Role must be at least 2 characters." }),
-  file: z.custom<File[]>(),
   email: z.string().email(),
   password: z
     .string()
@@ -47,7 +43,6 @@ export const AccountValidation = z.object({
 const optionSchema = z.object({
   label: z.string(),
   value: z.string(),
-  disable: z.boolean().optional(),
 })
 
 export const ProfileValidation = z.object({
@@ -58,9 +53,13 @@ export const ProfileValidation = z.object({
   workStatus: z.string().optional(),
   rate: z.string().optional(),
   timezone: z.string().optional(),
-  domains: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one domain.",
-  }),
+  availability: z.string().optional(),
+  website: z.string().url().nullish(),
+  linkedin: z.string().url().nullish(),
   skills: z.array(optionSchema).optional(),
+  domains: z.array(optionSchema).optional(),
+  meeting: z
+    .string()
+    .min(1, { message: "Please book a meeting before submitting." }),
   file: z.custom<File[]>(),
 })
