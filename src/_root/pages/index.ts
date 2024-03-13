@@ -1,0 +1,5 @@
+export { default as Home } from "./Home"
+export { default as Profile } from "./Profile"
+export { default as Work } from "./Work"
+export { default as Contract } from "./Contract"
+export { default as Account } from "./Account"

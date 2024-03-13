@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans bg-n-8 text-n-1 text-base;
+    background-image: url(/assets/stars.png);
+    background-position: 0 0;
+    background-size: 1440px;
+  }
+
+  :root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color-scheme: dark;
+
+    --gradient: #cbeafe;
+
+    --background: 216 62.4% 7.12%;
+    --foreground: 216 9.6% 99.45%;
+
+    --muted: 216 40% 15%;
+    --muted-foreground: 216 9.6% 58.9%;
+
+    --popover: 216 45.8% 11.57%;
+    --popover-foreground: 216 9.6% 99.45%;
+
+    --card: 216 45.8% 11.57%;
+    --card-foreground: 216 9.6% 99.45%;
+
+    --border: 216 40% 15%;
+    --input: 216 40% 15%;
+
+    --primary: #cbeafe;
+    --primary-foreground: 216 9.6% 8.9%;
+
+    --secondary: 216 40% 15%;
+    --secondary-foreground: 216 9.6% 99.45%;
+
+    --accent: 216 40% 15%;
+    --accent-foreground: 216 9.6% 99.45%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 216 9.6% 99.45%;
+
+    --ring: #cbeafe;
+
+    --radius: 0.5rem;
+  }
+}
