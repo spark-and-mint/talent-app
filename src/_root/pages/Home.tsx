@@ -1,13 +1,17 @@
 import { Button } from "@/components/ui/button"
 import { useMemberContext } from "@/context/AuthContext"
 import { SquareUser } from "lucide-react"
+import FadeIn from "react-fade-in"
 import { Link } from "react-router-dom"
 
 const Home = () => {
   const { member } = useMemberContext()
+  const accepted = member.status === "accepted"
+
+  console.log(member)
 
   return (
-    <div>
+    <FadeIn>
       <div className="relative flex justify-between w-full p-8 border-2 border-border rounded-xl">
         <div>
           <img
@@ -15,7 +19,11 @@ const Home = () => {
             className="absolute w-15 h-15 top-8 right-8"
           />
           <h2 className="h2 mb-3">Hello, {member.firstName}!</h2>
-          <p>Welcome to the Spark + Mint talent network.</p>
+          <p>
+            {accepted
+              ? "Welcome to the Spark + Mint talent network."
+              : "Thank you for filling out our application form."}
+          </p>
         </div>
       </div>
 
@@ -48,7 +56,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </FadeIn>
   )
 }
 

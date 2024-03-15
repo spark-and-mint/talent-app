@@ -8,24 +8,13 @@ import { Toaster } from "sonner"
 import "./globals.css"
 import Header from "./components/shared/Header"
 import Section from "./components/shared/Section"
-// import { useMemberContext } from "./context/AuthContext"
 
 const App = () => {
-  // const { isAuthenticated, member } = useMemberContext()
-
-  // console.log(member)
-
   return (
-    <main
-    // className="opacity-0"
-    // style={{
-    //   transition: "opacity 0.15s ease-out",
-    //   opacity: isAuthenticated ? 1 : 0,
-    // }}
-    >
+    <main>
       <Header />
 
-      <Section crosses>
+      <Section crosses className="h-[calc(100vh-6rem)]">
         <Routes>
           <Route element={<AuthLayout />}>
             <Route path="/sign-in" element={<SignInForm />} />

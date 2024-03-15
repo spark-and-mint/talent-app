@@ -8,7 +8,7 @@ const Header = () => {
   const { isAuthenticated } = useMemberContext()
 
   return (
-    <Section className="!px-0 !py-7">
+    <Section className="!px-0 !py-0 flex items-center min-h-24">
       <div className="container flex sm:justify-between justify-center items-center gap-10 max-sm:flex-col">
         <Link to="/">
           <img src="/assets/logo.svg" alt="logo" className="w-[4.5rem]" />

@@ -17,6 +17,7 @@ import { SignInValidation } from "@/lib/validation"
 import { useSignInAccount } from "@/lib/react-query/queries"
 import { useMemberContext } from "@/context/AuthContext"
 import { RotateCw } from "lucide-react"
+import StarSvg from "@/svg/StarSvg"
 
 const SignInForm = () => {
   const navigate = useNavigate()
@@ -51,8 +52,9 @@ const SignInForm = () => {
   }
 
   return (
-    <div className="mt-14">
+    <div className="mt-6">
       <Form {...form}>
+        <StarSvg className="w-8 h-8 mb-8 mx-auto" />
         <h5 className="h5 mb-8 text-center">Log in to Spark + Mint</h5>
         <form
           onSubmit={form.handleSubmit(handleSignin)}

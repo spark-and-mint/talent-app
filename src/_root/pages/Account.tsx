@@ -19,6 +19,7 @@ import { RotateCw } from "lucide-react"
 import FileUploader from "@/components/shared/FileUploader"
 import { Separator } from "@/components/ui/separator"
 import { useEffect } from "react"
+import FadeIn from "react-fade-in"
 
 const AccountPage = () => {
   const { member, setMember, isLoading } = useMemberContext()
@@ -76,7 +77,7 @@ const AccountPage = () => {
 
   return (
     <div className="pb-12">
-      <div className="space-y-6">
+      <FadeIn className="space-y-6">
         <div>
           <h3 className="text-lg font-medium mb-2">My account</h3>
           <p className="text-sm text-muted-foreground">
@@ -152,7 +153,7 @@ const AccountPage = () => {
             </div>
           </form>
         </Form>
-      </div>
+      </FadeIn>
     </div>
   )
 }

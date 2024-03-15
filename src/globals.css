@@ -33,7 +33,7 @@
     --foreground: 216 9.6% 99.45%;
 
     --muted: 216 40% 15%;
-    --muted-foreground: 216 9.6% 58.9%;
+    --muted-foreground: 216 9.6% 70.9%;
 
     --popover: 216 45.8% 11.57%;
     --popover-foreground: 216 9.6% 99.45%;
@@ -53,7 +53,7 @@
     --accent: 216 40% 15%;
     --accent-foreground: 216 9.6% 99.45%;
 
-    --destructive: 0 72.8% 50.6%;
+    --destructive: 0 82.8% 50.6%;
     --destructive-foreground: 216 9.6% 99.45%;
 
     --ring: #cbeafe;

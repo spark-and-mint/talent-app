@@ -16,7 +16,7 @@ const Calendly = ({ setMeetingBooked }: CalendlyProps) => {
         <PopupButton
           url="https://calendly.com/spark-and-mint-talent/hello"
           rootElement={document.getElementById("root")!}
-          text="Click here to schedule!"
+          text="Click here to schedule"
         />
       </Button>
     </div>

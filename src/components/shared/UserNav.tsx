@@ -37,7 +37,7 @@ export function UserNav() {
             <p className="text-sm font-medium leading-none">
               {member.firstName} {member.lastName}
             </p>
-            <p className="text-xs leading-none text-muted-foreground">
+            <p className="text-xs leading-none text-muted-foreground truncate">
               {member.email}
             </p>
           </div>

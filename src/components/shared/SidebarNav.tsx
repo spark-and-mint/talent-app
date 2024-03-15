@@ -1,34 +1,55 @@
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { NavLink } from "react-router-dom"
-import { LucideIcon } from "lucide-react"
+import {
+  HomeIcon,
+  UserIcon,
+  BriefcaseBusinessIcon,
+  FileTextIcon,
+  SettingsIcon,
+} from "lucide-react"
+import FadeIn from "react-fade-in"
 
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  links: {
-    to: string
-    icon: LucideIcon
-    title: string
-    badge?: number
-  }[]
-}
+export function SidebarNav() {
+  const navLinks = [
+    {
+      title: "Home",
+      icon: HomeIcon,
+      to: "/",
+    },
+    {
+      title: "Profile",
+      icon: UserIcon,
+      to: "/profile",
+    },
+    {
+      title: "Work",
+      icon: BriefcaseBusinessIcon,
+      to: "/work",
+      badge: 1,
+    },
+    {
+      title: "Contract",
+      icon: FileTextIcon,
+      to: "/contract",
+    },
+    {
+      title: "Account",
+      icon: SettingsIcon,
+      to: "/account",
+    },
+  ]
 
-export function SidebarNav({ className, links, ...props }: SidebarNavProps) {
   return (
-    <nav
-      className={cn(
-        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2",
-        className
-      )}
-      {...props}
-    >
-      {links.map((link) => (
+    <FadeIn className="flex space-x-2 w-full lg:flex-col lg:space-x-0 lg:space-y-2">
+      {navLinks.map((link) => (
         <NavLink
           key={link.to}
           to={link.to}
           className={({ isActive }) =>
             cn(
               buttonVariants({ variant: "ghost" }),
-              `justify-start rounded-md font-medium ${
+              `w-full justify-start rounded-md font-medium ${
                 isActive && "bg-muted hover:bg-muted"
               }`
             )
@@ -44,6 +65,6 @@ export function SidebarNav({ className, links, ...props }: SidebarNavProps) {
           )}
         </NavLink>
       ))}
-    </nav>
+    </FadeIn>
   )
 }

@@ -30,6 +30,7 @@ import {
   SquareArrowOutUpRight,
   Trash2,
 } from "lucide-react"
+import FadeIn from "react-fade-in"
 
 const talentUpdateSchema = z.object({
   resources: z
@@ -87,7 +88,7 @@ const Work = () => {
   // }
 
   return (
-    <div>
+    <FadeIn>
       <div className="">
         <div className="mb-2 text-primary tracking-[0.08em] uppercase text-sm font-semibold">
           You have been assigned to
@@ -113,6 +114,13 @@ const Work = () => {
             Contact client
           </Button>
         </div>
+      </div>
+
+      <Separator className="my-8" />
+
+      <div className="flex gap-4">
+        <Button variant="secondary">Decline</Button>
+        <Button>Accept opportunity</Button>
       </div>
 
       <Separator className="my-8" />
@@ -215,21 +223,11 @@ const Work = () => {
             </Button>
             <div className="flex justify-end mt-8">
               <Button type="submit">Save updates</Button>
-              {/* <Button type="submit" disabled={isLoadingUpdate}>
-                {isLoadingUpdate ? (
-                  <div className="flex items-center gap-2">
-                    <RotateCw className="h-4 w-4 animate-spin" />
-                    Saving...
-                  </div>
-                ) : (
-                  "Save updates"
-                )}
-              </Button> */}
             </div>
           </form>
         </Form>
       </div>
-    </div>
+    </FadeIn>
   )
 }
 

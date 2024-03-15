@@ -10,43 +10,47 @@ export type IMember = {
   email: string
   firstName: string
   lastName: string
-  avatarUrl: string
-  avatarId: string
+  website: string
+  linkedin: string
   primaryRole: string
   seniority: string
   workStatus: string
   rate: string
-  timezone: string
-  availability: string
-  website: string
-  linkedin: string
   skills: string[]
   domains: string[]
+  timezone: string
+  availability: string
+  status: "form completed" | "1on1 done" | "accepted" | "rejected" | null
+
+  meeting: string
+  avatarUrl: string
+  avatarId: string
   clients: IClient[]
   contractSigned: boolean
-  applicationStatus: "form completed" | "1on1 done" | "accepted" | "rejected"
-  meeting: string
 }
 
 export type IUpdateMember = {
   memberId: string
+  email?: string | null
   firstName?: string | null
   lastName?: string | null
-  email?: string | null
+  website?: string | null
+  linkedin?: string | null
   primaryRole?: string | null
   seniority?: string | null
   workStatus?: string | null
   rate?: string | null
-  timezone?: string | null
-  availability?: string | null
-  website?: string | null
-  linkedin?: string | null
   skills?: string[] | null
   domains?: string[] | null
+  timezone?: string | null
+  availability?: string | null
+  status?: "form completed" | "1on1 done" | "accepted" | "rejected" | null
+
   meeting?: string | null
   avatarUrl?: URL | string
   avatarId: string
   file: File[]
+  contractSigned?: boolean
 }
 
 export type INewClient = {

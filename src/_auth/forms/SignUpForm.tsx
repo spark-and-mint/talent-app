@@ -45,7 +45,6 @@ const SignUpForm = () => {
       const newMember = await createMemberAccount(member)
 
       if (!newMember) {
-        console.log("could not create member account")
         toast.error("Sign up failed. Please try again.")
         return
       }

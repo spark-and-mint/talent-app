@@ -177,6 +177,7 @@ export async function updateMember(member: IUpdateMember) {
         rate: member.rate,
         timezone: member.timezone,
         availability: member.availability,
+        status: member.status,
         website: member.website,
         linkedin: member.linkedin,
         skills: member.skills,

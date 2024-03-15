@@ -46,10 +46,12 @@ const optionSchema = z.object({
 })
 
 export const ProfileValidation = z.object({
+  seniority: z
+    .string()
+    .min(1, { message: "Please select your seniority level." }),
   primaryRole: z
     .string()
     .min(2, { message: "Role must be at least 2 characters." }),
-  seniority: z.string().optional(),
   workStatus: z.string().optional(),
   rate: z.string().optional(),
   timezone: z.string().optional(),
@@ -58,8 +60,7 @@ export const ProfileValidation = z.object({
   linkedin: z.string().url().nullish(),
   skills: z.array(optionSchema).optional(),
   domains: z.array(optionSchema).optional(),
-  meeting: z
-    .string()
-    .min(1, { message: "Please book a meeting before submitting." }),
+  meeting: z.string().optional(),
+  // .min(1, { message: "Please book a meeting before submitting." }),
   file: z.custom<File[]>(),
 })

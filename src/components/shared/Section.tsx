@@ -22,9 +22,7 @@ const Section = ({
       id={id}
       className={`
       relative
-      ${
-        customPaddings || `py-10 lg:py-16 xl:py-20 ${crosses ? "lg:py-32" : ""}`
-      }
+      ${customPaddings || `py-10 lg:py-16 ${crosses ? "lg:py-20" : ""}`}
       ${className || ""}`}
     >
       {children}
