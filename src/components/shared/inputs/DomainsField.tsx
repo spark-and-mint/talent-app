@@ -23,10 +23,6 @@ const DomainsField = () => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>Share more about the domains you've worked in</FormLabel>
-          <FormDescription>
-            We recommend selecting domains you're fairly comfortable in vs. ones
-            your only dabbled in.
-          </FormDescription>
           <FormControl>
             <MultipleSelector
               value={field.value}
@@ -36,6 +32,10 @@ const DomainsField = () => {
               placeholder="Choose as many as you like..."
             />
           </FormControl>
+          <FormDescription>
+            We recommend selecting domains you're fairly comfortable in vs. ones
+            your only dabbled in.
+          </FormDescription>
           <FormMessage />
         </FormItem>
       )}

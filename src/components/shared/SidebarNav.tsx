@@ -5,7 +5,7 @@ import {
   HomeIcon,
   UserIcon,
   BriefcaseBusinessIcon,
-  FileTextIcon,
+  // FileTextIcon,
   SettingsIcon,
 } from "lucide-react"
 import FadeIn from "react-fade-in"
@@ -28,11 +28,11 @@ export function SidebarNav() {
       to: "/work",
       badge: 1,
     },
-    {
-      title: "Contract",
-      icon: FileTextIcon,
-      to: "/contract",
-    },
+    // {
+    //   title: "Contract",
+    //   icon: FileTextIcon,
+    //   to: "/contract",
+    // },
     {
       title: "Account",
       icon: SettingsIcon,

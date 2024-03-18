@@ -46,21 +46,39 @@ const optionSchema = z.object({
 })
 
 export const ProfileValidation = z.object({
-  seniority: z
+  workStatus: z.string({
+    invalid_type_error: "Please select your work status.",
+  }),
+  seniority: z.string({
+    invalid_type_error: "Please select your seniority level.",
+  }),
+  primaryRole: z.string({
+    invalid_type_error: "Please select your primary role.",
+  }),
+  rate: z.string({ required_error: "Please enter your hourly rate." }),
+  timezone: z.string({
+    invalid_type_error: "Please select a timezone.",
+  }),
+  availability: z.string({
+    invalid_type_error: "Please select your availability.",
+  }),
+  website: z
     .string()
-    .min(1, { message: "Please select your seniority level." }),
-  primaryRole: z
+    .url({ message: "Invalid url. Please add https." })
+    .nullish(),
+  linkedin: z
     .string()
-    .min(2, { message: "Role must be at least 2 characters." }),
-  workStatus: z.string().optional(),
-  rate: z.string().optional(),
-  timezone: z.string().optional(),
-  availability: z.string().optional(),
-  website: z.string().url().nullish(),
-  linkedin: z.string().url().nullish(),
-  skills: z.array(optionSchema).optional(),
-  domains: z.array(optionSchema).optional(),
+    .url({ message: "Invalid url. Please add https." })
+    .nullish(),
+  skills: z
+    .array(optionSchema)
+    .min(1, { message: "Please select at least one skill." }),
+  domains: z
+    .array(optionSchema)
+    .min(1, { message: "Please select at least one domain or industry." }),
   meeting: z.string().optional(),
-  // .min(1, { message: "Please book a meeting before submitting." }),
+  // meeting: z.string({
+  //   required_error: "Please book a meeting before moving forward.",
+  // }),
   file: z.custom<File[]>(),
 })

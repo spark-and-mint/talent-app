@@ -23,10 +23,6 @@ const AvailabilityField = ({ member }) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>How many hours per week are you available?</FormLabel>
-          <FormDescription>
-            Indicate your general availability for work each week. Please note
-            that the mininum required availability is 10 hours per week.
-          </FormDescription>
           <Select
             onValueChange={field.onChange}
             defaultValue={member.availability ?? undefined}
@@ -43,6 +39,10 @@ const AvailabilityField = ({ member }) => {
               <SelectItem value="40">40 hrs/week</SelectItem>
             </SelectContent>
           </Select>
+          <FormDescription>
+            Indicate your general availability for work each week. Please note
+            that the mininum required availability is 10 hours per week.
+          </FormDescription>
           <FormMessage />
         </FormItem>
       )}

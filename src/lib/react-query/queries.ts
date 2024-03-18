@@ -15,6 +15,7 @@ import {
   getClients,
   getMemberById,
   getMembers,
+  getTypeFormAnswersByEmail,
   signInAccount,
   signOutAccount,
   updateClient,
@@ -145,5 +146,12 @@ export const useDeleteClient = () => {
         queryKey: [QUERY_KEYS.GET_CLIENTS],
       })
     },
+  })
+}
+
+export const useGetTypeFormAnswersByEmail = (email: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_TYPEFORM_ANSWERS_BY_EMAIL, email],
+    queryFn: () => getTypeFormAnswersByEmail(email),
   })
 }

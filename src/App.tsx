@@ -1,6 +1,13 @@
 import { Route, Routes } from "react-router-dom"
 import SignInForm from "./_auth/forms/SignInForm"
-import { Account, Contract, Home, Profile, Work } from "./_root/pages"
+import {
+  Account,
+  Contract,
+  Home,
+  Profile,
+  Work,
+  EmailVerification,
+} from "./_root/pages"
 import SignUpForm from "./_auth/forms/SignUpForm"
 import AuthLayout from "./_auth/AuthLayout"
 import RootLayout from "./_root/RootLayout"
@@ -27,6 +34,7 @@ const App = () => {
             <Route path="/work" element={<Work />} />
             <Route path="/contract" element={<Contract />} />
             <Route path="/account" element={<Account />} />
+            <Route path="/verify" element={<EmailVerification />} />
           </Route>
         </Routes>
       </Section>

@@ -24,7 +24,7 @@ const MeetingField = ({ member, meetingBooked, setMeetingBooked }) => {
           <FormLabel>
             {meetingBooked
               ? "Meeting booked!"
-              : "Book a meeting with Jason to discuss your profile"}
+              : "Book a meeting with us to discuss your profile"}
           </FormLabel>
           <FormControl>
             <div>

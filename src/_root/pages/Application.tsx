@@ -2,18 +2,11 @@ import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "@/components/ui/form"
-import { toast } from "sonner"
 import { Button } from "@/components/ui"
 import { ProfileValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
-import {
-  useGetTypeFormAnswersByEmail,
-  useUpdateMember,
-} from "@/lib/react-query/queries"
+import { useUpdateMember } from "@/lib/react-query/queries"
 import { RotateCw } from "lucide-react"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Separator } from "@/components/ui/separator"
-import StarSvg from "@/svg/StarSvg"
 import { useEffect, useState } from "react"
 import FormLoader from "@/components/shared/FormLoader"
 import {
@@ -27,17 +20,12 @@ import {
   WebsiteField,
   LinkedInField,
   MeetingField,
+  PrimaryRoleField,
 } from "@/components/shared/inputs"
-import FadeIn from "react-fade-in/lib/FadeIn"
+import FadeIn from "react-fade-in"
 
-const ProfilePage = () => {
-  const profileFound = true
-  const { member, setMember } = useMemberContext()
-  const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
-    useUpdateMember()
-  const { data: typeFormAnswers, isLoading } = useGetTypeFormAnswersByEmail(
-    member.email
-  )
+const ApplicationForm = () => {
+  const { member, setMember, isLoading } = useMemberContext()
   const [meetingBooked, setMeetingBooked] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof ProfileValidation>>({
@@ -63,31 +51,32 @@ const ProfilePage = () => {
       file: [],
     },
   })
+
   const { reset, clearErrors, setValue } = form
+
+  const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
+    useUpdateMember()
 
   const handleUpdate = async (values: z.infer<typeof ProfileValidation>) => {
     const updatedMember = await updateMember({
       ...values,
       memberId: member.id,
+      status: "form completed",
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
       skills: values.skills?.map((skill) => skill.value),
       domains: values.domains?.map((domain) => domain.value),
     })
 
-    if (!updatedMember) {
-      toast.error("Failed to update profile. Please try again.")
-    } else {
-      toast.success("Profile updated successfully!")
-    }
-
     setMember({
       ...member,
+      status: updatedMember?.status,
       firstName: updatedMember?.firstName,
       lastName: updatedMember?.lastName,
       email: updatedMember?.email,
       seniority: updatedMember?.seniority,
       workStatus: updatedMember?.workStatus,
+      primaryRole: updatedMember?.primaryRole,
       rate: updatedMember?.rate,
       timezone: updatedMember?.timezone,
       availability: updatedMember?.availability,
@@ -95,7 +84,6 @@ const ProfilePage = () => {
       linkedin: updatedMember?.linkedin,
       skills: updatedMember?.skills,
       domains: updatedMember?.domains,
-      primaryRole: updatedMember?.primaryRole,
       avatarUrl: updatedMember?.avatarUrl,
       avatarId: updatedMember?.avatarId,
     })
@@ -125,44 +113,32 @@ const ProfilePage = () => {
   }, [meetingBooked, clearErrors, setValue])
 
   if (isLoading) {
-    return <FormLoader />
+    return (
+      <div className="container">
+        <div className="max-w-lg mx-auto">
+          <FormLoader />
+        </div>
+      </div>
+    )
   }
 
-  console.log(typeFormAnswers)
-
   return (
-    <FadeIn className="pb-24">
-      <div className="space-y-6">
-        {profileFound ? (
-          <Alert className="relative mt-2 mb-6">
-            <StarSvg className="w-4 h-4" />
-            <AlertTitle className="mb-2 font-semibold">
-              We found you in our database!
-            </AlertTitle>
-            <AlertDescription>
-              Click to import your profile and get started
-            </AlertDescription>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2">
-              <Button>Import profile</Button>
-            </div>
-          </Alert>
-        ) : (
-          <>
-            <div>
-              <h3 className="text-lg font-medium mb-2">My profile</h3>
-              <p className="text-sm text-muted-foreground">
-                Update your profile information
-              </p>
-            </div>
-            <Separator />
-          </>
-        )}
+    <FadeIn delay={200} className="container pb-24">
+      <div className="space-y-4">
+        <div className="flex flex-col items-center justify-center w-full h-full">
+          <h3 className="h3 mb-4">Welcome to Spark + Mint</h3>
+          <p className="max-w-md mb-8 text-center text-muted-foreground">
+            We're very excited to have you join our talent network. Please fill
+            out the application form to get started.
+          </p>
+        </div>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleUpdate)}>
-            <FadeIn className="space-y-14 pt-8">
-              <SeniorityField member={member} />
+            <FadeIn delay={200} className="max-w-lg mx-auto space-y-14 pt-8">
               <WorkStatusField member={member} />
+              <SeniorityField member={member} />
+              <PrimaryRoleField member={member} />
               <SkillsField />
               <RateField member={member} />
               <TimezoneField member={member} />
@@ -181,10 +157,10 @@ const ProfilePage = () => {
                     {isLoadingUpdate ? (
                       <div className="flex items-center gap-2">
                         <RotateCw className="h-4 w-4 animate-spin" />
-                        Updating...
+                        Submitting...
                       </div>
                     ) : (
-                      "Update profile"
+                      "Submit application"
                     )}
                   </Button>
                 </div>
@@ -197,4 +173,4 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
+export default ApplicationForm

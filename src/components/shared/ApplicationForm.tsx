@@ -2,7 +2,6 @@ import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "@/components/ui/form"
-import { toast } from "sonner"
 import { Button } from "@/components/ui"
 import { ProfileValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
@@ -21,10 +20,15 @@ import {
   WebsiteField,
   LinkedInField,
   MeetingField,
+  PrimaryRoleField,
 } from "@/components/shared/inputs"
 import FadeIn from "react-fade-in"
 
-const ApplicationForm = () => {
+interface ApplicationFormProps {
+  setShowApplicationForm: (value: boolean) => void
+}
+
+const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
   const { member, setMember, isLoading } = useMemberContext()
   const [meetingBooked, setMeetingBooked] = useState<string | null>(null)
 
@@ -51,6 +55,7 @@ const ApplicationForm = () => {
       file: [],
     },
   })
+
   const { reset, clearErrors, setValue } = form
 
   const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
@@ -60,25 +65,22 @@ const ApplicationForm = () => {
     const updatedMember = await updateMember({
       ...values,
       memberId: member.id,
+      status: "form completed",
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
       skills: values.skills?.map((skill) => skill.value),
       domains: values.domains?.map((domain) => domain.value),
     })
 
-    if (!updatedMember) {
-      toast.error("Failed to update profile. Please try again.")
-    } else {
-      toast.success("Profile updated successfully!")
-    }
-
     setMember({
       ...member,
+      status: updatedMember?.status,
       firstName: updatedMember?.firstName,
       lastName: updatedMember?.lastName,
       email: updatedMember?.email,
       seniority: updatedMember?.seniority,
       workStatus: updatedMember?.workStatus,
+      primaryRole: updatedMember?.primaryRole,
       rate: updatedMember?.rate,
       timezone: updatedMember?.timezone,
       availability: updatedMember?.availability,
@@ -86,10 +88,11 @@ const ApplicationForm = () => {
       linkedin: updatedMember?.linkedin,
       skills: updatedMember?.skills,
       domains: updatedMember?.domains,
-      primaryRole: updatedMember?.primaryRole,
       avatarUrl: updatedMember?.avatarUrl,
       avatarId: updatedMember?.avatarId,
     })
+
+    setShowApplicationForm(false)
   }
 
   useEffect(() => {
@@ -139,8 +142,9 @@ const ApplicationForm = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleUpdate)}>
             <FadeIn delay={200} className="max-w-lg mx-auto space-y-14 pt-8">
-              <SeniorityField member={member} />
               <WorkStatusField member={member} />
+              <SeniorityField member={member} />
+              <PrimaryRoleField member={member} />
               <SkillsField />
               <RateField member={member} />
               <TimezoneField member={member} />

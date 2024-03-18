@@ -168,6 +168,7 @@ export async function updateMember(member: IUpdateMember) {
       appwriteConfig.memberCollectionId,
       member.memberId,
       {
+        emailVerification: member.emailVerification,
         firstName: member.firstName,
         lastName: member.lastName,
         email: member.email,
@@ -406,5 +407,30 @@ export async function deleteFile(fileId: string) {
     return { status: "ok" }
   } catch (error) {
     console.log(error)
+  }
+}
+
+export async function getTypeFormAnswersByEmail(email: string) {
+  if (!email) throw Error("Email can't be empty")
+
+  try {
+    const response = await fetch(
+      "https://spectacular-sprite-2804c0.netlify.app/.netlify/functions/formResponses",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    )
+
+    if (!response.ok) throw new Error("Network response was not ok")
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error(`An error occurred: ${error}`)
+    return error
   }
 }

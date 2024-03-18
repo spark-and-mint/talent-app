@@ -6,6 +6,7 @@ import { getCurrentMember } from "@/lib/appwrite/api"
 
 export const INITIAL_MEMBER: IMember = {
   id: "",
+  emailVerification: false,
   email: "",
   firstName: "",
   lastName: "",
@@ -62,6 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (currentAccount) {
         setMember({
           id: currentAccount.$id,
+          emailVerification: currentAccount.emailVerification,
           email: currentAccount.email,
           firstName: currentAccount.firstName,
           lastName: currentAccount.lastName,

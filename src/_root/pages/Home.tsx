@@ -8,17 +8,17 @@ const Home = () => {
   const { member } = useMemberContext()
   const accepted = member.status === "accepted"
 
-  console.log(member)
-
   return (
     <FadeIn>
       <div className="relative flex justify-between w-full p-8 border-2 border-border rounded-xl">
         <div>
           <img
             src="/assets/stars-multiple.svg"
-            className="absolute w-15 h-15 top-8 right-8"
+            className="absolute w-15 h-15 top-12 right-8"
           />
-          <h2 className="h2 mb-3">Hello, {member.firstName}!</h2>
+          <h2 className="h2 mb-3">
+            Hello, <span className="capitalize">{member.firstName}</span>!
+          </h2>
           <p>
             {accepted
               ? "Welcome to the Spark + Mint talent network."

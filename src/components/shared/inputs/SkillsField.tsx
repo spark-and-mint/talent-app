@@ -35,9 +35,6 @@ const SkillsField = () => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>What are your top skills?</FormLabel>
-          <FormDescription>
-            We'll use these to match you with clients and projects that fit you.
-          </FormDescription>
           <FormControl>
             <MultipleSelector
               value={field.value}
@@ -57,6 +54,9 @@ const SkillsField = () => {
               }
             />
           </FormControl>
+          <FormDescription>
+            We'll use these to match you with clients and projects that fit you.
+          </FormDescription>
           <FormMessage />
         </FormItem>
       )}

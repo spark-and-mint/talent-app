@@ -7,6 +7,7 @@ export type INewMember = {
 
 export type IMember = {
   id: string
+  emailVerification: boolean
   email: string
   firstName: string
   lastName: string
@@ -21,7 +22,6 @@ export type IMember = {
   timezone: string
   availability: string
   status: "form completed" | "1on1 done" | "accepted" | "rejected" | null
-
   meeting: string
   avatarUrl: string
   avatarId: string
@@ -31,6 +31,7 @@ export type IMember = {
 
 export type IUpdateMember = {
   memberId: string
+  emailVerification?: boolean
   email?: string | null
   firstName?: string | null
   lastName?: string | null
@@ -45,7 +46,6 @@ export type IUpdateMember = {
   timezone?: string | null
   availability?: string | null
   status?: "form completed" | "1on1 done" | "accepted" | "rejected" | null
-
   meeting?: string | null
   avatarUrl?: URL | string
   avatarId: string

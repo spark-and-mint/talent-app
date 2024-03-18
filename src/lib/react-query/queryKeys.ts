@@ -10,4 +10,7 @@ export enum QUERY_KEYS {
   // CLIENT KEYS
   GET_CLIENTS = "getClients",
   GET_CLIENT_BY_ID = "getClientById",
+
+  // OTHER KEYS
+  GET_TYPEFORM_ANSWERS_BY_EMAIL = "getTypeformAnswersByEmail",
 }
