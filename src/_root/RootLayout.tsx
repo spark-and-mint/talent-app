@@ -13,6 +13,7 @@ const acceptedMembers = [
   "hello+lol@kevinivan.com",
   "hello+calibration@kevinivan.com",
   "hello+verify@kevinivan.com",
+  "hello+harry@kevinivan.com",
   "jason+accepted@sparkandmint.com",
 ]
 
