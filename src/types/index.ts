@@ -8,7 +8,9 @@ export type INewMember = {
 export type IMember = {
   id: string
   emailVerification: boolean
+  importedAnswers: boolean
   email: string
+  name: string
   firstName: string
   lastName: string
   website: string
@@ -32,6 +34,7 @@ export type IMember = {
 export type IUpdateMember = {
   memberId: string
   emailVerification?: boolean
+  importedAnswers?: boolean
   email?: string | null
   firstName?: string | null
   lastName?: string | null

@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom"
 import { createContext, useContext, useEffect, useState } from "react"
-
 import { IMember } from "@/types"
 import { getCurrentMember } from "@/lib/appwrite/api"
 
 export const INITIAL_MEMBER: IMember = {
   id: "",
+  importedAnswers: false,
   emailVerification: false,
   email: "",
+  name: "",
   firstName: "",
   lastName: "",
   website: "",
@@ -63,8 +64,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (currentAccount) {
         setMember({
           id: currentAccount.$id,
+          importedAnswers: currentAccount.importedAnswers,
           emailVerification: currentAccount.emailVerification,
           email: currentAccount.email,
+          name: currentAccount.name,
           firstName: currentAccount.firstName,
           lastName: currentAccount.lastName,
           website: currentAccount.website,

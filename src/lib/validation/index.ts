@@ -52,9 +52,6 @@ export const ProfileValidation = z.object({
   seniority: z.string({
     invalid_type_error: "Please select your seniority level.",
   }),
-  primaryRole: z.string({
-    invalid_type_error: "Please select your primary role.",
-  }),
   rate: z.string({ required_error: "Please enter your hourly rate." }),
   timezone: z.string({
     invalid_type_error: "Please select a timezone.",
@@ -76,9 +73,4 @@ export const ProfileValidation = z.object({
   domains: z
     .array(optionSchema)
     .min(1, { message: "Please select at least one domain or industry." }),
-  meeting: z.string().optional(),
-  // meeting: z.string({
-  //   required_error: "Please book a meeting before moving forward.",
-  // }),
-  file: z.custom<File[]>(),
 })

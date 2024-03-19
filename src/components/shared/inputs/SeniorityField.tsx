@@ -24,6 +24,7 @@ const SeniorityField = ({ member }) => {
         <FormItem>
           <FormLabel>What is your current level of seniority?</FormLabel>
           <Select
+            value={field.value ?? undefined}
             onValueChange={field.onChange}
             defaultValue={member.seniority ?? undefined}
           >

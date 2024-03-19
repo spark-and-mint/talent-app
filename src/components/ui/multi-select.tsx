@@ -425,7 +425,7 @@ const MultipleSelector = React.forwardRef<
                   : placeholder
               }
               className={cn(
-                "flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
+                "flex-1 bg-transparent outline-none placeholder:text-placeholder",
                 inputProps?.className
               )}
             />

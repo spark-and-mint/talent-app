@@ -17,7 +17,6 @@ import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
 import { RotateCw } from "lucide-react"
 import FileUploader from "@/components/shared/FileUploader"
-import { Separator } from "@/components/ui/separator"
 import { useEffect } from "react"
 import FadeIn from "react-fade-in"
 
@@ -78,17 +77,17 @@ const AccountPage = () => {
   return (
     <div className="pb-12">
       <FadeIn className="space-y-6">
-        <div>
+        <div className="mb-12">
           <h3 className="text-lg font-medium mb-2">My account</h3>
           <p className="text-sm text-muted-foreground">
             Update your account settings
           </p>
         </div>
-        <Separator />
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleUpdate)}
-            className="space-y-8 pt-3"
+            className="space-y-8"
           >
             <FormField
               control={form.control}

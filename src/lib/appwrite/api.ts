@@ -13,7 +13,8 @@ export async function createMemberAccount(member: INewMember) {
     const newAccount = await account.create(
       ID.unique(),
       member.email,
-      member.password
+      member.password,
+      `${member.firstName} ${member.lastName}`
     )
 
     if (!newAccount) throw Error
@@ -25,6 +26,7 @@ export async function createMemberAccount(member: INewMember) {
     const newMember = await saveMemberToDB({
       accountId: newAccount.$id,
       email: newAccount.email,
+      name: `${member.firstName} ${member.lastName}`,
       firstName: member.firstName,
       lastName: member.lastName,
       avatarUrl,
@@ -41,6 +43,7 @@ export async function createMemberAccount(member: INewMember) {
 export async function saveMemberToDB(member: {
   accountId: string
   email: string
+  name: string
   firstName: string
   lastName: string
   avatarUrl: URL
@@ -168,6 +171,7 @@ export async function updateMember(member: IUpdateMember) {
       appwriteConfig.memberCollectionId,
       member.memberId,
       {
+        importedAnswers: member.importedAnswers,
         emailVerification: member.emailVerification,
         firstName: member.firstName,
         lastName: member.lastName,
@@ -415,17 +419,8 @@ export async function getTypeFormAnswersByEmail(email: string) {
 
   try {
     const response = await fetch(
-      "https://spectacular-sprite-2804c0.netlify.app/.netlify/functions/formResponses",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      }
+      `https://spectacular-sprite-2804c0.netlify.app/.netlify/functions/formResponses?email=${email}`
     )
-
-    if (!response.ok) throw new Error("Network response was not ok")
 
     const data = await response.json()
     return data

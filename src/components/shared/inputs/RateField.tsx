@@ -23,6 +23,7 @@ const RateField = ({ member }) => {
         <FormItem>
           <FormLabel>What is your hourly rate in USD?</FormLabel>
           <Select
+            value={field.value ?? undefined}
             onValueChange={field.onChange}
             defaultValue={member.rate ?? undefined}
           >

@@ -24,6 +24,7 @@ const WorkStatusField = ({ member }) => {
         <FormItem>
           <FormLabel>What is your current work status?</FormLabel>
           <Select
+            value={field.value ?? undefined}
             onValueChange={field.onChange}
             defaultValue={member.workStatus ?? undefined}
           >
@@ -33,23 +34,23 @@ const WorkStatusField = ({ member }) => {
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="Freelancer/consultant">
-                Freelancer/consultant
+              <SelectItem value="Freelancer/Consultant">
+                Freelancer/Consultant
               </SelectItem>
-              <SelectItem value="Part time employee">
-                Part time employee
+              <SelectItem value="Part Time Employee">
+                Part Time Employee
               </SelectItem>
-              <SelectItem value="Full time employee">
-                Full time employee
+              <SelectItem value="Full Time Employee">
+                Full Time Employee
               </SelectItem>
-              <SelectItem value="Fractional leader">
-                Fractional leader
+              <SelectItem value="Fractional Leader">
+                Fractional Leader
               </SelectItem>
-              <SelectItem value="Consultant + employee mix">
-                Consultant + employee mix
+              <SelectItem value="Consultant + Employee Mix">
+                Consultant + Employee Mix
               </SelectItem>
-              <SelectItem value="None of the above">
-                None of the above
+              <SelectItem value="None of The Above">
+                None of The Above
               </SelectItem>
             </SelectContent>
           </Select>

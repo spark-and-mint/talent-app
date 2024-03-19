@@ -8,8 +8,8 @@ export const domains = [
     label: "MedTech",
   },
   {
-    value: "Retail Tech",
-    label: "Retail Tech",
+    value: "Retail Tech.",
+    label: "Retail Tech.",
   },
   {
     value: "Banking / Crypto",

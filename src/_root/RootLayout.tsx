@@ -9,13 +9,7 @@ import { EmailVerification } from "./pages"
 import { AnnoyedIcon, RefreshCcw } from "lucide-react"
 import { Button } from "@/components/ui"
 
-const acceptedMembers = [
-  "hello+lol@kevinivan.com",
-  "hello+calibration@kevinivan.com",
-  "hello+verify@kevinivan.com",
-  "hello+harry@kevinivan.com",
-  "jason+accepted@sparkandmint.com",
-]
+const acceptedMembers = ["kevin@sparkandmint.com"]
 
 const RootLayout = () => {
   const { member, setMember } = useMemberContext()

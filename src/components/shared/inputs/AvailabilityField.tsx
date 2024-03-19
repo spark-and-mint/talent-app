@@ -24,6 +24,7 @@ const AvailabilityField = ({ member }) => {
         <FormItem>
           <FormLabel>How many hours per week are you available?</FormLabel>
           <Select
+            value={field.value ?? undefined}
             onValueChange={field.onChange}
             defaultValue={member.availability ?? undefined}
           >
@@ -33,10 +34,10 @@ const AvailabilityField = ({ member }) => {
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              <SelectItem value="10">10 hrs/week</SelectItem>
-              <SelectItem value="20">20 hrs/week</SelectItem>
-              <SelectItem value="30">30 hrs/week</SelectItem>
-              <SelectItem value="40">40 hrs/week</SelectItem>
+              <SelectItem value="10 hrs/week">10 hrs/week</SelectItem>
+              <SelectItem value="20 hrs/week">20 hrs/week</SelectItem>
+              <SelectItem value="30 hrs/week">30 hrs/week</SelectItem>
+              <SelectItem value="40 hrs/week">40 hrs/week</SelectItem>
             </SelectContent>
           </Select>
           <FormDescription>

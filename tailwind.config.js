@@ -45,6 +45,7 @@ module.exports = {
           12: "#2E2A41",
           13: "#6C7275",
         },
+        placeholder: "#64748b",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "var(--ring)",
