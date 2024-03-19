@@ -61,8 +61,7 @@ const SignUpForm = () => {
       }
 
       account.createVerification(
-        // "https://talent-spark-and-mint.netlify.app/verify"
-        "http://localhost:5173/verify"
+        "https://talent-spark-and-mint.netlify.app/verify"
       )
 
       const isLoggedIn = await checkAuthMember()
