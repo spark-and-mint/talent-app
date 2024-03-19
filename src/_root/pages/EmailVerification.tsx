@@ -60,14 +60,14 @@ const EmailVerification = () => {
           {isVerifying ? (
             "Hang tight."
           ) : (
-            <>
-              Didn't receive a verification email?
+            <div className="leading-7">
+              We sent a verification email to {member.email}
               <br />
-              Please contact us at{" "}
+              If you didn't receive it, please{" "}
               <a className="text-primary" href="mailto:hello@sparkandmint.com">
-                hello@sparkandmint.com
+                email us.
               </a>
-            </>
+            </div>
           )}
         </p>
       </div>
