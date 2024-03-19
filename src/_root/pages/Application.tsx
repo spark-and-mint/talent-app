@@ -42,7 +42,6 @@ const ApplicationForm = () => {
       timezone: member.timezone,
       website: member.website,
       linkedin: member.linkedin,
-      file: [],
     },
   })
 
@@ -58,6 +57,7 @@ const ApplicationForm = () => {
       avatarId: member.avatarId,
       skills: values.skills?.map((skill) => skill.value),
       domains: values.domains?.map((domain) => domain.value),
+      file: [],
     })
 
     setMember({

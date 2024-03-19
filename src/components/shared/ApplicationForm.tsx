@@ -7,7 +7,6 @@ import { ProfileValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
 import { RotateCw } from "lucide-react"
-import { useEffect, useState } from "react"
 import FormLoader from "@/components/shared/FormLoader"
 import {
   SeniorityField,
@@ -19,7 +18,6 @@ import {
   AvailabilityField,
   WebsiteField,
   LinkedInField,
-  MeetingField,
   PrimaryRoleField,
 } from "@/components/shared/inputs"
 import FadeIn from "react-fade-in"
@@ -30,12 +28,10 @@ interface ApplicationFormProps {
 
 const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
   const { member, setMember, isLoading } = useMemberContext()
-  const [meetingBooked, setMeetingBooked] = useState<string | null>(null)
 
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
-      primaryRole: member.primaryRole,
       seniority: member.seniority,
       workStatus: member.workStatus,
       rate: member.rate,
@@ -51,12 +47,8 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
       availability: member.availability,
       website: member.website,
       linkedin: member.linkedin,
-      meeting: member.meeting,
-      file: [],
     },
   })
-
-  const { reset, clearErrors, setValue } = form
 
   const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
     useUpdateMember()
@@ -70,53 +62,25 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
       avatarId: member.avatarId,
       skills: values.skills?.map((skill) => skill.value),
       domains: values.domains?.map((domain) => domain.value),
+      file: [],
     })
 
     setMember({
       ...member,
       status: updatedMember?.status,
-      firstName: updatedMember?.firstName,
-      lastName: updatedMember?.lastName,
-      email: updatedMember?.email,
-      seniority: updatedMember?.seniority,
       workStatus: updatedMember?.workStatus,
-      primaryRole: updatedMember?.primaryRole,
-      rate: updatedMember?.rate,
-      timezone: updatedMember?.timezone,
+      seniority: updatedMember?.seniority,
       availability: updatedMember?.availability,
-      website: updatedMember?.website,
-      linkedin: updatedMember?.linkedin,
       skills: updatedMember?.skills,
       domains: updatedMember?.domains,
-      avatarUrl: updatedMember?.avatarUrl,
-      avatarId: updatedMember?.avatarId,
+      rate: updatedMember?.rate,
+      timezone: updatedMember?.timezone,
+      website: updatedMember?.website,
+      linkedin: updatedMember?.linkedin,
     })
 
     setShowApplicationForm(false)
   }
-
-  useEffect(() => {
-    if (member.id) {
-      reset({
-        ...member,
-        file: [],
-        skills: member.skills?.map((skill: string) => ({
-          value: skill,
-          label: skill,
-        })),
-        domains: member.domains?.map((domain: string) => ({
-          value: domain,
-          label: domain,
-        })),
-      })
-    }
-  }, [member, reset])
-
-  useEffect(() => {
-    if (meetingBooked) {
-      setValue("meeting", meetingBooked, { shouldValidate: true })
-    }
-  }, [meetingBooked, clearErrors, setValue])
 
   if (isLoading) {
     return (
@@ -152,11 +116,6 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
               <AvailabilityField member={member} />
               <WebsiteField member={member} />
               <LinkedInField member={member} />
-              <MeetingField
-                member={member}
-                meetingBooked={meetingBooked}
-                setMeetingBooked={setMeetingBooked}
-              />
               <div className="flex justify-end">
                 <div className="flex gap-6 pt-8">
                   <Button type="submit" disabled={isLoadingUpdate}>
