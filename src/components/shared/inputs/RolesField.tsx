@@ -6,35 +6,36 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui"
-import MultipleSelector from "@/components/ui/multi-select"
 import { useFormContext } from "react-hook-form"
-import skills from "@/lib/constants/skills"
+import roles from "@/lib/constants/roles"
 import { IOption } from "@/types"
+import MultipleSelector from "@/components/ui/multi-select"
 import { mockSearch } from "@/lib/utils"
 
-const SkillsField = () => {
+const RolesField = () => {
   const { control } = useFormContext()
-  const skillOptions: IOption[] = skills
+  const roleOptions: IOption[] = roles
 
   return (
     <FormField
       control={control}
-      name="skills"
+      name="roles"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>What are your top skills?</FormLabel>
+          <FormLabel>Which roles describe you best?</FormLabel>
           <FormControl>
             <MultipleSelector
               value={field.value}
               onChange={field.onChange}
-              defaultOptions={skillOptions}
+              defaultOptions={roleOptions}
               onSearch={async (value) => {
-                const res = await mockSearch(value, skillOptions)
+                const res = await mockSearch(value, roleOptions)
                 return res
               }}
+              groupBy="group"
               hidePlaceholderWhenSelected
               triggerSearchOnFocus
-              placeholder="Search and select your skills"
+              placeholder="Search and select your primary roles"
               emptyIndicator={
                 <p className="w-full text-center leading-10 text-white">
                   No results found.
@@ -43,7 +44,8 @@ const SkillsField = () => {
             />
           </FormControl>
           <FormDescription>
-            We'll use these to match you with clients and projects that fit you.
+            We know these can be over-simplified, but it helps us understand
+            your general focus.
           </FormDescription>
           <FormMessage />
         </FormItem>
@@ -52,4 +54,4 @@ const SkillsField = () => {
   )
 }
 
-export default SkillsField
+export default RolesField

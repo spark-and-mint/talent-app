@@ -45,6 +45,8 @@ module.exports = {
           12: "#2E2A41",
           13: "#6C7275",
         },
+        "secondary-hover": "#19394e",
+        "green-250": "#95f2b6",
         placeholder: "#64748b",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

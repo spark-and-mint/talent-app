@@ -19,6 +19,7 @@ export type IMember = {
   seniority: string
   workStatus: string
   rate: string
+  roles: string[]
   skills: string[]
   domains: string[]
   timezone: string
@@ -44,6 +45,7 @@ export type IUpdateMember = {
   seniority?: string | null
   workStatus?: string | null
   rate?: string | null
+  roles?: string[] | null
   skills?: string[] | null
   domains?: string[] | null
   timezone?: string | null
@@ -81,4 +83,5 @@ export type IResource = {
 export type IOption = {
   label: string
   value: string
+  [key: string]: string | boolean | undefined
 }

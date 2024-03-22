@@ -24,6 +24,7 @@ import {
   AvailabilityField,
   WebsiteField,
   LinkedInField,
+  RolesField,
 } from "@/components/shared/inputs"
 import FadeIn from "react-fade-in/lib/FadeIn"
 import { useState } from "react"
@@ -41,9 +42,15 @@ const ProfilePage = () => {
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
+      availability: member.availability,
+      rate: member.rate,
+      timezone: member.timezone,
       workStatus: member.workStatus,
       seniority: member.seniority,
-      availability: member.availability,
+      roles: member.roles?.map((role: string) => ({
+        value: role,
+        label: role,
+      })),
       skills: member.skills?.map((skill: string) => ({
         value: skill,
         label: skill,
@@ -52,8 +59,6 @@ const ProfilePage = () => {
         value: domain,
         label: domain,
       })),
-      rate: member.rate,
-      timezone: member.timezone,
       website: member.website,
       linkedin: member.linkedin,
     },
@@ -66,6 +71,7 @@ const ProfilePage = () => {
       importedAnswers: member.importedAnswers || importedAnswers,
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
+      roles: values.roles?.map((role) => role.value),
       skills: values.skills?.map((skill) => skill.value),
       domains: values.domains?.map((domain) => domain.value),
       file: [],
@@ -80,13 +86,14 @@ const ProfilePage = () => {
     setMember({
       ...member,
       importedAnswers: updatedMember?.importedAnswers,
-      workStatus: updatedMember?.workStatus,
-      seniority: updatedMember?.seniority,
       availability: updatedMember?.availability,
-      skills: updatedMember?.skills,
-      domains: updatedMember?.domains,
       rate: updatedMember?.rate,
       timezone: updatedMember?.timezone,
+      workStatus: updatedMember?.workStatus,
+      seniority: updatedMember?.seniority,
+      roles: updatedMember?.roles,
+      skills: updatedMember?.skills,
+      domains: updatedMember?.domains,
       website: updatedMember?.website,
       linkedin: updatedMember?.linkedin,
     })
@@ -119,13 +126,17 @@ const ProfilePage = () => {
 
   const handleImport = async () => {
     const answers = typeFormAnswers[0]?.answers
-    if (!answers) return
 
     setLoadingImport(true)
     await new Promise((resolve) => setTimeout(resolve, 2000))
     setLoadingImport(false)
-    setImportedAnswers(true)
 
+    if (!answers) {
+      toast.error("Could not import profile. Please try again.")
+      return
+    }
+
+    setImportedAnswers(true)
     toast.success("Profile imported successfully!")
 
     answers.forEach(
@@ -133,7 +144,6 @@ const ProfilePage = () => {
         field: { ref: string }
         type: string
         text?: string
-        email?: string
         choice?: { label: string }
         choices?: { labels: string[]; other?: string }
       }) => {
@@ -161,13 +171,12 @@ const ProfilePage = () => {
         const fieldName = mapRefToFieldName(field.ref)
 
         if (fieldName) {
-          if (Array.isArray(value)) {
-            console.log(fieldName, value)
+          if (Array.isArray(value) && value !== undefined) {
             setValue(
               fieldName,
               value.map((v) => ({ value: v.trim(), label: v.trim() }))
             )
-          } else {
+          } else if (value !== undefined) {
             setValue(fieldName, value?.trim())
           }
         }
@@ -178,7 +187,7 @@ const ProfilePage = () => {
   return (
     <FadeIn className="pb-24">
       <div className="space-y-6">
-        {typeFormAnswers && !member.importedAnswers && !importedAnswers ? (
+        {typeFormAnswers ? (
           <Alert className="relative mt-2 mb-14">
             <StarSvg className="w-4 h-4" />
             <AlertTitle className="mb-3 font-semibold">
@@ -212,10 +221,11 @@ const ProfilePage = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleUpdate)}>
             <FadeIn className="space-y-14">
-              <WorkStatusField member={member} />
-              <SeniorityField member={member} />
               <AvailabilityField member={member} />
               <RateField member={member} />
+              <WorkStatusField member={member} />
+              <SeniorityField member={member} />
+              <RolesField />
               <SkillsField />
               <DomainsField />
               <TimezoneField member={member} />

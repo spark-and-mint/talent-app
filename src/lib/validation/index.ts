@@ -46,31 +46,30 @@ const optionSchema = z.object({
 })
 
 export const ProfileValidation = z.object({
-  workStatus: z.string({
-    invalid_type_error: "Please select your work status.",
-  }),
-  seniority: z.string({
-    invalid_type_error: "Please select your seniority level.",
-  }),
-  rate: z.string({ required_error: "Please enter your hourly rate." }),
-  timezone: z.string({
-    invalid_type_error: "Please select a timezone.",
-  }),
-  availability: z.string({
-    invalid_type_error: "Please select your availability.",
-  }),
-  website: z
+  availability: z.string(),
+  rate: z.string(),
+  timezone: z.string(),
+  workStatus: z.string().min(1, { message: "Please select your work status." }),
+  seniority: z
     .string()
-    .url({ message: "Invalid url. Please add https." })
-    .nullish(),
-  linkedin: z
-    .string()
-    .url({ message: "Invalid url. Please add https." })
-    .nullish(),
+    .min(1, { message: "Please select your seniority level." }),
+  roles: z
+    .array(optionSchema, { required_error: "Please select at least one role." })
+    .min(1, { message: "Please select at least one role." }),
   skills: z
     .array(optionSchema)
     .min(1, { message: "Please select at least one skill." }),
   domains: z
     .array(optionSchema)
     .min(1, { message: "Please select at least one domain or industry." }),
+  website: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
+  linkedin: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
 })

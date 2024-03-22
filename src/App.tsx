@@ -21,7 +21,7 @@ const App = () => {
     <main>
       <Header />
 
-      <Section crosses className="h-[calc(100vh-6rem)]">
+      <Section crosses>
         <Routes>
           <Route element={<AuthLayout />}>
             <Route path="/sign-in" element={<SignInForm />} />

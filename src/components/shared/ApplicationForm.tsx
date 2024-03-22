@@ -1,5 +1,6 @@
 import * as z from "zod"
 import { useForm } from "react-hook-form"
+import FadeIn from "react-fade-in"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui"
@@ -11,16 +12,12 @@ import FormLoader from "@/components/shared/FormLoader"
 import {
   SeniorityField,
   WorkStatusField,
-  RateField,
-  TimezoneField,
   SkillsField,
+  RolesField,
   DomainsField,
-  AvailabilityField,
   WebsiteField,
   LinkedInField,
-  PrimaryRoleField,
 } from "@/components/shared/inputs"
-import FadeIn from "react-fade-in"
 
 interface ApplicationFormProps {
   setShowApplicationForm: (value: boolean) => void
@@ -32,10 +29,12 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
-      seniority: member.seniority,
       workStatus: member.workStatus,
-      rate: member.rate,
-      timezone: member.timezone,
+      seniority: member.seniority,
+      roles: member.roles?.map((role: string) => ({
+        value: role,
+        label: role,
+      })),
       skills: member.skills?.map((skill: string) => ({
         value: skill,
         label: skill,
@@ -44,7 +43,6 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
         value: domain,
         label: domain,
       })),
-      availability: member.availability,
       website: member.website,
       linkedin: member.linkedin,
     },
@@ -60,6 +58,7 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
       status: "form completed",
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
+      roles: values.roles?.map((role) => role.value),
       skills: values.skills?.map((skill) => skill.value),
       domains: values.domains?.map((domain) => domain.value),
       file: [],
@@ -70,11 +69,9 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
       status: updatedMember?.status,
       workStatus: updatedMember?.workStatus,
       seniority: updatedMember?.seniority,
-      availability: updatedMember?.availability,
+      roles: updatedMember?.roles,
       skills: updatedMember?.skills,
       domains: updatedMember?.domains,
-      rate: updatedMember?.rate,
-      timezone: updatedMember?.timezone,
       website: updatedMember?.website,
       linkedin: updatedMember?.linkedin,
     })
@@ -108,15 +105,12 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
             <FadeIn delay={200} className="max-w-lg mx-auto space-y-14 pt-8">
               <WorkStatusField member={member} />
               <SeniorityField member={member} />
-              <PrimaryRoleField member={member} />
+              <RolesField />
               <SkillsField />
-              <RateField member={member} />
-              <TimezoneField member={member} />
               <DomainsField />
-              <AvailabilityField member={member} />
               <WebsiteField member={member} />
               <LinkedInField member={member} />
-              <div className="flex justify-end">
+              <div className="flex justify-center">
                 <div className="flex gap-6 pt-8">
                   <Button type="submit" disabled={isLoadingUpdate}>
                     {isLoadingUpdate ? (

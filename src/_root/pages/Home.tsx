@@ -1,60 +1,127 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui"
 import { useMemberContext } from "@/context/AuthContext"
-import { SquareUser } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { ArrowRight, ExternalLink, Heart, ScrollText, User } from "lucide-react"
 import FadeIn from "react-fade-in"
 import { Link } from "react-router-dom"
+
+interface PanelProps {
+  children: React.ReactNode
+  className?: string
+}
+
+const Panel = ({ children, className }: PanelProps) => (
+  <div
+    className={cn(
+      "p-6 border border-border bg-slate-400/5 rounded-xl",
+      className
+    )}
+  >
+    {children}
+  </div>
+)
 
 const Home = () => {
   const { member } = useMemberContext()
   const accepted = member.status === "accepted"
 
   return (
-    <FadeIn>
-      <div className="relative flex justify-between w-full p-8 border-2 border-border rounded-xl">
+    <FadeIn className="pb-16 space-y-4">
+      <div className="relative flex justify-between items-center mb-10 -mt-2">
         <div>
-          <img
-            src="/assets/stars-multiple.svg"
-            className="absolute w-15 h-15 top-12 right-8"
-          />
-          <h2 className="h2 mb-3">
+          <h4 className="h4 mb-1">
             Hello, <span className="capitalize">{member.firstName}</span>!
-          </h2>
-          <p>
+          </h4>
+          <p
+            className={cn(
+              "max-w-[34rem]",
+              accepted ? "mt-1.5 text-lg" : "text-base"
+            )}
+          >
             {accepted
               ? "Welcome to the Spark + Mint talent network."
-              : "Thank you for filling out our application form."}
+              : "Thank you for applying. Feel free to add any additional information to your profile – this will be really helpful when we review your application."}
           </p>
         </div>
+        <img src="/assets/stars-multiple.svg" className="w-14 h-14 mr-3" />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2">
-        <div className="relative flex flex-col gap-5 p-8 rounded-xl border-2 border-border">
-          <img src="/assets/slack.webp" alt="" className="w-9 h-9" />
+      {accepted ? (
+        <Link to="/profile" className="block">
+          <Panel className="flex items-center justify-between border-cyan-900 group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+            <div className="flex items-center gap-6">
+              <img src="/assets/slack.webp" className="w-10 h-10 ml-1.5" />
+              <div>
+                <h6 className="h6 text-lg mb-1 group-hover:text-white transition-colors duration-100">
+                  Join our Slack!
+                </h6>
+                <p>Connect with other members and mentors in our network.</p>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
+                <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
+              </div>
+            </div>
+          </Panel>
+        </Link>
+      ) : (
+        <Link to="/profile" className="block">
+          <Panel className="flex items-center justify-between border-cyan-900 group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
+                <User strokeWidth={2} className="w-6 h-6" />
+              </div>
+              <div>
+                <h6 className="h6 text-lg mb-1 group-hover:text-white transition-colors duration-100">
+                  Complete your Profile
+                </h6>
+                <p>Add more details to get started on your journey.</p>
+              </div>
+            </div>
+            <div className="flex items-center">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
+                <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
+              </div>
+            </div>
+          </Panel>
+        </Link>
+      )}
+
+      <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2">
+        <Panel className="flex flex-col gap-5 border-cyan-900">
+          <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
+            <ScrollText className="w-6 h-6" />
+          </div>
           <div>
-            <h6 className="h6 mb-2">Explore the community</h6>
-            <p>Connect with other members and mentors in our network.</p>
+            <h6 className="h6 mb-2">Read our Manifesto</h6>
+            <p>Understand our values and what keeps us exploring together.</p>
           </div>
           <div className="mt-2">
             <Button asChild variant="secondary">
-              <Link to="/community">Join our Slack!</Link>
+              <Link to="/community" className="flex items-center">
+                Open manifesto <ExternalLink className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
           </div>
-        </div>
-        <div className="relative flex flex-col gap-5 p-8 rounded-xl border-2 border-border">
-          <SquareUser
-            strokeWidth={1.25}
-            className="w-9 h-9 scale-125 text-primary"
-          />
+        </Panel>
+
+        <Panel className="relative flex flex-col gap-5 border-cyan-900">
+          <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
+            <Heart strokeWidth={2} className="w-6 h-6" />
+          </div>
           <div>
-            <h6 className="h6 mb-2">Complete your profile</h6>
-            <p>Add more details to get started with your journey.</p>
+            <h6 className="h6 mb-2">Stay in the Loop</h6>
+            <p>Connect with us on X for the latest updates and news.</p>
           </div>
           <div className="mt-2">
             <Button asChild variant="secondary">
-              <Link to="/community">Update profile</Link>
+              <Link to="https://x.com/sparkandmint" target="_blank">
+                Connect with us <ExternalLink className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
           </div>
-        </div>
+        </Panel>
       </div>
     </FadeIn>
   )

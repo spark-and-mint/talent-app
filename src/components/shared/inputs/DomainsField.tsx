@@ -8,13 +8,12 @@ import {
   FormMessage,
 } from "@/components/ui"
 import MultipleSelector from "@/components/ui/multi-select"
-import { domains } from "@/lib/constants"
+import domains from "@/lib/constants/domains"
 import { IOption } from "@/types"
-
-const domainOptions: IOption[] = domains
 
 const DomainsField = () => {
   const { control } = useFormContext()
+  const domainOptions: IOption[] = domains
 
   return (
     <FormField
@@ -22,7 +21,9 @@ const DomainsField = () => {
       name="domains"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Share more about the domains you've worked in</FormLabel>
+          <FormLabel>
+            Share more about the industries you've worked in
+          </FormLabel>
           <FormControl>
             <MultipleSelector
               value={field.value}
@@ -33,8 +34,8 @@ const DomainsField = () => {
             />
           </FormControl>
           <FormDescription>
-            We recommend selecting domains you're fairly comfortable in vs. ones
-            your only dabbled in.
+            We recommend selecting industries and domains you're fairly
+            comfortable in vs. ones you've only dabbled in.
           </FormDescription>
           <FormMessage />
         </FormItem>
