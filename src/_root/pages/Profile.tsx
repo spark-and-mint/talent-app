@@ -187,7 +187,7 @@ const ProfilePage = () => {
   return (
     <FadeIn className="pb-24">
       <div className="space-y-6">
-        {typeFormAnswers ? (
+        {typeFormAnswers && !member.importedAnswers && !importedAnswers ? (
           <Alert className="relative mt-2 mb-14">
             <StarSvg className="w-4 h-4" />
             <AlertTitle className="mb-3 font-semibold">

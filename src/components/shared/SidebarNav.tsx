@@ -27,7 +27,7 @@ export function SidebarNav() {
       title: "Opportunities",
       icon: Rocket,
       to: "/opportunities",
-      // badge: 1,
+      badge: 1,
     },
     {
       title: "My Projects",
@@ -64,11 +64,11 @@ export function SidebarNav() {
         >
           <link.icon className="w-4 h-4 mr-2" />
           {link.title}
-          {/* {link.badge && (
+          {link.badge && (
             <span className="ml-3 px-2 py-0.5 text-xs font-semibold text-black bg-primary rounded-full">
               {link.badge}
             </span>
-          )} */}
+          )}
         </NavLink>
       ))}
     </FadeIn>

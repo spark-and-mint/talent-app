@@ -1,25 +1,10 @@
+import Panel from "@/components/shared/Panel"
 import { Button } from "@/components/ui"
 import { useMemberContext } from "@/context/AuthContext"
 import { cn } from "@/lib/utils"
 import { ArrowRight, ExternalLink, Heart, ScrollText, User } from "lucide-react"
 import FadeIn from "react-fade-in"
 import { Link } from "react-router-dom"
-
-interface PanelProps {
-  children: React.ReactNode
-  className?: string
-}
-
-const Panel = ({ children, className }: PanelProps) => (
-  <div
-    className={cn(
-      "p-6 border border-border bg-slate-400/5 rounded-xl",
-      className
-    )}
-  >
-    {children}
-  </div>
-)
 
 const Home = () => {
   const { member } = useMemberContext()
@@ -48,7 +33,7 @@ const Home = () => {
 
       {accepted ? (
         <Link to="/profile" className="block">
-          <Panel className="flex items-center justify-between border-cyan-900 group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+          <Panel className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
             <div className="flex items-center gap-6">
               <img src="/assets/slack.webp" className="w-10 h-10 ml-1.5" />
               <div>
@@ -67,7 +52,7 @@ const Home = () => {
         </Link>
       ) : (
         <Link to="/profile" className="block">
-          <Panel className="flex items-center justify-between border-cyan-900 group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+          <Panel className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
             <div className="flex items-center gap-6">
               <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
                 <User strokeWidth={2} className="w-6 h-6" />
@@ -89,7 +74,7 @@ const Home = () => {
       )}
 
       <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2">
-        <Panel className="flex flex-col gap-5 border-cyan-900">
+        <Panel className="flex flex-col gap-5">
           <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
             <ScrollText className="w-6 h-6" />
           </div>
@@ -106,7 +91,7 @@ const Home = () => {
           </div>
         </Panel>
 
-        <Panel className="relative flex flex-col gap-5 border-cyan-900">
+        <Panel className="relative flex flex-col gap-5">
           <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
             <Heart strokeWidth={2} className="w-6 h-6" />
           </div>

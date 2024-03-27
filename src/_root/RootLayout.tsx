@@ -4,10 +4,11 @@ import { SidebarNav } from "@/components/shared/SidebarNav"
 import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
 import { useState } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import { EmailVerification } from "./pages"
 import { AnnoyedIcon, RefreshCcw } from "lucide-react"
 import { Button } from "@/components/ui"
+import { cn } from "@/lib/utils"
 
 const acceptedMembers = ["kevin@sparkandmint.com", "alex@sparkandmint.com"]
 
@@ -16,6 +17,8 @@ const RootLayout = () => {
   const [loading, setLoading] = useState(false)
   const [showApplicationForm, setShowApplicationForm] = useState(false)
   const { mutateAsync: updateMember } = useUpdateMember()
+  const location = useLocation()
+  const projectPage = location.pathname.includes("/project/")
   const goToDashboard =
     member.status === "form completed" || member.status === "accepted"
 
@@ -72,10 +75,12 @@ const RootLayout = () => {
     return (
       <div className="container h-full">
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <aside className="lg:w-1/4">
-            <SidebarNav />
-          </aside>
-          <div className="flex-1 lg:max-w-2xl">
+          {!projectPage && (
+            <aside className="lg:w-1/4">
+              <SidebarNav />
+            </aside>
+          )}
+          <div className={cn("flex-1", !projectPage && "lg:max-w-2xl")}>
             <Outlet />
           </div>
         </div>

@@ -5,6 +5,8 @@ import {
   IMember,
   INewClient,
   INewMember,
+  INewUpdate,
+  IUpdate,
   IUpdateMember,
 } from "@/types"
 
@@ -427,5 +429,61 @@ export async function getTypeFormAnswersByEmail(email: string) {
   } catch (error) {
     console.error(`An error occurred: ${error}`)
     return error
+  }
+}
+
+export async function createUpdate(update: INewUpdate) {
+  try {
+    const newUpdate = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.updateCollectionId,
+      ID.unique(),
+      {
+        title: update.title,
+      }
+    )
+
+    return newUpdate
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function updateUpdate(update: IUpdate) {
+  try {
+    const updatedUpdate = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.updateCollectionId,
+      update.updateId,
+      {
+        title: update.title,
+      }
+    )
+
+    if (!updatedUpdate) {
+      throw Error
+    }
+
+    return updatedUpdate
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getMemberUpdates(memberId?: string) {
+  if (!memberId) return
+
+  try {
+    const update = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.updateCollectionId,
+      [Query.equal("creator", memberId), Query.orderDesc("$createdAt")]
+    )
+
+    if (!update) throw Error
+
+    return update
+  } catch (error) {
+    console.log(error)
   }
 }

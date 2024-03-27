@@ -5,8 +5,10 @@ import {
   Contract,
   Home,
   Profile,
-  Work,
+  Opportunities,
+  Projects,
   EmailVerification,
+  Project,
 } from "./_root/pages"
 import SignUpForm from "./_auth/forms/SignUpForm"
 import AuthLayout from "./_auth/AuthLayout"
@@ -31,7 +33,9 @@ const App = () => {
           <Route element={<RootLayout />}>
             <Route index element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/work" element={<Work />} />
+            <Route path="/opportunities" element={<Opportunities />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/project/:id" element={<Project />} />
             <Route path="/contract" element={<Contract />} />
             <Route path="/account" element={<Account />} />
             <Route path="/verify" element={<EmailVerification />} />

@@ -85,3 +85,29 @@ export type IOption = {
   value: string
   [key: string]: string | boolean | undefined
 }
+
+export type INewUpdate = {
+  memberId: string
+  title: string
+  link?: null | string
+  type: string
+  milestone: string
+  description?: string
+}
+
+export type IUpdate = {
+  updateId: string
+  title?: string
+  link?: null | string
+  type?: string
+  milestone?: string
+  description?: string
+  feedback?: string
+}
+
+export type IProject = {
+  projectId: string
+  name: string
+  client: IClient
+  members: IMember[]
+}

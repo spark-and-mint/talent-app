@@ -10,7 +10,7 @@
   }
 
   body {
-    @apply font-sans bg-n-8 text-n-1 text-base;
+    @apply font-sans bg-body text-n-1 text-base;
     background-image: url(/assets/stars.png);
     background-position: 0 0;
     background-size: 1440px;

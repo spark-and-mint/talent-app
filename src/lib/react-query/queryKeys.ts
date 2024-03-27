@@ -11,6 +11,11 @@ export enum QUERY_KEYS {
   GET_CLIENTS = "getClients",
   GET_CLIENT_BY_ID = "getClientById",
 
+  // UPDATE KEYS
+  GET_UPDATES_BY_PROJET_ID = "getUpdatesByProjectId",
+  GET_UPDATE_BY_ID = "getUpdateById",
+  GET_MEMBER_UPDATES = "getMemberUpdates",
+
   // OTHER KEYS
   GET_TYPEFORM_ANSWERS_BY_EMAIL = "getTypeformAnswersByEmail",
 }

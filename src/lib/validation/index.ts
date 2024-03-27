@@ -73,3 +73,17 @@ export const ProfileValidation = z.object({
     .nullish()
     .or(z.literal("")),
 })
+
+export const UpdateValidation = z.object({
+  title: z
+    .string()
+    .min(2, { message: "The title must be at least 2 characters." }),
+  link: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
+  type: z.string(),
+  milestone: z.string(),
+  description: z.string(),
+})
