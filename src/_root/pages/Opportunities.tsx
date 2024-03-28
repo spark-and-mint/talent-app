@@ -18,7 +18,7 @@ const Opportunities = () => {
       "Global Unity needs a new website redesign and you are the proposed lead designer for the project.",
     projectDuration: "3 Months",
     projectType: "Hourly | Part-time | Full-time",
-    estimatedEarnings: "$7,500 – $9,000 USD ",
+    estimatedEarnings: "$7,500 – $9,000 USD",
     clientBackground:
       "Global Unity is an innovative educational platform designed to create open-source learning opportunities. They want to redesign their website to enhance the learning experience.",
     responsibilities:

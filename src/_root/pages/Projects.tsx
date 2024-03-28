@@ -5,9 +5,10 @@ const Projects = () => {
   const projects = [
     {
       $id: "1",
-      name: "Global Unity Website Redesign",
+      name: "Marketing Website Redesign",
       logoUrl: "/assets/global-unity-logo.png",
       client: {
+        name: "Global Unity",
         logoUrl: "/assets/global-unity-logo.png",
       },
       members: [

@@ -25,9 +25,16 @@ import {
   WebsiteField,
   LinkedInField,
   RolesField,
+  LookingForField,
+  GitHubField,
+  XField,
+  FarcasterField,
+  DribbbleField,
+  BehanceField,
 } from "@/components/shared/inputs"
 import FadeIn from "react-fade-in/lib/FadeIn"
 import { useState } from "react"
+import { Separator } from "@/components/ui/separator"
 
 const ProfilePage = () => {
   const { member, setMember } = useMemberContext()
@@ -209,28 +216,60 @@ const ProfilePage = () => {
               </Button>
             </div>
           </Alert>
-        ) : (
-          <div className="mb-12">
-            <h3 className="text-lg font-medium mb-2">My profile</h3>
-            <p className="text-sm text-muted-foreground">
-              We will use this information to match you with potential clients
-            </p>
-          </div>
-        )}
+        ) : null}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleUpdate)}>
-            <FadeIn className="space-y-14">
+            <FadeIn className="space-y-8 lg:space-y-14">
+              <div className="mb-12">
+                <h3 className="text-lg font-medium mb-2">Work preferences</h3>
+                <p className="text-sm text-muted-foreground">
+                  Help us understand your availability and what type of roles
+                  you're seeking.
+                </p>
+              </div>
+              <LookingForField member={member} />
               <AvailabilityField member={member} />
               <RateField member={member} />
+
+              <Separator />
+
+              <div className="mb-12">
+                <h3 className="text-lg font-medium mb-2">
+                  Professional details
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Please tell us more about your professional background and
+                  skills.
+                </p>
+              </div>
               <WorkStatusField member={member} />
               <SeniorityField member={member} />
               <RolesField />
               <SkillsField />
               <DomainsField />
               <TimezoneField member={member} />
+
+              <Separator />
+
+              <div className="mb-12">
+                <h3 className="text-lg font-medium mb-2">Online presence</h3>
+                <p className="text-sm text-muted-foreground">
+                  Sharing a portfolio, personal website, or online profiles
+                  helps potential clients get to know you better, providing
+                  credibility to your skills and experiences.
+                </p>
+              </div>
               <WebsiteField member={member} />
-              <LinkedInField member={member} />
+
+              <div className="grid gap-8 lg:grid-cols-2 lg:gap-y-14 lg:gap-x-12">
+                <LinkedInField member={member} />
+                <GitHubField member={member} />
+                <XField member={member} />
+                <FarcasterField member={member} />
+                <DribbbleField member={member} />
+                <BehanceField member={member} />
+              </div>
               <div className="flex justify-end">
                 <div className="flex gap-6 pt-8">
                   <Button type="submit" disabled={isLoadingUpdate}>

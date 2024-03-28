@@ -5,9 +5,8 @@ import {
   HomeIcon,
   UserIcon,
   BriefcaseBusinessIcon,
-  SettingsIcon,
   Rocket,
-  // FileTextIcon,
+  Gift,
 } from "lucide-react"
 import FadeIn from "react-fade-in"
 
@@ -34,15 +33,10 @@ export function SidebarNav() {
       icon: BriefcaseBusinessIcon,
       to: "/projects",
     },
-    // {
-    //   title: "Contracts",
-    //   icon: FileTextIcon,
-    //   to: "/contract",
-    // },
     {
-      title: "Account",
-      icon: SettingsIcon,
-      to: "/account",
+      title: "Refer and Earn",
+      icon: Gift,
+      to: "/referral",
     },
   ]
 

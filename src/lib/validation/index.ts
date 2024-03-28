@@ -86,4 +86,5 @@ export const UpdateValidation = z.object({
   type: z.string(),
   milestone: z.string(),
   description: z.string(),
+  file: z.custom<File[]>(),
 })

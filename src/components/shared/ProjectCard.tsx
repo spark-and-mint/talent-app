@@ -40,41 +40,22 @@ const ProjectCard = ({ project }: { project: Models.Document }) => {
         <div className="flex items-end justify-between">
           <div className="space-y-8">
             <div className="flex flex-col gap-2">
-              <h4 className="text-sm font-medium">Your role</h4>
-              <p className="font-medium">Product Designer</p>
+              <div className="text-primary tracking-[0.08em] uppercase text-xs font-semibold">
+                Client
+              </div>
+              <p className="font-medium">{project.client.name}</p>
             </div>
             <div className="flex flex-col gap-2">
-              {project.members && project.members.length > 0 ? (
-                <>
-                  <h4 className="text-sm font-medium">Team members</h4>
-                  <div className="flex items-center space-x-4">
-                    {project.members.map((member: Models.Document) => (
-                      <TooltipProvider delayDuration={100} key={member.$id}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Avatar>
-                              <AvatarImage src={member.avatarUrl} />
-                            </Avatar>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>
-                              {member.firstName} {member.lastName}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <p className="text-center py-8">No members assigned</p>
-              )}
+              <div className="text-primary tracking-[0.08em] uppercase text-xs font-semibold">
+                Your role
+              </div>
+              <p className="font-medium">Product Designer</p>
             </div>
           </div>
 
           <div>
             <Button asChild className="w-full">
-              <Link to={`/project/${project.projectId}`}>
+              <Link to={`/project/${project.$id}`}>
                 Project details <ArrowRight className="ml-2" size={16} />
               </Link>
             </Button>

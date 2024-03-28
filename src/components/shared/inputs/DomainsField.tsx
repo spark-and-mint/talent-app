@@ -21,9 +21,7 @@ const DomainsField = () => {
       name="domains"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>
-            Share more about the industries you've worked in
-          </FormLabel>
+          <FormLabel>What industries or domains have you worked in?</FormLabel>
           <FormControl>
             <MultipleSelector
               value={field.value}

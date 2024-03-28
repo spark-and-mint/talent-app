@@ -8,21 +8,21 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const LinkedInField = ({ member }) => {
+const DribbbleField = ({ member }) => {
   const { control } = useFormContext()
 
   return (
     <FormField
       control={control}
-      name="linkedin"
-      defaultValue={member.linkedin}
+      name="dribbble"
+      defaultValue={member.dribbble}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>LinkedIn</FormLabel>
+          <FormLabel>Dribbble</FormLabel>
           <FormControl>
             <Input
               type="text"
-              placeholder="linkedin.com/in/yourusername"
+              placeholder="dribbble.com/yourusername"
               {...field}
               value={field.value || ""}
             />
@@ -34,4 +34,4 @@ const LinkedInField = ({ member }) => {
   )
 }
 
-export default LinkedInField
+export default DribbbleField

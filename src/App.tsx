@@ -9,6 +9,8 @@ import {
   Projects,
   EmailVerification,
   Project,
+  Support,
+  Referral,
 } from "./_root/pages"
 import SignUpForm from "./_auth/forms/SignUpForm"
 import AuthLayout from "./_auth/AuthLayout"
@@ -21,6 +23,8 @@ import Section from "./components/shared/Section"
 const App = () => {
   return (
     <main>
+      <div className="absolute inset-x-0 h-[480px] bg-gradient-to-b from-[#06374e] to-transparent opacity-40" />
+
       <Header />
 
       <Section crosses>
@@ -37,8 +41,10 @@ const App = () => {
             <Route path="/projects" element={<Projects />} />
             <Route path="/project/:id" element={<Project />} />
             <Route path="/contract" element={<Contract />} />
+            <Route path="/referral" element={<Referral />} />
             <Route path="/account" element={<Account />} />
             <Route path="/verify" element={<EmailVerification />} />
+            <Route path="/support" element={<Support />} />
           </Route>
         </Routes>
       </Section>

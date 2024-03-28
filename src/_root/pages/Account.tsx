@@ -16,7 +16,7 @@ import { AccountValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
 import { RotateCw } from "lucide-react"
-import FileUploader from "@/components/shared/FileUploader"
+import ImageUploader from "@/components/shared/ImageUploader"
 import { useEffect } from "react"
 import FadeIn from "react-fade-in"
 
@@ -96,7 +96,7 @@ const AccountPage = () => {
                 <FormItem>
                   <FormLabel>Profile image</FormLabel>
                   <FormControl>
-                    <FileUploader
+                    <ImageUploader
                       fieldChange={field.onChange}
                       mediaUrl={member.avatarUrl}
                     />

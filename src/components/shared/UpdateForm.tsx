@@ -16,6 +16,7 @@ import {
   SelectContent,
   SelectItem,
   SelectValue,
+  FormDescription,
 } from "@/components/ui"
 import { UpdateValidation } from "@/lib/validation"
 import { toast } from "sonner"
@@ -43,6 +44,8 @@ const UpdateForm = ({ update, action, setOpen }: UpdateFormProps) => {
       description: update ? update?.description : "",
     },
   })
+
+  const fileRef = form.register("file")
 
   const { mutateAsync: createUpdate, isPending: isLoadingCreate } =
     useCreateUpdate()
@@ -85,7 +88,7 @@ const UpdateForm = ({ update, action, setOpen }: UpdateFormProps) => {
         onSubmit={form.handleSubmit(handleSubmit)}
         className="mt-2 space-y-8"
       >
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-16">
           <FormField
             control={form.control}
             name="title"
@@ -105,28 +108,6 @@ const UpdateForm = ({ update, action, setOpen }: UpdateFormProps) => {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="link"
-            defaultValue={update?.link}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Link</FormLabel>
-                <FormControl>
-                  <Input
-                    type="text"
-                    placeholder="https://example.com/lofi-wireframes"
-                    {...field}
-                    value={field.value || ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-8">
           <FormField
             control={form.control}
             name="type"
@@ -153,39 +134,41 @@ const UpdateForm = ({ update, action, setOpen }: UpdateFormProps) => {
               </FormItem>
             )}
           />
+        </div>
+
+        <div className="flex items-center gap-6">
+          <FormField
+            control={form.control}
+            name="link"
+            defaultValue={update?.link}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Link</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="https://example.com/lofi-wireframes"
+                    {...field}
+                    value={field.value || ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <p className="font-semibold pt-7">or</p>
 
           <FormField
             control={form.control}
-            name="milestone"
-            defaultValue={update?.milestone}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Select milestone</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select project milestone" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">
-                        Design audit & improvement plan
-                      </SelectItem>
-                      <SelectItem value="2">
-                        Define new design system
-                      </SelectItem>
-                      <SelectItem value="3">
-                        Product strategy presentation
-                      </SelectItem>
-                      <SelectItem value="4">
-                        Not related to a milestone
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
+            name="file"
+            render={() => (
+              <FormItem className="relative w-full">
+                <FormLabel>File upload</FormLabel>
+                <Input type="file" className="cursor-pointer" {...fileRef} />
+                <FormDescription className="absolute -bottom-6 right-0 text-xs text-end">
+                  Max file size: 25MB
+                </FormDescription>
               </FormItem>
             )}
           />

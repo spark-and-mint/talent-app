@@ -7,7 +7,7 @@ const PlusSvg = ({ className = "" }) => {
         width="10"
         height="10"
         stroke="#201e27"
-        fill="#0e0c15"
+        fill="#09161e"
         rx="2"
       />
     </svg>

@@ -3,12 +3,12 @@ import { FileWithPath, useDropzone } from "react-dropzone"
 import { convertFileToUrl } from "@/lib/utils"
 import { Button } from "../ui/button"
 
-type FileUploaderProps = {
+type ImageUploaderProps = {
   fieldChange: (files: File[]) => void
   mediaUrl: string | undefined
 }
 
-const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
+const ImageUploader = ({ fieldChange, mediaUrl }: ImageUploaderProps) => {
   const [file, setFile] = useState<File[]>([])
   const [fileUrl, setFileUrl] = useState<string | undefined>(mediaUrl)
 
@@ -65,4 +65,4 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
   )
 }
 
-export default FileUploader
+export default ImageUploader
