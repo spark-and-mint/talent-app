@@ -1,12 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import {
-  ArrowLeft,
-  CircleAlert,
-  LinkIcon,
-  SquareArrowOutUpRight,
-  Users,
-} from "lucide-react"
+import { ArrowLeft, CircleAlert, LinkIcon } from "lucide-react"
 import {
   BriefcaseIcon,
   CalendarIcon,
@@ -19,7 +13,6 @@ import { FigmaLogoIcon, NotionLogoIcon } from "@radix-ui/react-icons"
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"

@@ -1,4 +1,4 @@
-import { Mail, MailIcon, Users } from "lucide-react"
+import { Users } from "lucide-react"
 import {
   Dialog,
   DialogClose,

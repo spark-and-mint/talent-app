@@ -1,14 +1,12 @@
-import { IUpdate } from "@/types"
 import {
   CircleSlash,
-  Copy,
   ExternalLink,
   MoreHorizontal,
   Pickaxe,
   ThumbsUp,
 } from "lucide-react"
 import { Link } from "react-router-dom"
-import { Button, Input, Label } from "../ui"
+import { Button } from "../ui"
 import {
   TableHeader,
   TableRow,
@@ -30,7 +28,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
