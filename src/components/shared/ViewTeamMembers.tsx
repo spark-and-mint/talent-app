@@ -26,7 +26,7 @@ const ViewTeamMembers = ({ team }) => {
         </DialogHeader>
         <div className="mt-6 space-y-8 gap-4">
           {team.map((member: any) => (
-            <div className="flex items-center space-x-3">
+            <div key={member.firstName} className="flex items-center space-x-3">
               <Avatar className="w-10 h-10">
                 <AvatarImage src={member.avatarUrl} />
               </Avatar>
