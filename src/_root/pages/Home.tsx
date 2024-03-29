@@ -1,5 +1,5 @@
-import Panel from "@/components/shared/Panel"
 import { Button } from "@/components/ui"
+import { Card } from "@/components/ui/card"
 import { useMemberContext } from "@/context/AuthContext"
 import { cn } from "@/lib/utils"
 import { ArrowRight, ExternalLink, Heart, ScrollText, User } from "lucide-react"
@@ -32,8 +32,12 @@ const Home = () => {
       </div>
 
       {accepted ? (
-        <Link to="/profile" className="block">
-          <Panel className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+        <Link
+          to="https://sparkmintfractional.slack.com/"
+          target="_blank"
+          className="block"
+        >
+          <Card className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
             <div className="flex items-center gap-6">
               <img src="/assets/slack.webp" className="w-10 h-10 ml-1.5" />
               <div>
@@ -48,11 +52,11 @@ const Home = () => {
                 <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
               </div>
             </div>
-          </Panel>
+          </Card>
         </Link>
       ) : (
         <Link to="/profile" className="block">
-          <Panel className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+          <Card className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
             <div className="flex items-center gap-6">
               <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
                 <User strokeWidth={2} className="w-6 h-6" />
@@ -69,12 +73,12 @@ const Home = () => {
                 <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
               </div>
             </div>
-          </Panel>
+          </Card>
         </Link>
       )}
 
       <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2">
-        <Panel className="flex flex-col gap-5">
+        <Card className="flex flex-col gap-5">
           <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
             <ScrollText className="w-6 h-6" />
           </div>
@@ -89,9 +93,9 @@ const Home = () => {
               </Link>
             </Button>
           </div>
-        </Panel>
+        </Card>
 
-        <Panel className="relative flex flex-col gap-5">
+        <Card className="relative flex flex-col gap-5">
           <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
             <Heart strokeWidth={2} className="w-6 h-6" />
           </div>
@@ -106,7 +110,7 @@ const Home = () => {
               </Link>
             </Button>
           </div>
-        </Panel>
+        </Card>
       </div>
     </FadeIn>
   )

@@ -1,4 +1,3 @@
-import Panel from "@/components/shared/Panel"
 import { Button } from "@/components/ui/button"
 import { CircleAlert, LinkIcon } from "lucide-react"
 import FadeIn from "react-fade-in"
@@ -9,6 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import LinkedInLogo from "@/svg/LinkedInLogo"
+import { Card } from "@/components/ui/card"
 
 const Opportunities = () => {
   const opportunity = {
@@ -55,7 +55,7 @@ const Opportunities = () => {
           </div>
         </div>
 
-        <Panel className="mt-8 py-2">
+        <Card className="mt-8 py-2">
           <dl className="divide-y divide-stroke-1">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6 text-primary">
@@ -120,7 +120,7 @@ const Opportunities = () => {
               </dd>
             </div>
           </dl>
-        </Panel>
+        </Card>
       </FadeIn>
 
       <div className="flex gap-4 items-center justify-between mt-10">

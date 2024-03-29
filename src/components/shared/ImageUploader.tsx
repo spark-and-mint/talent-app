@@ -31,7 +31,7 @@ const ImageUploader = ({ fieldChange, mediaUrl }: ImageUploaderProps) => {
   return (
     <div
       {...getRootProps()}
-      className="flex flex-col items-center border border-input bg-background rounded-lg cursor-pointer"
+      className="flex flex-col items-center border border-accent bg-background rounded-lg cursor-pointer"
     >
       <input {...getInputProps()} className="cursor-pointer" />
 

@@ -1,14 +1,13 @@
-import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Link } from "react-router-dom"
-import Panel from "./Panel"
 import { ArrowRight } from "lucide-react"
 import { Models } from "appwrite"
 
 const ProjectCard = ({ project }: { project: Models.Document }) => {
   return (
-    <Panel className="flex flex-col justify-between h-full p-2">
+    <Card className="flex flex-col justify-between h-full p-2">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center justify-between">
@@ -56,7 +55,7 @@ const ProjectCard = ({ project }: { project: Models.Document }) => {
           </div>
         </div>
       </CardContent>
-    </Panel>
+    </Card>
   )
 }
 

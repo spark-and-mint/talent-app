@@ -72,7 +72,7 @@ const getMilestoneStatus = (feedback: string) => {
 
 const Milestone = ({ title, status, updates }: MilestoneProps) => {
   return (
-    <Card>
+    <Card className="p-2">
       <CardHeader>
         <div className="flex flex-col gap-4 justify-between lg:flex-row lg:items-center mb-4">
           <div className="flex items-center">

@@ -222,19 +222,6 @@ const ProfilePage = () => {
           <form onSubmit={form.handleSubmit(handleUpdate)}>
             <FadeIn className="space-y-8 lg:space-y-14">
               <div className="mb-12">
-                <h3 className="text-lg font-medium mb-2">Work preferences</h3>
-                <p className="text-sm text-muted-foreground">
-                  Help us understand your availability and what type of roles
-                  you're seeking.
-                </p>
-              </div>
-              <LookingForField member={member} />
-              <AvailabilityField member={member} />
-              <RateField member={member} />
-
-              <Separator />
-
-              <div className="mb-12">
                 <h3 className="text-lg font-medium mb-2">
                   Professional details
                 </h3>
@@ -249,6 +236,19 @@ const ProfilePage = () => {
               <SkillsField />
               <DomainsField />
               <TimezoneField member={member} />
+
+              <Separator />
+
+              <div className="mb-12">
+                <h3 className="text-lg font-medium mb-2">Work preferences</h3>
+                <p className="text-sm text-muted-foreground">
+                  Help us understand your availability and what type of roles
+                  you're seeking.
+                </p>
+              </div>
+              <LookingForField member={member} />
+              <AvailabilityField member={member} />
+              <RateField member={member} />
 
               <Separator />
 
