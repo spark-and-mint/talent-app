@@ -154,10 +154,14 @@ export const useDeleteClient = () => {
   })
 }
 
-export const useGetTypeFormAnswersByEmail = (email: string) => {
+export const useGetTypeFormAnswersByEmail = (
+  email: string,
+  importedAnswers: boolean
+) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_TYPEFORM_ANSWERS_BY_EMAIL, email],
     queryFn: () => getTypeFormAnswersByEmail(email),
+    enabled: !importedAnswers,
   })
 }
 

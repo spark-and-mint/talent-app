@@ -32,7 +32,6 @@ export async function createMemberAccount(member: INewMember) {
       firstName: member.firstName,
       lastName: member.lastName,
       avatarUrl,
-      avatarId: ID.unique(),
     })
 
     return newMember
@@ -49,14 +48,26 @@ export async function saveMemberToDB(member: {
   firstName: string
   lastName: string
   avatarUrl: URL
-  avatarId: string
 }) {
   try {
+    const newProfile = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.profileCollectionId,
+      ID.unique(),
+      {
+        memberId: member.accountId,
+      }
+    )
+
     const newMember = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.memberCollectionId,
       ID.unique(),
-      member
+      {
+        ...member,
+        avatarId: ID.unique(),
+        profileId: newProfile.$id,
+      }
     )
 
     return newMember
@@ -94,7 +105,36 @@ export async function getCurrentMember() {
 
     if (!currentMember) throw Error
 
-    return { member: currentMember.documents[0], error: null }
+    const profile = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.profileCollectionId,
+      currentMember.documents[0].profileId
+    )
+
+    if (!profile) throw Error
+
+    const member = {
+      ...currentMember.documents[0],
+      profile: {
+        workStatus: profile.workStatus,
+        seniority: profile.seniority,
+        roles: profile.roles,
+        skills: profile.skills,
+        domains: profile.domains,
+        lookingFor: profile.lookingFor,
+        availability: profile.availability,
+        rate: profile.rate,
+        website: profile.website,
+        linkedin: profile.linkedin,
+        github: profile.github,
+        x: profile.x,
+        farcaster: profile.farcaster,
+        dribbble: profile.dribbble,
+        behance: profile.behance,
+      },
+    }
+
+    return { member, error: null }
   } catch (error) {
     console.log(error)
     return { member: null, error }
@@ -168,7 +208,7 @@ export async function updateMember(member: IUpdateMember) {
       avatar = { ...avatar, avatarUrl: fileUrl, avatarId: uploadedFile.$id }
     }
 
-    const updatedMember = await databases.updateDocument(
+    const updatedMemberResponse = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.memberCollectionId,
       member.memberId,
@@ -182,28 +222,34 @@ export async function updateMember(member: IUpdateMember) {
         timezone: member.timezone,
         avatarUrl: avatar.avatarUrl,
         avatarId: avatar.avatarId,
-        profile: {
-          memberId: member.memberId,
-          workStatus: member.profile?.workStatus,
-          seniority: member.profile?.seniority,
-          roles: member.profile?.roles,
-          skills: member.profile?.skills,
-          domains: member.profile?.domains,
-          lookingFor: member.profile?.lookingFor,
-          availability: member.profile?.availability,
-          rate: member.profile?.rate,
-          website: member.profile?.website,
-          linkedin: member.profile?.linkedin,
-          github: member.profile?.github,
-          x: member.profile?.x,
-          farcaster: member.profile?.farcaster,
-          dribbble: member.profile?.dribbble,
-          behance: member.profile?.behance,
-        },
+        contractSigned: member.contractSigned,
       }
     )
 
-    if (!updatedMember) {
+    const updatedProfileResponse = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.profileCollectionId,
+      member.profileId,
+      {
+        workStatus: member.profile?.workStatus,
+        seniority: member.profile?.seniority,
+        roles: member.profile?.roles,
+        skills: member.profile?.skills,
+        domains: member.profile?.domains,
+        lookingFor: member.profile?.lookingFor,
+        availability: member.profile?.availability,
+        rate: member.profile?.rate,
+        website: member.profile?.website,
+        linkedin: member.profile?.linkedin,
+        github: member.profile?.github,
+        x: member.profile?.x,
+        farcaster: member.profile?.farcaster,
+        dribbble: member.profile?.dribbble,
+        behance: member.profile?.behance,
+      }
+    )
+
+    if (!updatedMemberResponse || !updatedProfileResponse) {
       if (hasFileToUpdate) {
         await deleteFile(avatar.avatarId)
       }
@@ -212,6 +258,27 @@ export async function updateMember(member: IUpdateMember) {
 
     if (member.avatarId && hasFileToUpdate) {
       await deleteFile(member.avatarId)
+    }
+
+    const updatedMember = {
+      ...updatedMemberResponse,
+      profile: {
+        workStatus: updatedProfileResponse.workStatus,
+        seniority: updatedProfileResponse.seniority,
+        roles: updatedProfileResponse.roles,
+        skills: updatedProfileResponse.skills,
+        domains: updatedProfileResponse.domains,
+        lookingFor: updatedProfileResponse.lookingFor,
+        availability: updatedProfileResponse.availability,
+        rate: updatedProfileResponse.rate,
+        website: updatedProfileResponse.website,
+        linkedin: updatedProfileResponse.linkedin,
+        github: updatedProfileResponse.github,
+        x: updatedProfileResponse.x,
+        farcaster: updatedProfileResponse.farcaster,
+        dribbble: updatedProfileResponse.dribbble,
+        behance: updatedProfileResponse.behance,
+      },
     }
 
     return updatedMember

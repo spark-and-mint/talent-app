@@ -13,7 +13,7 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const SeniorityField = ({ member }) => {
+const SeniorityField = () => {
   const { control } = useFormContext()
 
   return (
@@ -26,7 +26,6 @@ const SeniorityField = ({ member }) => {
           <Select
             value={field.value ?? undefined}
             onValueChange={field.onChange}
-            defaultValue={member.seniority ?? undefined}
           >
             <FormControl>
               <SelectTrigger>

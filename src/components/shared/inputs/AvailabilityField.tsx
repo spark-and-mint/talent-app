@@ -13,7 +13,7 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const AvailabilityField = ({ member }) => {
+const AvailabilityField = () => {
   const { control } = useFormContext()
 
   return (
@@ -26,7 +26,6 @@ const AvailabilityField = ({ member }) => {
           <Select
             value={field.value ?? undefined}
             onValueChange={field.onChange}
-            defaultValue={member.availability ?? undefined}
           >
             <FormControl>
               <SelectTrigger>

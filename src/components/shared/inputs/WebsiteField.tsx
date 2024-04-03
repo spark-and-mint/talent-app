@@ -8,26 +8,20 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const WebsiteField = ({ member }) => {
+const WebsiteField = () => {
   const { control } = useFormContext()
 
   return (
     <FormField
       control={control}
       name="website"
-      defaultValue={member.website}
       render={({ field }) => (
         <FormItem>
           <FormLabel>
             Do you have a portfolio or personal website you can share?
           </FormLabel>
           <FormControl>
-            <Input
-              type="text"
-              placeholder="https://vitalik.ca"
-              {...field}
-              value={field.value || ""}
-            />
+            <Input type="text" placeholder="https://vitalik.ca" {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>

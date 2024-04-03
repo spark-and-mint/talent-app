@@ -18,7 +18,24 @@ export type IMember = {
   avatarUrl: string
   avatarId: string
   contractSigned: boolean
-  profile: IProfile
+  profile: {
+    workStatus: string
+    seniority: string
+    rate: string
+    roles: string[]
+    skills: string[]
+    domains: string[]
+    availability: string
+    lookingFor: string
+    website: string
+    linkedin: string
+    github: string
+    x: string
+    farcaster: string
+    dribbble: string
+    behance: string
+  }
+  profileId: string
   projects: IProject[]
 }
 
@@ -27,6 +44,7 @@ export type IUpdateMember = {
   email: string
   firstName: string
   lastName: string
+  profileId: string
   emailVerification?: boolean
   importedAnswers?: boolean
   file: File[]
@@ -35,26 +53,24 @@ export type IUpdateMember = {
   timezone?: string | null
   status?: "form completed" | "1on1 done" | "accepted" | "rejected" | null
   contractSigned?: boolean
-  profile?: IProfile
+  profile?: {
+    workStatus?: string
+    seniority?: string
+    rate?: string
+    roles?: string[]
+    skills?: string[]
+    domains?: string[]
+    availability?: string
+    lookingFor?: string
+    website?: string
+    linkedin?: string
+    github?: string
+    x?: string
+    farcaster?: string
+    dribbble?: string
+    behance?: string
+  }
   projects?: IProject[]
-}
-
-export type IProfile = {
-  workStatus?: string
-  seniority?: string
-  rate?: string
-  roles?: string[]
-  skills?: string[]
-  domains?: string[]
-  availability?: string
-  lookingFor?: string
-  website?: string
-  linkedin?: string
-  github?: string
-  x?: string
-  farcaster?: string
-  dribbble?: string
-  behance?: string
 }
 
 export type INewClient = {

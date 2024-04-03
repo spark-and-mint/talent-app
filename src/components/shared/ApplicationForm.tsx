@@ -43,8 +43,8 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
         value: domain,
         label: domain,
       })),
-      website: member.profile.website,
-      linkedin: member.profile.linkedin,
+      website: member.profile.website ?? undefined,
+      linkedin: member.profile.linkedin ?? undefined,
     },
   })
 
@@ -56,34 +56,29 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
   ) => {
     const updatedMember = await updateMember({
       memberId: member.id,
+      profileId: member.profileId,
       email: member.email,
       firstName: member.firstName,
       lastName: member.lastName,
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
       file: [],
+      status: "form completed",
       profile: {
         workStatus: values.workStatus,
         seniority: values.seniority,
         roles: values.roles?.map((role) => role.value),
         skills: values.skills?.map((skill) => skill.value),
         domains: values.domains?.map((domain) => domain.value),
-        website: values.website || "",
-        linkedin: values.linkedin || "",
+        website: values.website,
+        linkedin: values.linkedin,
       },
     })
 
     setMember({
       ...member,
-      profile: {
-        workStatus: updatedMember?.profile.workStatus,
-        seniority: updatedMember?.profile.seniority,
-        roles: updatedMember?.profile.roles,
-        skills: updatedMember?.profile.skills,
-        domains: updatedMember?.profile.domains,
-        website: updatedMember?.profile.website,
-        linkedin: updatedMember?.profile.linkedin,
-      },
+      ...updatedMember,
+      // status: "form completed",
     })
 
     setShowApplicationForm(false)
@@ -113,13 +108,13 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleUpdate)}>
             <FadeIn delay={200} className="max-w-lg mx-auto space-y-14 pt-8">
-              <WorkStatusField member={member} />
-              <SeniorityField member={member} />
+              <WorkStatusField />
+              <SeniorityField />
               <RolesField />
               <SkillsField />
               <DomainsField />
-              <WebsiteField member={member} />
-              <LinkedInField member={member} />
+              <WebsiteField />
+              <LinkedInField />
               <div className="flex justify-center">
                 <div className="flex gap-6 pt-8">
                   <Button type="submit" disabled={isLoadingUpdate}>

@@ -21,19 +21,21 @@ const EmailVerification = () => {
     const verifyEmail = async () => {
       try {
         await account.updateVerification(userId, secret)
-        await updateMember({
+        const updatedMember = await updateMember({
           memberId: member.id,
+          profileId: member.profileId,
           firstName: member.firstName,
           lastName: member.lastName,
           email: member.email,
           avatarUrl: member.avatarUrl,
           avatarId: member.avatarId,
+          profile: member.profile,
           file: [],
           emailVerification: true,
         })
         setMember({
           ...member,
-          emailVerification: true,
+          ...updatedMember,
         })
         navigate("/")
       } catch (error) {

@@ -8,23 +8,21 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const FarcasterField = ({ member }) => {
+const FarcasterField = () => {
   const { control } = useFormContext()
 
   return (
     <FormField
       control={control}
       name="farcaster"
-      defaultValue={member.farcaster}
       render={({ field }) => (
         <FormItem>
           <FormLabel>Farcaster</FormLabel>
           <FormControl>
             <Input
               type="text"
-              placeholder="warpcast.com/yourusername"
+              placeholder="https://warpcast.com/yourusername"
               {...field}
-              value={field.value || ""}
             />
           </FormControl>
           <FormMessage />

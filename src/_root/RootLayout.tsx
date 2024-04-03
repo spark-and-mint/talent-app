@@ -9,11 +9,12 @@ import { EmailVerification } from "./pages"
 import { AnnoyedIcon, RefreshCcw } from "lucide-react"
 import { Button } from "@/components/ui"
 import { cn } from "@/lib/utils"
+import ServerError from "@/components/shared/ServerError"
 
 const acceptedMembers = ["kevin@sparkandmint.com", "alex@sparkandmint.com"]
 
 const RootLayout = () => {
-  const { member, setMember } = useMemberContext()
+  const { member, setMember, serverError } = useMemberContext()
   const [loading, setLoading] = useState(false)
   const [showApplicationForm, setShowApplicationForm] = useState(false)
   const { mutateAsync: updateMember } = useUpdateMember()
@@ -32,17 +33,18 @@ const RootLayout = () => {
         setLoading(true)
         const updatedMember = await updateMember({
           memberId: member.id,
+          profileId: member.profileId,
           email: member.email,
           firstName: member.firstName,
           lastName: member.lastName,
-          status: "accepted",
           avatarId: member.avatarId,
           file: [],
+          status: "accepted",
         })
 
         setMember({
           ...member,
-          status: updatedMember?.status,
+          ...updatedMember,
         })
 
         setTimeout(() => {
@@ -54,9 +56,9 @@ const RootLayout = () => {
     }
   }
 
-  // if (serverError) {
-  //   return <ServerError />
-  // }
+  if (serverError) {
+    return <ServerError />
+  }
 
   if (!member.id) {
     return null

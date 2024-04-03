@@ -12,7 +12,7 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const RateField = ({ member }) => {
+const RateField = () => {
   const { control } = useFormContext()
 
   return (
@@ -25,7 +25,6 @@ const RateField = ({ member }) => {
           <Select
             value={field.value ?? undefined}
             onValueChange={field.onChange}
-            defaultValue={member.rate ?? undefined}
           >
             <FormControl>
               <SelectTrigger>

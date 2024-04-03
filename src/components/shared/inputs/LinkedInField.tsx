@@ -8,23 +8,21 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const LinkedInField = ({ member }) => {
+const LinkedInField = () => {
   const { control } = useFormContext()
 
   return (
     <FormField
       control={control}
       name="linkedin"
-      defaultValue={member.linkedin}
       render={({ field }) => (
         <FormItem>
           <FormLabel>LinkedIn</FormLabel>
           <FormControl>
             <Input
               type="text"
-              placeholder="linkedin.com/in/yourusername"
+              placeholder="https://linkedin.com/in/yourusername"
               {...field}
-              value={field.value || ""}
             />
           </FormControl>
           <FormMessage />

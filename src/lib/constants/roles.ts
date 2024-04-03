@@ -230,16 +230,6 @@ export default [
     group: "Engineering",
   },
   {
-    value: "Chief Information Officer",
-    label: "Chief Information Officer",
-    group: "Leadership",
-  },
-  {
-    value: "Chief Technology Officer",
-    label: "Chief Technology Officer",
-    group: "Leadership",
-  },
-  {
     value: "Chief Operating Officer",
     label: "Chief Operating Officer",
     group: "Leadership",

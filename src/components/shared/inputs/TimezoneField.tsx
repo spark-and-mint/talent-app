@@ -13,7 +13,7 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const TimezoneField = ({ member }) => {
+const TimezoneField = () => {
   const { control } = useFormContext()
 
   return (
@@ -24,8 +24,8 @@ const TimezoneField = ({ member }) => {
         <FormItem>
           <FormLabel>Which timezone are you mostly working in?</FormLabel>
           <Select
+            value={field.value ?? undefined}
             onValueChange={field.onChange}
-            defaultValue={member.timezone ?? undefined}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a timezone" />

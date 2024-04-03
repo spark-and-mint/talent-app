@@ -28,7 +28,6 @@ const AccountPage = () => {
     defaultValues: {
       firstName: member.firstName,
       lastName: member.lastName,
-      email: member.email,
       file: [],
     },
   })
@@ -39,10 +38,13 @@ const AccountPage = () => {
 
   const handleUpdate = async (values: z.infer<typeof AccountValidation>) => {
     const updatedMember = await updateMember({
-      ...values,
       memberId: member.id,
+      profileId: member.profileId,
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
+      email: member.email,
+      profile: member.profile,
+      ...values,
     })
 
     if (!updatedMember) {
@@ -53,10 +55,7 @@ const AccountPage = () => {
 
     setMember({
       ...member,
-      firstName: updatedMember?.firstName,
-      lastName: updatedMember?.lastName,
-      email: updatedMember?.email,
-      avatarUrl: updatedMember?.avatarUrl,
+      ...updatedMember,
     })
   }
 

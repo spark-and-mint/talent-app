@@ -36,7 +36,6 @@ export const AccountValidation = z.object({
   lastName: z
     .string()
     .min(2, { message: "Last name must be at least 2 characters." }),
-  email: z.string().email(),
   file: z.custom<File[]>(),
 })
 
@@ -46,81 +45,97 @@ const optionSchema = z.object({
 })
 
 export const ApplicationValidation = z.object({
-  workStatus: z.string().min(1, { message: "Please select your work status." }),
-  seniority: z
-    .string()
-    .min(1, { message: "Please select your seniority level." }),
-  roles: z
-    .array(optionSchema, { required_error: "Please select at least one role." })
-    .min(1, { message: "Please select at least one role." }),
-  skills: z
-    .array(optionSchema)
-    .min(1, { message: "Please select at least one skill." }),
-  domains: z
-    .array(optionSchema)
-    .min(1, { message: "Please select at least one domain or industry." }),
+  workStatus: z.string({
+    required_error: "Please select your work status.",
+  }),
+  seniority: z.string({
+    required_error: "Please select your seniority level.",
+  }),
+  roles: z.array(optionSchema, {
+    required_error: "Please select at least one role.",
+  }),
+  skills: z.array(optionSchema, {
+    required_error: "Please select at least one skill.",
+  }),
+  domains: z.array(optionSchema, {
+    required_error: "Please select at least one domain or industry.",
+  }),
   website: z
     .string()
     .url({ message: "Invalid url. Please add https." })
+    .optional()
     .or(z.literal("")),
   linkedin: z
     .string()
     .url({ message: "Invalid url. Please add https." })
+    .optional()
     .or(z.literal("")),
 })
 
 export const ProfileValidation = z.object({
-  availability: z.string(),
-  rate: z.string(),
-  timezone: z.string(),
-  workStatus: z.string().min(1, { message: "Please select your work status." }),
-  lookingFor: z.string().max(200, { message: "Please shorten your answer." }),
-  seniority: z
-    .string()
-    .min(1, { message: "Please select your seniority level." }),
-  roles: z
-    .array(optionSchema, { required_error: "Please select at least one role." })
-    .min(1, { message: "Please select at least one role." }),
-  skills: z
-    .array(optionSchema)
-    .min(1, { message: "Please select at least one skill." }),
-  domains: z
-    .array(optionSchema)
-    .min(1, { message: "Please select at least one domain or industry." }),
+  workStatus: z.string({
+    required_error: "Please select your work status.",
+  }),
+  seniority: z.string({
+    required_error: "Please select your seniority level.",
+  }),
+  roles: z.array(optionSchema, {
+    required_error: "Please select at least one role.",
+  }),
+  skills: z.array(optionSchema, {
+    required_error: "Please select at least one skill.",
+  }),
+  domains: z.array(optionSchema, {
+    required_error: "Please select at least one domain or industry.",
+  }),
+  timezone: z.string({
+    required_error: "Please select a timezone.",
+  }),
+  lookingFor: z
+    .string({
+      required_error: "Please specify what kind of work you're looking for.",
+    })
+    .max(200, { message: "Please shorten your answer." }),
+  availability: z.string({
+    required_error: "Please select your availability.",
+  }),
+  rate: z.string({
+    required_error: "Please select your preferred hourly rate.",
+  }),
   website: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
+    .optional()
     .or(z.literal("")),
   linkedin: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
+    .optional()
     .or(z.literal("")),
   github: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
+    .optional()
     .or(z.literal("")),
   x: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
+    .optional()
     .or(z.literal("")),
   farcaster: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
+    .optional()
     .or(z.literal("")),
   dribbble: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
+    .optional()
     .or(z.literal("")),
   behance: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
+    .optional()
     .or(z.literal("")),
 })
 

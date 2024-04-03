@@ -13,7 +13,7 @@ import {
 } from "@/components/ui"
 import { useFormContext } from "react-hook-form"
 
-const WorkStatusField = ({ member }) => {
+const WorkStatusField = () => {
   const { control } = useFormContext()
 
   return (
@@ -26,7 +26,6 @@ const WorkStatusField = ({ member }) => {
           <Select
             value={field.value ?? undefined}
             onValueChange={field.onChange}
-            defaultValue={member.workStatus ?? undefined}
           >
             <FormControl>
               <SelectTrigger>

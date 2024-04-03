@@ -40,11 +40,13 @@ const ProfilePage = () => {
   const { member, setMember } = useMemberContext()
   const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
     useUpdateMember()
-  const { data: typeFormAnswers, isLoading } = useGetTypeFormAnswersByEmail(
-    member.email
+  const { data: typeFormAnswerData, isLoading } = useGetTypeFormAnswersByEmail(
+    member.email,
+    member.importedAnswers
   )
   const [loadingImport, setLoadingImport] = useState(false)
   const [importedAnswers, setImportedAnswers] = useState(false)
+  const typeFormAnswers = typeFormAnswerData && typeFormAnswerData[0]?.answers
 
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
@@ -63,23 +65,24 @@ const ProfilePage = () => {
         value: domain,
         label: domain,
       })),
-      timezone: member.timezone,
-      lookingFor: member.profile.lookingFor,
-      availability: member.profile.availability,
-      rate: member.profile.rate,
-      website: member.profile.website,
-      linkedin: member.profile.linkedin,
-      github: member.profile.github,
-      x: member.profile.x,
-      farcaster: member.profile.farcaster,
-      dribbble: member.profile.dribbble,
-      behance: member.profile.behance,
+      timezone: member.timezone ?? undefined,
+      lookingFor: member.profile.lookingFor ?? undefined,
+      availability: member.profile.availability ?? undefined,
+      rate: member.profile.rate ?? undefined,
+      website: member.profile.website ?? undefined,
+      linkedin: member.profile.linkedin ?? undefined,
+      github: member.profile.github ?? undefined,
+      x: member.profile.x ?? undefined,
+      farcaster: member.profile.farcaster ?? undefined,
+      dribbble: member.profile.dribbble ?? undefined,
+      behance: member.profile.behance ?? undefined,
     },
   })
 
   const handleUpdate = async (values: z.infer<typeof ProfileValidation>) => {
     const updatedMember = await updateMember({
       memberId: member.id,
+      profileId: member.profileId,
       email: member.email,
       firstName: member.firstName,
       lastName: member.lastName,
@@ -97,13 +100,13 @@ const ProfilePage = () => {
         lookingFor: values.lookingFor,
         availability: values.availability,
         rate: values.rate,
-        website: values.website || "",
-        linkedin: values.linkedin || "",
-        github: values.github || "",
-        x: values.x || "",
-        farcaster: values.farcaster || "",
-        dribbble: values.dribbble || "",
-        behance: values.behance || "",
+        website: values.website,
+        linkedin: values.linkedin,
+        github: values.github,
+        x: values.x,
+        farcaster: values.farcaster,
+        dribbble: values.dribbble,
+        behance: values.behance,
       },
     })
 
@@ -115,29 +118,14 @@ const ProfilePage = () => {
 
     setMember({
       ...member,
-      importedAnswers: updatedMember?.importedAnswers,
-      timezone: updatedMember?.timezone,
-      profile: {
-        workStatus: updatedMember?.profile.workStatus,
-        seniority: updatedMember?.profile.seniority,
-        roles: updatedMember?.profile.roles,
-        skills: updatedMember?.profile.skills,
-        domains: updatedMember?.profile.domains,
-        lookingFor: updatedMember?.profile.lookingFor,
-        availability: updatedMember?.profile.availability,
-        rate: updatedMember?.profile.rate,
-        website: updatedMember?.profile.website,
-        linkedin: updatedMember?.profile.linkedin,
-        github: updatedMember?.profile.github,
-        x: updatedMember?.profile.x,
-        farcaster: updatedMember?.profile.farcaster,
-        dribbble: updatedMember?.profile.dribbble,
-        behance: updatedMember?.profile.behance,
-      },
+      ...updatedMember,
     })
   }
 
-  const { setValue } = form
+  const {
+    setValue,
+    formState: { errors },
+  } = form
 
   if (isLoading) {
     return <FormLoader />
@@ -165,13 +153,11 @@ const ProfilePage = () => {
   }
 
   const handleImport = async () => {
-    const answers = typeFormAnswers[0]?.answers
-
     setLoadingImport(true)
     await new Promise((resolve) => setTimeout(resolve, 2000))
     setLoadingImport(false)
 
-    if (!answers) {
+    if (!typeFormAnswers) {
       toast.error("Could not import profile. Please try again.")
       return
     }
@@ -179,7 +165,7 @@ const ProfilePage = () => {
     setImportedAnswers(true)
     toast.success("Parts of your profile imported successfully!")
 
-    answers.forEach(
+    typeFormAnswers.forEach(
       (answer: {
         field: { ref: string }
         type: string
@@ -264,12 +250,12 @@ const ProfilePage = () => {
                 </p>
               </div>
 
-              <WorkStatusField member={member} />
-              <SeniorityField member={member} />
+              <WorkStatusField />
+              <SeniorityField />
               <RolesField />
               <SkillsField />
               <DomainsField />
-              <TimezoneField member={member} />
+              <TimezoneField />
 
               <Separator />
 
@@ -281,9 +267,9 @@ const ProfilePage = () => {
                 </p>
               </div>
 
-              <LookingForField member={member} />
-              <AvailabilityField member={member} />
-              <RateField member={member} />
+              <LookingForField />
+              <AvailabilityField />
+              <RateField />
 
               <Separator />
 
@@ -296,18 +282,18 @@ const ProfilePage = () => {
                 </p>
               </div>
 
-              <WebsiteField member={member} />
+              <WebsiteField />
 
               <div className="grid gap-8 lg:grid-cols-2 lg:gap-y-14 lg:gap-x-12">
-                <LinkedInField member={member} />
-                <GitHubField member={member} />
-                <XField member={member} />
-                <FarcasterField member={member} />
-                <DribbbleField member={member} />
-                <BehanceField member={member} />
+                <LinkedInField />
+                <GitHubField />
+                <XField />
+                <FarcasterField />
+                <DribbbleField />
+                <BehanceField />
               </div>
 
-              <div className="flex justify-end">
+              <div className="flex flex-col gap-4 items-end">
                 <div className="flex gap-6 pt-8">
                   <Button type="submit" disabled={isLoadingUpdate}>
                     {isLoadingUpdate ? (
@@ -320,6 +306,17 @@ const ProfilePage = () => {
                     )}
                   </Button>
                 </div>
+                {Object.keys(errors).length > 0 && (
+                  <div className="space-y-2 text-right">
+                    {Object.keys(errors).map((key) => (
+                      <div key={key}>
+                        <p className="text-sm text-destructive font-medium">
+                          {errors[key]?.message}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </FadeIn>
           </form>

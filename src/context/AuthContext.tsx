@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { createContext, useContext, useEffect, useState } from "react"
 import { IMember } from "@/types"
 import { getCurrentMember } from "@/lib/appwrite/api"
+import { Models } from "appwrite"
 
 export const INITIAL_MEMBER: IMember = {
   id: "",
@@ -17,6 +18,7 @@ export const INITIAL_MEMBER: IMember = {
   avatarId: "",
   contractSigned: false,
   projects: [],
+  profileId: "",
   profile: {
     workStatus: "",
     seniority: "",
@@ -69,9 +71,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
 
     try {
-      const { member, error } = await getCurrentMember()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { member, error }: { member: Models.Document | null; error: any } =
+        await getCurrentMember()
 
-      if (error) {
+      if (
+        error &&
+        error.message &&
+        !error.message.includes("User (role: guests) missing scope (account)")
+      ) {
         setServerError(true)
       }
 
@@ -90,22 +98,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           contractSigned: member.contractSigned,
           projects: member.projects,
           timezone: member.timezone,
+          profileId: member.profileId,
           profile: {
-            workStatus: member.profile.workStatus,
-            seniority: member.profile.seniority,
-            roles: member.profile.roles,
-            skills: member.profile.skills,
-            domains: member.profile.domains,
-            lookingFor: member.profile.lookingFor,
-            availability: member.profile.availability,
-            rate: member.profile.rate,
-            website: member.profile.website,
-            linkedin: member.profile.linkedin,
-            github: member.profile.github,
-            x: member.profile.x,
-            farcaster: member.profile.farcaster,
-            dribbble: member.profile.dribbble,
-            behance: member.profile.behance,
+            workStatus: member.profile?.workStatus,
+            seniority: member.profile?.seniority,
+            roles: member.profile?.roles,
+            skills: member.profile?.skills,
+            domains: member.profile?.domains,
+            lookingFor: member.profile?.lookingFor,
+            availability: member.profile?.availability,
+            rate: member.profile?.rate,
+            website: member.profile?.website,
+            linkedin: member.profile?.linkedin,
+            github: member.profile?.github,
+            x: member.profile?.x,
+            farcaster: member.profile?.farcaster,
+            dribbble: member.profile?.dribbble,
+            behance: member.profile?.behance,
           },
         })
         setIsAuthenticated(true)
