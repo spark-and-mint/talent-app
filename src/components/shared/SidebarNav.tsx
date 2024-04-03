@@ -26,7 +26,7 @@ export function SidebarNav() {
       title: "Opportunities",
       icon: Rocket,
       to: "/opportunities",
-      badge: 1,
+      badge: false,
     },
     {
       title: "My Projects",
@@ -41,7 +41,7 @@ export function SidebarNav() {
   ]
 
   return (
-    <FadeIn className="flex space-x-2 w-full lg:flex-col lg:space-x-0 lg:space-y-2">
+    <FadeIn className="hidden sm:flex space-x-2 w-full lg:flex-col lg:space-x-0 lg:space-y-2">
       {navLinks.map((link) => (
         <NavLink
           key={link.to}

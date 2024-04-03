@@ -42,6 +42,7 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 
 interface MilestoneProps {
+  milestoneId: string
   title: string
   status: string
   updates: any[]
@@ -70,7 +71,7 @@ const getMilestoneStatus = (feedback: string) => {
   }
 }
 
-const Milestone = ({ title, status, updates }: MilestoneProps) => {
+const Milestone = ({ milestoneId, title, status, updates }: MilestoneProps) => {
   return (
     <Card className="p-2">
       <CardHeader>
@@ -87,7 +88,7 @@ const Milestone = ({ title, status, updates }: MilestoneProps) => {
             >
               Request approval
             </Button>
-            <CreateUpdate status={status} />
+            <CreateUpdate milestoneId={milestoneId} status={status} />
           </div>
         </div>
       </CardHeader>

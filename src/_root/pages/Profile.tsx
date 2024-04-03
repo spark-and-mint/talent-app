@@ -49,39 +49,62 @@ const ProfilePage = () => {
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
-      availability: member.availability,
-      rate: member.rate,
-      timezone: member.timezone,
-      workStatus: member.workStatus,
-      seniority: member.seniority,
-      roles: member.roles?.map((role: string) => ({
+      workStatus: member.profile.workStatus,
+      seniority: member.profile.seniority,
+      roles: member.profile.roles?.map((role: string) => ({
         value: role,
         label: role,
       })),
-      skills: member.skills?.map((skill: string) => ({
+      skills: member.profile.skills?.map((skill: string) => ({
         value: skill,
         label: skill,
       })),
-      domains: member.domains?.map((domain: string) => ({
+      domains: member.profile.domains?.map((domain: string) => ({
         value: domain,
         label: domain,
       })),
-      website: member.website,
-      linkedin: member.linkedin,
+      timezone: member.timezone,
+      lookingFor: member.profile.lookingFor,
+      availability: member.profile.availability,
+      rate: member.profile.rate,
+      website: member.profile.website,
+      linkedin: member.profile.linkedin,
+      github: member.profile.github,
+      x: member.profile.x,
+      farcaster: member.profile.farcaster,
+      dribbble: member.profile.dribbble,
+      behance: member.profile.behance,
     },
   })
 
   const handleUpdate = async (values: z.infer<typeof ProfileValidation>) => {
     const updatedMember = await updateMember({
-      ...values,
       memberId: member.id,
-      importedAnswers: member.importedAnswers || importedAnswers,
+      email: member.email,
+      firstName: member.firstName,
+      lastName: member.lastName,
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
-      roles: values.roles?.map((role) => role.value),
-      skills: values.skills?.map((skill) => skill.value),
-      domains: values.domains?.map((domain) => domain.value),
       file: [],
+      importedAnswers: member.importedAnswers || importedAnswers,
+      timezone: values.timezone,
+      profile: {
+        workStatus: values.workStatus,
+        seniority: values.seniority,
+        roles: values.roles?.map((role) => role.value),
+        skills: values.skills?.map((skill) => skill.value),
+        domains: values.domains?.map((domain) => domain.value),
+        lookingFor: values.lookingFor,
+        availability: values.availability,
+        rate: values.rate,
+        website: values.website || "",
+        linkedin: values.linkedin || "",
+        github: values.github || "",
+        x: values.x || "",
+        farcaster: values.farcaster || "",
+        dribbble: values.dribbble || "",
+        behance: values.behance || "",
+      },
     })
 
     if (!updatedMember) {
@@ -93,16 +116,24 @@ const ProfilePage = () => {
     setMember({
       ...member,
       importedAnswers: updatedMember?.importedAnswers,
-      availability: updatedMember?.availability,
-      rate: updatedMember?.rate,
       timezone: updatedMember?.timezone,
-      workStatus: updatedMember?.workStatus,
-      seniority: updatedMember?.seniority,
-      roles: updatedMember?.roles,
-      skills: updatedMember?.skills,
-      domains: updatedMember?.domains,
-      website: updatedMember?.website,
-      linkedin: updatedMember?.linkedin,
+      profile: {
+        workStatus: updatedMember?.profile.workStatus,
+        seniority: updatedMember?.profile.seniority,
+        roles: updatedMember?.profile.roles,
+        skills: updatedMember?.profile.skills,
+        domains: updatedMember?.profile.domains,
+        lookingFor: updatedMember?.profile.lookingFor,
+        availability: updatedMember?.profile.availability,
+        rate: updatedMember?.profile.rate,
+        website: updatedMember?.profile.website,
+        linkedin: updatedMember?.profile.linkedin,
+        github: updatedMember?.profile.github,
+        x: updatedMember?.profile.x,
+        farcaster: updatedMember?.profile.farcaster,
+        dribbble: updatedMember?.profile.dribbble,
+        behance: updatedMember?.profile.behance,
+      },
     })
   }
 
@@ -114,10 +145,12 @@ const ProfilePage = () => {
 
   const mapRefToFieldName = (ref: string) => {
     switch (ref) {
-      case "6bca3a14-27ca-46a4-a6fd-e10c02f587fd":
-        return "seniority"
       case "36063908-04b1-41c3-af3b-f15bf3a64466":
         return "workStatus"
+      case "6bca3a14-27ca-46a4-a6fd-e10c02f587fd":
+        return "seniority"
+      case "c7e32d35-35da-4e37-be98-78f770170f52":
+        return "roles"
       case "0de0d035-ef1b-4922-9751-590d182b3722":
         return "rate"
       case "7f58c40f-3aae-4469-a12a-cc44f97fe943":
@@ -144,7 +177,7 @@ const ProfilePage = () => {
     }
 
     setImportedAnswers(true)
-    toast.success("Profile imported successfully!")
+    toast.success("Parts of your profile imported successfully!")
 
     answers.forEach(
       (answer: {
@@ -230,6 +263,7 @@ const ProfilePage = () => {
                   skills.
                 </p>
               </div>
+
               <WorkStatusField member={member} />
               <SeniorityField member={member} />
               <RolesField />
@@ -246,6 +280,7 @@ const ProfilePage = () => {
                   you're seeking.
                 </p>
               </div>
+
               <LookingForField member={member} />
               <AvailabilityField member={member} />
               <RateField member={member} />
@@ -260,6 +295,7 @@ const ProfilePage = () => {
                   credibility to your skills and experiences.
                 </p>
               </div>
+
               <WebsiteField member={member} />
 
               <div className="grid gap-8 lg:grid-cols-2 lg:gap-y-14 lg:gap-x-12">
@@ -270,6 +306,7 @@ const ProfilePage = () => {
                 <DribbbleField member={member} />
                 <BehanceField member={member} />
               </div>
+
               <div className="flex justify-end">
                 <div className="flex gap-6 pt-8">
                   <Button type="submit" disabled={isLoadingUpdate}>

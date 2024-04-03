@@ -94,10 +94,10 @@ export async function getCurrentMember() {
 
     if (!currentMember) throw Error
 
-    return currentMember.documents[0]
+    return { member: currentMember.documents[0], error: null }
   } catch (error) {
     console.log(error)
-    return null
+    return { member: null, error }
   }
 }
 
@@ -178,19 +178,28 @@ export async function updateMember(member: IUpdateMember) {
         firstName: member.firstName,
         lastName: member.lastName,
         email: member.email,
-        primaryRole: member.primaryRole,
-        seniority: member.seniority,
-        workStatus: member.workStatus,
-        rate: member.rate,
-        timezone: member.timezone,
-        availability: member.availability,
         status: member.status,
-        website: member.website,
-        linkedin: member.linkedin,
-        skills: member.skills,
-        domains: member.domains,
+        timezone: member.timezone,
         avatarUrl: avatar.avatarUrl,
         avatarId: avatar.avatarId,
+        profile: {
+          memberId: member.memberId,
+          workStatus: member.profile?.workStatus,
+          seniority: member.profile?.seniority,
+          roles: member.profile?.roles,
+          skills: member.profile?.skills,
+          domains: member.profile?.domains,
+          lookingFor: member.profile?.lookingFor,
+          availability: member.profile?.availability,
+          rate: member.profile?.rate,
+          website: member.profile?.website,
+          linkedin: member.profile?.linkedin,
+          github: member.profile?.github,
+          x: member.profile?.x,
+          farcaster: member.profile?.farcaster,
+          dribbble: member.profile?.dribbble,
+          behance: member.profile?.behance,
+        },
       }
     )
 

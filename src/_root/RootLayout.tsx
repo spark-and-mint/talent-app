@@ -32,6 +32,9 @@ const RootLayout = () => {
         setLoading(true)
         const updatedMember = await updateMember({
           memberId: member.id,
+          email: member.email,
+          firstName: member.firstName,
+          lastName: member.lastName,
           status: "accepted",
           avatarId: member.avatarId,
           file: [],
@@ -50,6 +53,10 @@ const RootLayout = () => {
       console.log(error)
     }
   }
+
+  // if (serverError) {
+  //   return <ServerError />
+  // }
 
   if (!member.id) {
     return null

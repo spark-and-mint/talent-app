@@ -1,23 +1,27 @@
 export default [
   {
-    value: "FinTech/DeFi",
-    label: "FinTech/DeFi",
+    value: "FinTech / DeFi",
+    label: "FinTech / DeFi",
   },
   {
-    value: "Health Tech",
-    label: "Health Tech",
+    value: "MedTech",
+    label: "MedTech",
   },
   {
-    value: "Retail & E-Commerce Tech",
-    label: "Retail & E-Commerce Tech",
+    value: "Retail Tech.",
+    label: "Retail Tech.",
   },
   {
-    value: "Crypto",
-    label: "Crypto",
+    value: "Banking / Crypto",
+    label: "Banking / Crypto",
   },
   {
-    value: "AI/ML",
-    label: "AI/ML",
+    value: "AI",
+    label: "AI",
+  },
+  {
+    value: "Logistics",
+    label: "Logistics",
   },
   {
     value: "EdTech",
@@ -32,12 +36,12 @@ export default [
     label: "Sports Tech",
   },
   {
-    value: "Media and Advertising Tech",
-    label: "Media and Advertising Tech",
+    value: "Media + AdTech",
+    label: "Media + AdTech",
   },
   {
-    value: "Blockchain & NFTs",
-    label: "Blockchain & NFTs",
+    value: "dApps + NFT",
+    label: "dApps + NFT",
   },
   {
     value: "Clean Energy & Sustainability Tech",

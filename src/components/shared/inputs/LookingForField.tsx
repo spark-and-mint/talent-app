@@ -19,7 +19,7 @@ const LookingForField = ({ member }) => {
       defaultValue={member.lookingFor}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>What are you looking for?</FormLabel>
+          <FormLabel>What kind of work are you looking for?</FormLabel>
           <FormControl>
             <Input type="text" {...field} />
           </FormControl>

@@ -11,7 +11,13 @@ import { PlusIcon } from "lucide-react"
 import UpdateForm from "./UpdateForm"
 import { useState } from "react"
 
-const CreateUpdate = ({ status }: { status: string }) => {
+const CreateUpdate = ({
+  milestoneId,
+  status,
+}: {
+  milestoneId: string
+  status: string
+}) => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -31,7 +37,11 @@ const CreateUpdate = ({ status }: { status: string }) => {
           </DialogDescription>
         </DialogHeader>
 
-        <UpdateForm action="Create" setOpen={setOpen} />
+        <UpdateForm
+          action="Create"
+          setOpen={setOpen}
+          milestoneId={milestoneId}
+        />
       </DialogContent>
     </Dialog>
   )

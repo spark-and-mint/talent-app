@@ -22,12 +22,12 @@ import Section from "./components/shared/Section"
 
 const App = () => {
   return (
-    <main>
+    <main className="flex flex-col h-screen">
       <div className="absolute inset-x-0 h-[480px] bg-gradient-to-b from-[#06374e] to-transparent opacity-40" />
 
       <Header />
 
-      <Section crosses>
+      <Section crosses className="flex-grow">
         <Routes>
           <Route element={<AuthLayout />}>
             <Route path="/sign-in" element={<SignInForm />} />

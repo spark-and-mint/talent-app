@@ -11,23 +11,29 @@ export const INITIAL_MEMBER: IMember = {
   name: "",
   firstName: "",
   lastName: "",
-  website: "",
-  linkedin: "",
-  primaryRole: "",
-  seniority: "",
-  workStatus: "",
-  rate: "",
-  roles: [],
-  skills: [],
-  domains: [],
   timezone: "",
-  availability: "",
   status: null,
-  meeting: "",
   avatarUrl: "",
   avatarId: "",
-  clients: [],
   contractSigned: false,
+  projects: [],
+  profile: {
+    workStatus: "",
+    seniority: "",
+    roles: [],
+    skills: [],
+    domains: [],
+    lookingFor: "",
+    availability: "",
+    rate: "",
+    website: "",
+    linkedin: "",
+    github: "",
+    x: "",
+    farcaster: "",
+    dribbble: "",
+    behance: "",
+  },
 }
 
 const INITIAL_STATE = {
@@ -37,6 +43,7 @@ const INITIAL_STATE = {
   setMember: () => {},
   setIsAuthenticated: () => {},
   checkAuthMember: async () => false as boolean,
+  serverError: false,
 }
 
 type IContextType = {
@@ -46,6 +53,7 @@ type IContextType = {
   isAuthenticated: boolean
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>
   checkAuthMember: () => Promise<boolean>
+  serverError: boolean
 }
 
 const AuthContext = createContext<IContextType>(INITIAL_STATE)
@@ -55,39 +63,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [member, setMember] = useState<IMember>(INITIAL_MEMBER)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [serverError, setServerError] = useState(false)
 
   const checkAuthMember = async () => {
     setIsLoading(true)
 
     try {
-      const currentAccount = await getCurrentMember()
+      const { member, error } = await getCurrentMember()
 
-      if (currentAccount) {
+      if (error) {
+        setServerError(true)
+      }
+
+      if (member) {
         setMember({
-          id: currentAccount.$id,
-          importedAnswers: currentAccount.importedAnswers,
-          emailVerification: currentAccount.emailVerification,
-          email: currentAccount.email,
-          name: currentAccount.name,
-          firstName: currentAccount.firstName,
-          lastName: currentAccount.lastName,
-          website: currentAccount.website,
-          linkedin: currentAccount.linkedin,
-          primaryRole: currentAccount.primaryRole,
-          roles: currentAccount.roles,
-          seniority: currentAccount.seniority,
-          workStatus: currentAccount.workStatus,
-          rate: currentAccount.rate,
-          skills: currentAccount.skills,
-          domains: currentAccount.domains,
-          timezone: currentAccount.timezone,
-          availability: currentAccount.availability,
-          status: currentAccount.status,
-          meeting: currentAccount.meeting,
-          avatarUrl: currentAccount.avatarUrl,
-          avatarId: currentAccount.avatarId,
-          clients: currentAccount.clients,
-          contractSigned: currentAccount.contractSigned,
+          id: member.$id,
+          importedAnswers: member.importedAnswers,
+          emailVerification: member.emailVerification,
+          email: member.email,
+          name: member.name,
+          firstName: member.firstName,
+          lastName: member.lastName,
+          status: member.status,
+          avatarUrl: member.avatarUrl,
+          avatarId: member.avatarId,
+          contractSigned: member.contractSigned,
+          projects: member.projects,
+          timezone: member.timezone,
+          profile: {
+            workStatus: member.profile.workStatus,
+            seniority: member.profile.seniority,
+            roles: member.profile.roles,
+            skills: member.profile.skills,
+            domains: member.profile.domains,
+            lookingFor: member.profile.lookingFor,
+            availability: member.profile.availability,
+            rate: member.profile.rate,
+            website: member.profile.website,
+            linkedin: member.profile.linkedin,
+            github: member.profile.github,
+            x: member.profile.x,
+            farcaster: member.profile.farcaster,
+            dribbble: member.profile.dribbble,
+            behance: member.profile.behance,
+          },
         })
         setIsAuthenticated(true)
         return true
@@ -121,6 +140,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isAuthenticated,
     setIsAuthenticated,
     checkAuthMember,
+    serverError,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

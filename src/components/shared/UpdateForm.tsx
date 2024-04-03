@@ -29,9 +29,15 @@ type UpdateFormProps = {
   update?: Models.Document
   action: "Create" | "Update"
   setOpen: (value: boolean) => void
+  milestoneId: string
 }
 
-const UpdateForm = ({ update, action, setOpen }: UpdateFormProps) => {
+const UpdateForm = ({
+  update,
+  action,
+  setOpen,
+  milestoneId,
+}: UpdateFormProps) => {
   const { member } = useMemberContext()
 
   const form = useForm<z.infer<typeof UpdateValidation>>({
@@ -58,6 +64,7 @@ const UpdateForm = ({ update, action, setOpen }: UpdateFormProps) => {
       const updatedUpdate = await updateUpdate({
         ...value,
         updateId: update.$id,
+        title: value.title,
       })
 
       if (!updatedUpdate) {
@@ -72,6 +79,7 @@ const UpdateForm = ({ update, action, setOpen }: UpdateFormProps) => {
     const newUpdate = await createUpdate({
       ...value,
       memberId: member.id,
+      milestoneId,
     })
 
     if (!newUpdate) {

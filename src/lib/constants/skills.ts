@@ -208,6 +208,7 @@ export default [
   { value: "PostCSS", label: "PostCSS" },
   { value: "PostgreSQL", label: "PostgreSQL" },
   { value: "Preact", label: "Preact" },
+  { value: "Figma", label: "Figma" },
   { value: "Presentation Design", label: "Presentation Design" },
   { value: "Product Design", label: "Product Design" },
   {

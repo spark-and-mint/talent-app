@@ -56,7 +56,6 @@ const AccountPage = () => {
       firstName: updatedMember?.firstName,
       lastName: updatedMember?.lastName,
       email: updatedMember?.email,
-      primaryRole: updatedMember?.primaryRole,
       avatarUrl: updatedMember?.avatarUrl,
     })
   }

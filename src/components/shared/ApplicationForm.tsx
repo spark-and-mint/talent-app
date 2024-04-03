@@ -4,7 +4,7 @@ import FadeIn from "react-fade-in"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "@/components/ui/form"
 import { Button } from "@/components/ui"
-import { ProfileValidation } from "@/lib/validation"
+import { ApplicationValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
 import { RotateCw } from "lucide-react"
@@ -26,54 +26,64 @@ interface ApplicationFormProps {
 const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
   const { member, setMember, isLoading } = useMemberContext()
 
-  const form = useForm<z.infer<typeof ProfileValidation>>({
-    resolver: zodResolver(ProfileValidation),
+  const form = useForm<z.infer<typeof ApplicationValidation>>({
+    resolver: zodResolver(ApplicationValidation),
     defaultValues: {
-      workStatus: member.workStatus,
-      seniority: member.seniority,
-      roles: member.roles?.map((role: string) => ({
+      workStatus: member.profile.workStatus,
+      seniority: member.profile.seniority,
+      roles: member.profile.roles?.map((role: string) => ({
         value: role,
         label: role,
       })),
-      skills: member.skills?.map((skill: string) => ({
+      skills: member.profile.skills?.map((skill: string) => ({
         value: skill,
         label: skill,
       })),
-      domains: member.domains?.map((domain: string) => ({
+      domains: member.profile.domains?.map((domain: string) => ({
         value: domain,
         label: domain,
       })),
-      website: member.website,
-      linkedin: member.linkedin,
+      website: member.profile.website,
+      linkedin: member.profile.linkedin,
     },
   })
 
   const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
     useUpdateMember()
 
-  const handleUpdate = async (values: z.infer<typeof ProfileValidation>) => {
+  const handleUpdate = async (
+    values: z.infer<typeof ApplicationValidation>
+  ) => {
     const updatedMember = await updateMember({
-      ...values,
       memberId: member.id,
-      status: "form completed",
+      email: member.email,
+      firstName: member.firstName,
+      lastName: member.lastName,
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
-      roles: values.roles?.map((role) => role.value),
-      skills: values.skills?.map((skill) => skill.value),
-      domains: values.domains?.map((domain) => domain.value),
       file: [],
+      profile: {
+        workStatus: values.workStatus,
+        seniority: values.seniority,
+        roles: values.roles?.map((role) => role.value),
+        skills: values.skills?.map((skill) => skill.value),
+        domains: values.domains?.map((domain) => domain.value),
+        website: values.website || "",
+        linkedin: values.linkedin || "",
+      },
     })
 
     setMember({
       ...member,
-      status: updatedMember?.status,
-      workStatus: updatedMember?.workStatus,
-      seniority: updatedMember?.seniority,
-      roles: updatedMember?.roles,
-      skills: updatedMember?.skills,
-      domains: updatedMember?.domains,
-      website: updatedMember?.website,
-      linkedin: updatedMember?.linkedin,
+      profile: {
+        workStatus: updatedMember?.profile.workStatus,
+        seniority: updatedMember?.profile.seniority,
+        roles: updatedMember?.profile.roles,
+        skills: updatedMember?.profile.skills,
+        domains: updatedMember?.profile.domains,
+        website: updatedMember?.profile.website,
+        linkedin: updatedMember?.profile.linkedin,
+      },
     })
 
     setShowApplicationForm(false)

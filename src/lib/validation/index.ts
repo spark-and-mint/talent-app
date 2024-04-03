@@ -45,11 +45,36 @@ const optionSchema = z.object({
   value: z.string(),
 })
 
+export const ApplicationValidation = z.object({
+  workStatus: z.string().min(1, { message: "Please select your work status." }),
+  seniority: z
+    .string()
+    .min(1, { message: "Please select your seniority level." }),
+  roles: z
+    .array(optionSchema, { required_error: "Please select at least one role." })
+    .min(1, { message: "Please select at least one role." }),
+  skills: z
+    .array(optionSchema)
+    .min(1, { message: "Please select at least one skill." }),
+  domains: z
+    .array(optionSchema)
+    .min(1, { message: "Please select at least one domain or industry." }),
+  website: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .or(z.literal("")),
+  linkedin: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .or(z.literal("")),
+})
+
 export const ProfileValidation = z.object({
   availability: z.string(),
   rate: z.string(),
   timezone: z.string(),
   workStatus: z.string().min(1, { message: "Please select your work status." }),
+  lookingFor: z.string().max(200, { message: "Please shorten your answer." }),
   seniority: z
     .string()
     .min(1, { message: "Please select your seniority level." }),
@@ -72,6 +97,31 @@ export const ProfileValidation = z.object({
     .url({ message: "Invalid url. Please add https." })
     .nullish()
     .or(z.literal("")),
+  github: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
+  x: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
+  farcaster: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
+  dribbble: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
+  behance: z
+    .string()
+    .url({ message: "Invalid url. Please add https." })
+    .nullish()
+    .or(z.literal("")),
 })
 
 export const UpdateValidation = z.object({
@@ -81,7 +131,6 @@ export const UpdateValidation = z.object({
   link: z
     .string()
     .url({ message: "Invalid url. Please add https." })
-    .nullish()
     .or(z.literal("")),
   type: z.string(),
   milestone: z.string(),

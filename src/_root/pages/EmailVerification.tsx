@@ -23,10 +23,13 @@ const EmailVerification = () => {
         await account.updateVerification(userId, secret)
         await updateMember({
           memberId: member.id,
-          emailVerification: true,
+          firstName: member.firstName,
+          lastName: member.lastName,
+          email: member.email,
           avatarUrl: member.avatarUrl,
           avatarId: member.avatarId,
           file: [],
+          emailVerification: true,
         })
         setMember({
           ...member,
@@ -61,7 +64,8 @@ const EmailVerification = () => {
             "Hang tight."
           ) : (
             <div className="leading-7">
-              We sent a verification email to {member.email}
+              We sent a verification email to{" "}
+              <span className="text-gray-200">{member.email}</span>
               <br />
               If you didn't receive it, please{" "}
               <a className="text-primary" href="mailto:hello@sparkandmint.com">

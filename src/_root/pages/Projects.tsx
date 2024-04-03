@@ -1,4 +1,6 @@
 import ProjectCard from "@/components/shared/ProjectCard"
+import { Card } from "@/components/ui/card"
+import { TreePalm } from "lucide-react"
 import FadeIn from "react-fade-in"
 
 const Projects = () => {
@@ -11,7 +13,7 @@ const Projects = () => {
         name: "Global Unity",
         logoUrl: "/assets/global-unity-logo.png",
       },
-      members: [
+      team: [
         {
           $id: "1",
           avatarUrl: "/assets/avatars/01.png",
@@ -30,13 +32,27 @@ const Projects = () => {
 
   return (
     <div className="pb-16">
-      <FadeIn className="flex flex-col gap-8">
-        {projects?.map((project: any) => (
-          <div key={project.$id}>
-            <ProjectCard project={project} />
-          </div>
-        ))}
-      </FadeIn>
+      {projects.length > 0 ? (
+        <FadeIn className="flex flex-col gap-8">
+          {projects?.map((project: any) => (
+            <div key={project.$id}>
+              <ProjectCard project={project} />
+            </div>
+          ))}
+        </FadeIn>
+      ) : (
+        <FadeIn>
+          <Card className="flex flex-col items-center justify-center h-full py-16">
+            <TreePalm strokeWidth={1} className="h-14 w-14 text-primary" />
+            <h6 className="h6 text-[1.325rem] mt-3 text-center">
+              No projects yet
+            </h6>
+            <p className="mt-2 text-muted-foreground text-center ">
+              All your accepted opportunities will be listed here.
+            </p>
+          </Card>
+        </FadeIn>
+      )}
     </div>
   )
 }
