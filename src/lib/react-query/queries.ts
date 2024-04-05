@@ -17,6 +17,7 @@ import {
   getClientById,
   getClients,
   getMemberById,
+  getMemberOpportunity,
   getMemberUpdates,
   getMembers,
   getTypeFormAnswersByEmail,
@@ -220,3 +221,11 @@ export const useGetMemberUpdates = (memberId?: string) => {
 //     },
 //   })
 // }
+
+export const useGetMemberOpportunity = (memberId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_MEMBER_OPPORTUNITY, memberId],
+    queryFn: () => getMemberOpportunity(memberId),
+    enabled: !!memberId,
+  })
+}

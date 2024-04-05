@@ -113,6 +113,16 @@ export type IProject = {
   members?: IMember[]
 }
 
+export type INewOpportunity = {
+  clientId: string
+  projectId: string
+  memberId: string
+}
+
+export type IOpportunity = {
+  opportunityId: string
+}
+
 export type INewMilestone = {
   projectId: string
   title: string

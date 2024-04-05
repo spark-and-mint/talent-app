@@ -16,6 +16,9 @@ export enum QUERY_KEYS {
   GET_UPDATE_BY_ID = "getUpdateById",
   GET_MEMBER_UPDATES = "getMemberUpdates",
 
+  // OPPORTUNITY KEYS
+  GET_MEMBER_OPPORTUNITY = "getMemberOpportunity",
+
   // OTHER KEYS
   GET_TYPEFORM_ANSWERS_BY_EMAIL = "getTypeformAnswersByEmail",
 }

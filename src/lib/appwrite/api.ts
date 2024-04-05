@@ -563,3 +563,21 @@ export async function getMemberUpdates(memberId?: string) {
     console.log(error)
   }
 }
+
+export async function getMemberOpportunity(memberId?: string) {
+  if (!memberId) return
+
+  try {
+    const opportunity = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.opportunityCollectionId,
+      [Query.equal("member", memberId)]
+    )
+
+    if (!opportunity) throw Error
+
+    return opportunity
+  } catch (error) {
+    console.log(error)
+  }
+}
