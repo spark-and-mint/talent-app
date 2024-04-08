@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button"
-import { CircleAlert, LinkIcon, Sprout } from "lucide-react"
+import {
+  ArrowRight,
+  CircleAlert,
+  LinkIcon,
+  RotateCw,
+  Sprout,
+} from "lucide-react"
 import FadeIn from "react-fade-in"
+import ConfettiExplosion, { ConfettiProps } from "react-confetti-explosion"
 import XLogo from "@/svg/XLogo"
 import {
   Tooltip,
@@ -10,16 +17,110 @@ import {
 import LinkedInLogo from "@/svg/LinkedInLogo"
 import { Card } from "@/components/ui/card"
 import { useMemberContext } from "@/context/AuthContext"
-import { useGetMemberOpportunity } from "@/lib/react-query/queries"
+import {
+  useUpdateOpportunity,
+  useGetMemberOpportunity,
+  useUpdateProject,
+} from "@/lib/react-query/queries"
 import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useConfirm } from "@/components/shared/AlertDialogProvider"
+import { toast } from "sonner"
+import { useState } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+
+const largeProps: ConfettiProps = {
+  force: 0.7,
+  duration: 3000,
+  particleCount: 80,
+  width: 1600,
+  colors: ["#1a2746", "#1471BF", "#5BB4DC", "#eeffff", "#cbeafe"],
+  zIndex: 1000,
+}
 
 const Opportunities = () => {
   const { member } = useMemberContext()
+  const confirm = useConfirm()
   const { data: opportunityData, isPending } = useGetMemberOpportunity(
     member.id
   )
-  const opportunity = opportunityData?.documents[0]
+  const [acceptingOpportunity, setAcceptingOpportunity] = useState(false)
+  const [decliningOpportunity, setDecliningOpportunity] = useState(false)
+
+  const opportunity = opportunityData?.documents.find(
+    (document) => document.status === "awaiting response"
+  )
+
+  const { mutateAsync: updateOpportunity } = useUpdateOpportunity()
+  const { mutateAsync: updateProject } = useUpdateProject()
+
+  const [showAcceptModal, setShowAcceptModal] = useState(false)
+
+  const handleAccept = async () => {
+    try {
+      setAcceptingOpportunity(true)
+
+      if (!opportunity?.$id) {
+        throw new Error("opportunityId is undefined")
+      }
+
+      const acceptedOpportunity = await updateOpportunity({
+        opportunityId: opportunity?.$id,
+        status: "accepted",
+      })
+
+      if (acceptedOpportunity) {
+        setShowAcceptModal(true)
+      } else {
+        toast.error("Error accepting opportunity. Please try again.")
+        return
+      }
+
+      await updateProject({
+        projectId: opportunity.project.$id,
+        title: opportunity.project.title,
+        team: [...opportunity.project.team, member.id],
+      })
+    } catch (error) {
+      toast.error("An error occurred. Please try again.")
+      console.error({ error })
+    } finally {
+      setAcceptingOpportunity(false)
+    }
+  }
+
+  const handleDecline = async () => {
+    const declineConfirmed = await confirm({
+      title: `Are you sure you want to decline this opportunity?`,
+      cancelButton: "Cancel",
+      actionButton: "Decline",
+    })
+
+    if (!declineConfirmed) return
+
+    try {
+      if (!opportunity?.$id) {
+        throw new Error("opportunityId is undefined")
+      }
+      setDecliningOpportunity(true)
+      await updateOpportunity({
+        opportunityId: opportunity?.$id,
+        status: "declined",
+      })
+    } catch (error) {
+      toast.error("An error occurred. Please try again.")
+      console.error({ error })
+    } finally {
+      setDecliningOpportunity(false)
+    }
+  }
 
   return (
     <div className="pb-16">
@@ -163,8 +264,33 @@ const Opportunities = () => {
                   or on Slack.
                 </p>
                 <div className="flex gap-4">
-                  <Button variant="secondary">Decline</Button>
-                  <Button>Accept opportunity</Button>
+                  <Button
+                    disabled={decliningOpportunity}
+                    variant="secondary"
+                    onClick={handleDecline}
+                  >
+                    {decliningOpportunity ? (
+                      <div className="flex items-center gap-2">
+                        <RotateCw className="h-4 w-4 animate-spin" />
+                        Declining...
+                      </div>
+                    ) : (
+                      "Decline"
+                    )}
+                  </Button>
+                  <Button
+                    disabled={acceptingOpportunity}
+                    onClick={handleAccept}
+                  >
+                    {acceptingOpportunity ? (
+                      <div className="flex items-center gap-2">
+                        <RotateCw className="h-4 w-4 animate-spin" />
+                        Accepting...
+                      </div>
+                    ) : (
+                      "Accept opportunity"
+                    )}
+                  </Button>
                 </div>
               </div>
             </>
@@ -183,6 +309,46 @@ const Opportunities = () => {
           )}
         </>
       )}
+
+      <Dialog open={showAcceptModal} onOpenChange={setShowAcceptModal}>
+        <DialogContent className="max-w-[40rem] p-12">
+          <DialogHeader>
+            <DialogDescription className="block text-primary tracking-[0.1em] uppercase text-sm font-semibold text-center">
+              We just wanted to say
+            </DialogDescription>
+            <div className="flex items-center justify-center">
+              <ConfettiExplosion {...largeProps} />
+            </div>
+            <DialogTitle className="text-center">
+              <h4 className="h4 -mt-1.5 tracking-wide">CONGRATS!</h4>
+            </DialogTitle>
+          </DialogHeader>
+          <FadeIn delay={100}>
+            <img
+              src="/assets/prize-cup.webp"
+              alt="cup"
+              className="h-[14rem] mx-auto opacity-80"
+            />
+            <div className="mt-6 mb-8">
+              <p className="mb-1.5 text-center text-lg">
+                You just accepted your{" "}
+                <span className="font-semibold text-blue-300">first</span>{" "}
+                opportunity – way to go!
+              </p>
+              <p className="text-center text-muted-foreground">
+                Now you can view the project details and start creating updates.
+              </p>
+            </div>
+            <DialogFooter className="flex sm:justify-center">
+              <Button asChild>
+                <Link to="/projects">
+                  Go to My Projects <ArrowRight className="h-4 w-4 ml-2" />
+                </Link>
+              </Button>
+            </DialogFooter>
+          </FadeIn>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

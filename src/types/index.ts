@@ -15,9 +15,7 @@ export type IMember = {
   name: string
   timezone: string
   status: "form completed" | "1on1 done" | "accepted" | "rejected" | null
-  avatarUrl: string
-  avatarId: string
-  contractSigned: boolean
+  profileId: string
   profile: {
     workStatus: string
     seniority: string
@@ -35,7 +33,9 @@ export type IMember = {
     dribbble: string
     behance: string
   }
-  profileId: string
+  avatarUrl: string
+  avatarId: string
+  contractSigned: boolean
   projects: IProject[]
 }
 
@@ -44,16 +44,10 @@ export type IUpdateMember = {
   email: string
   firstName: string
   lastName: string
-  profileId: string
-  emailVerification?: boolean
-  importedAnswers?: boolean
   file: File[]
   avatarId: string
-  avatarUrl?: URL | string
-  timezone?: string | null
-  status?: "form completed" | "1on1 done" | "accepted" | "rejected" | null
-  contractSigned?: boolean
-  profile?: {
+  profileId: string
+  profile: {
     workStatus?: string
     seniority?: string
     rate?: string
@@ -70,6 +64,12 @@ export type IUpdateMember = {
     dribbble?: string
     behance?: string
   }
+  importedAnswers?: boolean
+  emailVerification?: boolean
+  avatarUrl?: URL | string
+  timezone?: string | null
+  status?: "form completed" | "1on1 done" | "accepted" | "rejected" | null
+  contractSigned?: boolean
   projects?: IProject[]
 }
 
@@ -102,25 +102,27 @@ export type IOption = {
   [key: string]: string | boolean | undefined
 }
 
-export type INewProject = {
-  clientId: string
-  title: string
-}
-
 export type IProject = {
   projectId: string
   title: string
-  members?: IMember[]
-}
-
-export type INewOpportunity = {
-  clientId: string
-  projectId: string
-  memberId: string
+  briefLink?: string
+  additionalLink?: string
+  sparkRep?: string
+  status?: string
+  client?: IClient
+  team?: IMember[] | null
 }
 
 export type IOpportunity = {
   opportunityId: string
+  status?: string
+  role?: string
+  background?: string
+  description?: string
+  duration?: string
+  type?: string
+  estimatedEarnings?: string
+  responsibilities?: string
 }
 
 export type INewMilestone = {

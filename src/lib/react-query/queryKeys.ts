@@ -19,6 +19,9 @@ export enum QUERY_KEYS {
   // OPPORTUNITY KEYS
   GET_MEMBER_OPPORTUNITY = "getMemberOpportunity",
 
+  // PROJETS KEYS
+  GET_MEMBER_PROJETS = "getMemberProjects",
+
   // OTHER KEYS
   GET_TYPEFORM_ANSWERS_BY_EMAIL = "getTypeformAnswersByEmail",
 }

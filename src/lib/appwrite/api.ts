@@ -6,6 +6,8 @@ import {
   INewClient,
   INewMember,
   INewUpdate,
+  IOpportunity,
+  IProject,
   IUpdate,
   IUpdateMember,
 } from "@/types"
@@ -116,21 +118,7 @@ export async function getCurrentMember() {
     const member = {
       ...currentMember.documents[0],
       profile: {
-        workStatus: profile.workStatus,
-        seniority: profile.seniority,
-        roles: profile.roles,
-        skills: profile.skills,
-        domains: profile.domains,
-        lookingFor: profile.lookingFor,
-        availability: profile.availability,
-        rate: profile.rate,
-        website: profile.website,
-        linkedin: profile.linkedin,
-        github: profile.github,
-        x: profile.x,
-        farcaster: profile.farcaster,
-        dribbble: profile.dribbble,
-        behance: profile.behance,
+        ...profile,
       },
     }
 
@@ -215,14 +203,16 @@ export async function updateMember(member: IUpdateMember) {
       {
         importedAnswers: member.importedAnswers,
         emailVerification: member.emailVerification,
+        email: member.email,
         firstName: member.firstName,
         lastName: member.lastName,
-        email: member.email,
         status: member.status,
-        timezone: member.timezone,
-        avatarUrl: avatar.avatarUrl,
-        avatarId: avatar.avatarId,
+        avatarUrl: member.avatarUrl,
+        avatarId: member.avatarId,
         contractSigned: member.contractSigned,
+        timezone: member.timezone,
+        profileId: member.profileId,
+        projects: member.projects,
       }
     )
 
@@ -577,6 +567,71 @@ export async function getMemberOpportunity(memberId?: string) {
     if (!opportunity) throw Error
 
     return opportunity
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function updateOpportunity(opportunity: IOpportunity) {
+  if (!opportunity) return
+
+  try {
+    const updatedOpportunity = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.opportunityCollectionId,
+      opportunity.opportunityId,
+      {
+        status: opportunity.status,
+      }
+    )
+
+    if (!updatedOpportunity) {
+      throw Error
+    }
+
+    return updatedOpportunity
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getMemberProjects(memberId?: string) {
+  if (!memberId) return
+
+  try {
+    const projects = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.projectCollectionId,
+      [Query.equal("member", memberId)]
+    )
+
+    if (!projects) throw Error
+
+    return projects
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function updateProject(project: IProject) {
+  if (!project) return
+
+  try {
+    const updatedProject = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.projectCollectionId,
+      project.projectId,
+      {
+        title: project.title,
+        team: project.team,
+      }
+    )
+
+    if (!updatedProject) {
+      throw Error
+    }
+
+    return updatedProject
   } catch (error) {
     console.log(error)
   }

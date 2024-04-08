@@ -4,6 +4,8 @@ import {
   INewClient,
   INewMember,
   INewUpdate,
+  IOpportunity,
+  IProject,
   IUpdate,
   IUpdateMember,
 } from "@/types"
@@ -18,6 +20,7 @@ import {
   getClients,
   getMemberById,
   getMemberOpportunity,
+  getMemberProjects,
   getMemberUpdates,
   getMembers,
   getTypeFormAnswersByEmail,
@@ -25,6 +28,8 @@ import {
   signOutAccount,
   updateClient,
   updateMember,
+  updateOpportunity,
+  updateProject,
   updateUpdate,
 } from "../appwrite/api"
 import { QUERY_KEYS } from "./queryKeys"
@@ -166,10 +171,6 @@ export const useGetTypeFormAnswersByEmail = (
   })
 }
 
-// ============================================================
-// UPDATE QUERIES
-// ============================================================
-
 export const useCreateUpdate = () => {
   const queryClient = useQueryClient()
   return useMutation({
@@ -202,30 +203,36 @@ export const useGetMemberUpdates = (memberId?: string) => {
   })
 }
 
-// export const useGetUpdatesByProject = (projectId?: string) => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_UPDATES_BY_PROJECT, projectId],
-//     queryFn: () => getProjectUpdates(projectId),
-//     enabled: !!projectId,
-//   })
-// }
-
-// export const useDeleteUpdate = () => {
-//   const queryClient = useQueryClient()
-//   return useMutation({
-//     mutationFn: ({ updateId }: { updateId?: string }) => deleteUpdate(updateId),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({
-//         queryKey: [QUERY_KEYS.GET_RECENT_UPDATES],
-//       })
-//     },
-//   })
-// }
-
 export const useGetMemberOpportunity = (memberId?: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_MEMBER_OPPORTUNITY, memberId],
     queryFn: () => getMemberOpportunity(memberId),
     enabled: !!memberId,
+  })
+}
+
+export const useUpdateOpportunity = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (opportunity: IOpportunity) => updateOpportunity(opportunity),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_MEMBER_OPPORTUNITY, data?.member.$id],
+      })
+    },
+  })
+}
+
+export const useGetMemberProjects = (memberId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_MEMBER_PROJETS, memberId],
+    queryFn: () => getMemberProjects(memberId),
+    enabled: !!memberId,
+  })
+}
+
+export const useUpdateProject = () => {
+  return useMutation({
+    mutationFn: (project: IProject) => updateProject(project),
   })
 }

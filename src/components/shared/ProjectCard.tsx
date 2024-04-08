@@ -5,13 +5,19 @@ import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
 import { Models } from "appwrite"
 
-const ProjectCard = ({ project }: { project: Models.Document }) => {
+const ProjectCard = ({
+  project,
+  role,
+}: {
+  project: Models.Document
+  role: string
+}) => {
   return (
     <Card className="flex flex-col justify-between h-full p-2">
       <CardHeader>
         <CardTitle>
           <div className="flex items-center justify-between">
-            <h4 className="h4">{project.name}</h4>
+            <h4 className="h4">{project.title}</h4>
             {project.client?.logoUrl ? (
               <img
                 src={project.client?.logoUrl.toString()}
@@ -21,7 +27,7 @@ const ProjectCard = ({ project }: { project: Models.Document }) => {
               <Avatar>
                 <AvatarFallback>
                   <span className="text-sm uppercase">
-                    {project.name.substring(0, 2)}
+                    {project.title.substring(0, 2)}
                   </span>
                 </AvatarFallback>
               </Avatar>
@@ -42,7 +48,7 @@ const ProjectCard = ({ project }: { project: Models.Document }) => {
               <div className="text-primary tracking-[0.08em] uppercase text-xs font-semibold">
                 Your role
               </div>
-              <p className="font-medium">Product Designer</p>
+              <p className="font-medium">{role}</p>
             </div>
           </div>
 

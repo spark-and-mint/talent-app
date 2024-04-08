@@ -10,8 +10,7 @@ import { AnnoyedIcon, RefreshCcw } from "lucide-react"
 import { Button } from "@/components/ui"
 import { cn } from "@/lib/utils"
 import ServerError from "@/components/shared/ServerError"
-
-const acceptedMembers = ["kevin@sparkandmint.com", "alex@sparkandmint.com"]
+import acceptedMembers from "@/lib/constants/acceptedMembers"
 
 const RootLayout = () => {
   const { member, setMember, serverError } = useMemberContext()
@@ -39,6 +38,7 @@ const RootLayout = () => {
           lastName: member.lastName,
           avatarId: member.avatarId,
           file: [],
+          profile: member.profile,
           status: "accepted",
         })
 
@@ -49,7 +49,7 @@ const RootLayout = () => {
 
         setTimeout(() => {
           setLoading(false)
-        }, 3500)
+        }, 3000)
       }
     } catch (error) {
       console.log(error)
