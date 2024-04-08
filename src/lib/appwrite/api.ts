@@ -636,3 +636,21 @@ export async function updateProject(project: IProject) {
     console.log(error)
   }
 }
+
+export async function getProjectById(projectId?: string) {
+  if (!projectId) throw Error
+
+  try {
+    const project = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.projectCollectionId,
+      projectId
+    )
+
+    if (!project) throw Error
+
+    return project
+  } catch (error) {
+    console.log(error)
+  }
+}

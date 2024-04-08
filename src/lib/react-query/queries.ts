@@ -23,6 +23,7 @@ import {
   getMemberProjects,
   getMemberUpdates,
   getMembers,
+  getProjectById,
   getTypeFormAnswersByEmail,
   signInAccount,
   signOutAccount,
@@ -225,7 +226,7 @@ export const useUpdateOpportunity = () => {
 
 export const useGetMemberProjects = (memberId?: string) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_MEMBER_PROJETS, memberId],
+    queryKey: [QUERY_KEYS.GET_MEMBER_PROJECTS, memberId],
     queryFn: () => getMemberProjects(memberId),
     enabled: !!memberId,
   })
@@ -234,5 +235,13 @@ export const useGetMemberProjects = (memberId?: string) => {
 export const useUpdateProject = () => {
   return useMutation({
     mutationFn: (project: IProject) => updateProject(project),
+  })
+}
+
+export const useGetProjectById = (projectId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_PROJECT_BY_ID, projectId],
+    queryFn: () => getProjectById(projectId),
+    enabled: !!projectId,
   })
 }
