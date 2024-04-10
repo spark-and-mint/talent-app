@@ -44,9 +44,8 @@ const UpdateForm = ({
     resolver: zodResolver(UpdateValidation),
     defaultValues: {
       title: update ? update?.title : "",
-      link: update ? update?.link : "",
       type: update ? update?.type : "",
-      milestone: update ? update?.milestone : "",
+      link: update ? update?.link : "",
       description: update ? update?.description : "",
     },
   })
@@ -58,13 +57,13 @@ const UpdateForm = ({
   const { mutateAsync: updateUpdate, isPending: isLoadingUpdate } =
     useUpdateUpdate()
 
-  const handleSubmit = async (value: z.infer<typeof UpdateValidation>) => {
+  const handleSubmit = async (values: z.infer<typeof UpdateValidation>) => {
     // UPDATE
     if (update && action === "Update") {
       const updatedUpdate = await updateUpdate({
-        ...value,
+        ...values,
         updateId: update.$id,
-        title: value.title,
+        title: values.title,
       })
 
       if (!updatedUpdate) {
@@ -77,7 +76,7 @@ const UpdateForm = ({
 
     // CREATE
     const newUpdate = await createUpdate({
-      ...value,
+      ...values,
       memberId: member.id,
       milestoneId,
     })

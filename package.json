@@ -33,6 +33,7 @@
     "cmdk": "0.2.1",
     "framer-motion": "^11.0.13",
     "lucide-react": "^0.352.0",
+    "nanoid": "^5.0.7",
     "postcss": "^8.4.35",
     "react": "^18.2.0",
     "react-calendly": "^4.3.0",

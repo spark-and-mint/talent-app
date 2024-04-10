@@ -1,6 +1,5 @@
 import {
   IClient,
-  IMember,
   INewClient,
   INewMember,
   INewUpdate,
@@ -11,7 +10,6 @@ import {
 } from "@/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  assignMemberToClient,
   createClient,
   createMemberAccount,
   createUpdate,
@@ -121,28 +119,6 @@ export const useUpdateClient = () => {
       })
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CLIENT_BY_ID, data?.$id],
-      })
-    },
-  })
-}
-
-export const useAssignMemberToClient = () => {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: ({
-      clientId,
-      memberArray,
-    }: {
-      clientId: string
-      memberArray: IMember[]
-      addMember: boolean
-    }) => assignMemberToClient(clientId, memberArray),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_CLIENTS],
-      })
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_MEMBERS],
       })
     },
   })

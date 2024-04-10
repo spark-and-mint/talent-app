@@ -2,7 +2,6 @@ import { ID, Query } from "appwrite"
 import { appwriteConfig, account, databases, storage, avatars } from "./config"
 import {
   IClient,
-  IMember,
   INewClient,
   INewMember,
   INewUpdate,
@@ -11,6 +10,7 @@ import {
   IUpdate,
   IUpdateMember,
 } from "@/types"
+import { nanoid } from "nanoid"
 
 export async function createMemberAccount(member: INewMember) {
   try {
@@ -67,7 +67,7 @@ export async function saveMemberToDB(member: {
       ID.unique(),
       {
         ...member,
-        avatarId: ID.unique(),
+        avatarId: nanoid(),
         profileId: newProfile.$id,
       }
     )
@@ -207,12 +207,12 @@ export async function updateMember(member: IUpdateMember) {
         firstName: member.firstName,
         lastName: member.lastName,
         status: member.status,
-        avatarUrl: member.avatarUrl,
-        avatarId: member.avatarId,
         contractSigned: member.contractSigned,
         timezone: member.timezone,
         profileId: member.profileId,
         projects: member.projects,
+        avatarUrl: avatar.avatarUrl,
+        avatarId: avatar.avatarId,
       }
     )
 
@@ -431,28 +431,6 @@ export async function updateClient(client: IClient) {
   }
 }
 
-export async function assignMemberToClient(
-  clientId: string,
-  memberArray: IMember[]
-) {
-  try {
-    const updatedClient = await databases.updateDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.clientCollectionId,
-      clientId,
-      {
-        members: memberArray,
-      }
-    )
-
-    if (!updatedClient) throw Error
-
-    return updatedClient
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 export async function deleteClient(clientId?: string, logoId?: string) {
   if (!clientId || !logoId) return
 
@@ -506,6 +484,11 @@ export async function createUpdate(update: INewUpdate) {
       ID.unique(),
       {
         title: update.title,
+        type: update.type,
+        link: update.link,
+        description: update.description,
+        milestone: update.milestoneId,
+        creator: update.memberId,
       }
     )
 

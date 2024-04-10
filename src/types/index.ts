@@ -107,7 +107,7 @@ export type IProject = {
   title: string
   briefLink?: string
   additionalLink?: string
-  sparkRep?: string
+  sparkRep?: IMember
   status?: string
   client?: IClient
   team?: IMember[] | null
