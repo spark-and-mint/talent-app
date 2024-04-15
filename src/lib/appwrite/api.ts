@@ -506,6 +506,9 @@ export async function updateUpdate(update: IUpdate) {
       update.updateId,
       {
         title: update.title,
+        type: update.type,
+        link: update.link,
+        description: update.description,
       }
     )
 
@@ -514,6 +517,24 @@ export async function updateUpdate(update: IUpdate) {
     }
 
     return updatedUpdate
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deleteUpdate(updateId?: string) {
+  if (!updateId) return
+
+  try {
+    const statusCode = await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.updateCollectionId,
+      updateId
+    )
+
+    if (!statusCode) throw Error
+
+    return { status: "Ok" }
   } catch (error) {
     console.log(error)
   }
@@ -633,6 +654,24 @@ export async function getProjectById(projectId?: string) {
     if (!project) throw Error
 
     return project
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getMilestoneById(milestoneId?: string) {
+  if (!milestoneId) throw Error
+
+  try {
+    const milestone = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.milestoneCollectionId,
+      milestoneId
+    )
+
+    if (!milestone) throw Error
+
+    return milestone
   } catch (error) {
     console.log(error)
   }

@@ -146,9 +146,13 @@ export const UpdateValidation = z.object({
   link: z
     .string()
     .url({ message: "Invalid url. Please add https." })
+    .optional()
     .or(z.literal("")),
-  type: z.string(),
-  milestone: z.string(),
-  description: z.string(),
+  type: z.string({
+    required_error: "Please select a type.",
+  }),
+  description: z
+    .string()
+    .max(2200, { message: "Please shorten your description." }),
   file: z.custom<File[]>(),
 })

@@ -27,26 +27,27 @@ import { Textarea } from "../ui/textarea"
 
 type UpdateFormProps = {
   update?: Models.Document
-  action: "Create" | "Update"
+  milestoneId?: string
+  action: "create" | "update"
   setOpen: (value: boolean) => void
-  milestoneId: string
 }
 
 const UpdateForm = ({
   update,
+  milestoneId,
   action,
   setOpen,
-  milestoneId,
 }: UpdateFormProps) => {
   const { member } = useMemberContext()
 
   const form = useForm<z.infer<typeof UpdateValidation>>({
     resolver: zodResolver(UpdateValidation),
     defaultValues: {
-      title: update ? update?.title : "",
-      type: update ? update?.type : "",
-      link: update ? update?.link : "",
-      description: update ? update?.description : "",
+      title: update?.title,
+      type: update?.type,
+      link: update?.link,
+      description: update?.description,
+      file: [],
     },
   })
 
@@ -59,7 +60,7 @@ const UpdateForm = ({
 
   const handleSubmit = async (values: z.infer<typeof UpdateValidation>) => {
     // UPDATE
-    if (update && action === "Update") {
+    if (update && action === "update") {
       const updatedUpdate = await updateUpdate({
         ...values,
         updateId: update.$id,
@@ -72,20 +73,24 @@ const UpdateForm = ({
         toast.success("Update modified successfully.")
         setOpen(false)
       }
+
+      return
     }
 
     // CREATE
-    const newUpdate = await createUpdate({
-      ...values,
-      memberId: member.id,
-      milestoneId,
-    })
+    if (milestoneId) {
+      const newUpdate = await createUpdate({
+        ...values,
+        memberId: member.id,
+        milestoneId,
+      })
 
-    if (!newUpdate) {
-      toast.error("An error occured. Please try again.")
-    } else {
-      toast.success("Update created successfully.")
-      setOpen(false)
+      if (!newUpdate) {
+        toast.error("An error occured. Please try again.")
+      } else {
+        toast.success("Update created successfully.")
+        setOpen(false)
+      }
     }
   }
 
@@ -211,10 +216,10 @@ const UpdateForm = ({
             {isLoadingCreate || isLoadingUpdate ? (
               <div className="flex items-center gap-2">
                 <RotateCw className="h-4 w-4 animate-spin" />
-                {action === "Create" ? "Creating..." : "Saving..."}
+                {action === "create" ? "Creating..." : "Saving..."}
               </div>
             ) : (
-              <>{action === "Create" ? "Create update" : "Save update"}</>
+              <>{action === "create" ? "Create update" : "Save"}</>
             )}
           </Button>
         </div>

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -31,14 +30,10 @@ const CreateUpdate = ({
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Create a new update</DialogTitle>
-          <DialogDescription>
-            This update will not be visible to the client until you request
-            their approval.
-          </DialogDescription>
         </DialogHeader>
 
         <UpdateForm
-          action="Create"
+          action="create"
           setOpen={setOpen}
           milestoneId={milestoneId}
         />

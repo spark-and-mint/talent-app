@@ -12,7 +12,7 @@ const Home = () => {
 
   return (
     <FadeIn className="pb-16 space-y-4">
-      <div className="relative flex justify-between items-center mb-10 -mt-2">
+      <div className="relative flex justify-between items-center mb-8 -mt-2">
         <div>
           <h4 className="h4 mb-1">
             Hello, <span className="capitalize">{member.firstName}</span>!

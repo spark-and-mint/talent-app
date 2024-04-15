@@ -134,6 +134,7 @@ export type IMilestone = {
   milestoneId: string
   title: string
   updates?: IUpdate[]
+  project?: IProject
   status?: "in progress" | "approved"
 }
 
@@ -154,6 +155,10 @@ export type IUpdate = {
   link?: string
   file?: File[]
   description?: string
+  isViewed?: boolean
+  milestone?: IMilestone
+  creator?: IMember
+  feedback?: IFeedback
 }
 
 export type INewFeedback = {

@@ -23,6 +23,9 @@ export enum QUERY_KEYS {
   GET_MEMBER_PROJECTS = "getMemberProjects",
   GET_PROJECT_BY_ID = "getProjectById",
 
+  // MILESTONE KEYS
+  GET_MILESTONE_BY_ID = "getMilestoneById",
+
   // OTHER KEYS
   GET_TYPEFORM_ANSWERS_BY_EMAIL = "getTypeformAnswersByEmail",
 }

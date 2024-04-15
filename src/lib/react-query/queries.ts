@@ -14,6 +14,7 @@ import {
   createMemberAccount,
   createUpdate,
   deleteClient,
+  deleteUpdate,
   getClientById,
   getClients,
   getMemberById,
@@ -21,6 +22,7 @@ import {
   getMemberProjects,
   getMemberUpdates,
   getMembers,
+  getMilestoneById,
   getProjectById,
   getTypeFormAnswersByEmail,
   signInAccount,
@@ -32,6 +34,7 @@ import {
   updateUpdate,
 } from "../appwrite/api"
 import { QUERY_KEYS } from "./queryKeys"
+import { useParams } from "react-router-dom"
 
 export const useCreateMemberAccount = () => {
   return useMutation({
@@ -152,9 +155,9 @@ export const useCreateUpdate = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (update: INewUpdate) => createUpdate(update),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_MEMBER_UPDATES],
+        queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, data?.milestone.$id],
       })
     },
   })
@@ -166,7 +169,20 @@ export const useUpdateUpdate = () => {
     mutationFn: (update: IUpdate) => updateUpdate(update),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_UPDATE_BY_ID, data?.$id],
+        queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, data?.milestone.$id],
+      })
+    },
+  })
+}
+
+export const useDeleteUpdate = () => {
+  const queryClient = useQueryClient()
+  const { projectId } = useParams()
+  return useMutation({
+    mutationFn: ({ updateId }: { updateId?: string }) => deleteUpdate(updateId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_PROJECT_BY_ID, projectId],
       })
     },
   })
@@ -219,5 +235,13 @@ export const useGetProjectById = (projectId?: string) => {
     queryKey: [QUERY_KEYS.GET_PROJECT_BY_ID, projectId],
     queryFn: () => getProjectById(projectId),
     enabled: !!projectId,
+  })
+}
+
+export const useGetMilestoneById = (milestoneId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, milestoneId],
+    queryFn: () => getMilestoneById(milestoneId),
+    enabled: !!milestoneId,
   })
 }
