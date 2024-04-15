@@ -2,6 +2,8 @@ import { ID, Query } from "appwrite"
 import { appwriteConfig, account, databases, storage, avatars } from "./config"
 import {
   IClient,
+  IFeedback,
+  IMilestone,
   INewClient,
   INewMember,
   INewUpdate,
@@ -672,6 +674,50 @@ export async function getMilestoneById(milestoneId?: string) {
     if (!milestone) throw Error
 
     return milestone
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function updateMilestone(milestone: IMilestone) {
+  try {
+    const updatedMilestone = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.milestoneCollectionId,
+      milestone.milestoneId,
+      {
+        title: milestone.title,
+        status: milestone.status,
+      }
+    )
+
+    if (!updatedMilestone) {
+      throw Error
+    }
+
+    return updatedMilestone
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function updateFeedback(feedback: IFeedback) {
+  try {
+    const updatedFeedback = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.feedbackCollectionId,
+      feedback.feedbackId,
+      {
+        text: feedback.text,
+        viewedBy: feedback.viewedBy,
+      }
+    )
+
+    if (!updatedFeedback) {
+      throw Error
+    }
+
+    return updatedFeedback
   } catch (error) {
     console.log(error)
   }

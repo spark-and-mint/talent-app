@@ -135,7 +135,7 @@ export type IMilestone = {
   title: string
   updates?: IUpdate[]
   project?: IProject
-  status?: "in progress" | "approved"
+  status?: "in progress" | "approval requested" | "approved"
 }
 
 export type INewUpdate = {
@@ -169,4 +169,5 @@ export type INewFeedback = {
 export type IFeedback = {
   feedbackId: string
   text: string
+  viewedBy?: string[]
 }

@@ -1,5 +1,7 @@
 import {
   IClient,
+  IFeedback,
+  IMilestone,
   INewClient,
   INewMember,
   INewUpdate,
@@ -28,7 +30,9 @@ import {
   signInAccount,
   signOutAccount,
   updateClient,
+  updateFeedback,
   updateMember,
+  updateMilestone,
   updateOpportunity,
   updateProject,
   updateUpdate,
@@ -243,5 +247,29 @@ export const useGetMilestoneById = (milestoneId?: string) => {
     queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, milestoneId],
     queryFn: () => getMilestoneById(milestoneId),
     enabled: !!milestoneId,
+  })
+}
+
+export const useUpdateMilestone = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (milestone: IMilestone) => updateMilestone(milestone),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, data?.$id],
+      })
+    },
+  })
+}
+
+export const useUpdateFeedback = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (feedback: IFeedback) => updateFeedback(feedback),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID],
+      })
+    },
   })
 }

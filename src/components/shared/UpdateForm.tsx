@@ -21,24 +21,30 @@ import {
 import { UpdateValidation } from "@/lib/validation"
 import { toast } from "sonner"
 import { useMemberContext } from "@/context/AuthContext"
-import { useCreateUpdate, useUpdateUpdate } from "@/lib/react-query/queries"
+import {
+  useCreateUpdate,
+  useUpdateMilestone,
+  useUpdateUpdate,
+} from "@/lib/react-query/queries"
 import { RotateCw } from "lucide-react"
 import { Textarea } from "../ui/textarea"
+import { useState } from "react"
 
 type UpdateFormProps = {
   update?: Models.Document
-  milestoneId?: string
+  milestone?: Models.Document
   action: "create" | "update"
   setOpen: (value: boolean) => void
 }
 
 const UpdateForm = ({
   update,
-  milestoneId,
+  milestone,
   action,
   setOpen,
 }: UpdateFormProps) => {
   const { member } = useMemberContext()
+  const [isLoadingCreate, setIsLoadingCreate] = useState(false)
 
   const form = useForm<z.infer<typeof UpdateValidation>>({
     resolver: zodResolver(UpdateValidation),
@@ -53,8 +59,8 @@ const UpdateForm = ({
 
   const fileRef = form.register("file")
 
-  const { mutateAsync: createUpdate, isPending: isLoadingCreate } =
-    useCreateUpdate()
+  const { mutateAsync: updateMilestone } = useUpdateMilestone()
+  const { mutateAsync: createUpdate } = useCreateUpdate()
   const { mutateAsync: updateUpdate, isPending: isLoadingUpdate } =
     useUpdateUpdate()
 
@@ -78,18 +84,31 @@ const UpdateForm = ({
     }
 
     // CREATE
-    if (milestoneId) {
-      const newUpdate = await createUpdate({
-        ...values,
-        memberId: member.id,
-        milestoneId,
-      })
+    if (milestone) {
+      try {
+        setIsLoadingCreate(true)
+        const newUpdate = await createUpdate({
+          ...values,
+          memberId: member.id,
+          milestoneId: milestone.$id,
+        })
 
-      if (!newUpdate) {
-        toast.error("An error occured. Please try again.")
-      } else {
-        toast.success("Update created successfully.")
-        setOpen(false)
+        const updatedMilestone = await updateMilestone({
+          milestoneId: milestone.$id,
+          title: milestone.title,
+          status: "in progress",
+        })
+
+        if (!newUpdate && !updatedMilestone) {
+          toast.error("An error occured. Please try again.")
+        } else {
+          toast.success("Update created successfully.")
+          setOpen(false)
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoadingCreate(false)
       }
     }
   }
