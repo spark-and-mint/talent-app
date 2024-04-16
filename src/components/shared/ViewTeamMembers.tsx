@@ -11,6 +11,13 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "../ui"
 
+interface TeamMember {
+  firstName: string
+  lastName: string
+  role: string
+  avatarUrl: string
+}
+
 const ViewTeamMembers = ({ team }) => {
   return (
     <Dialog>
@@ -25,7 +32,7 @@ const ViewTeamMembers = ({ team }) => {
           <DialogTitle>Team members</DialogTitle>
         </DialogHeader>
         <div className="mt-6 space-y-8 gap-4">
-          {team.map((member: any) => (
+          {team.map((member: TeamMember) => (
             <div key={member.firstName} className="flex items-center space-x-3">
               <Avatar className="w-10 h-10">
                 <AvatarImage src={member.avatarUrl} />

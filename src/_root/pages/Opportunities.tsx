@@ -19,8 +19,10 @@ import { Card } from "@/components/ui/card"
 import { useMemberContext } from "@/context/AuthContext"
 import {
   useUpdateOpportunity,
-  useGetMemberOpportunity,
+  useGetMemberOpportunities,
   useUpdateProject,
+  useGetClientById,
+  useGetProjectById,
 } from "@/lib/react-query/queries"
 import { Link } from "react-router-dom"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -36,7 +38,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-const largeProps: ConfettiProps = {
+const confettiProps: ConfettiProps = {
   force: 0.7,
   duration: 3000,
   particleCount: 80,
@@ -48,15 +50,18 @@ const largeProps: ConfettiProps = {
 const Opportunities = () => {
   const { member } = useMemberContext()
   const confirm = useConfirm()
-  const { data: opportunityData, isPending } = useGetMemberOpportunity(
-    member.id
-  )
+  const { data: opportunityData, isPending: isPendingOpportunity } =
+    useGetMemberOpportunities(member.id)
   const [acceptingOpportunity, setAcceptingOpportunity] = useState(false)
   const [decliningOpportunity, setDecliningOpportunity] = useState(false)
 
   const opportunity = opportunityData?.documents.find(
     (document) => document.status === "awaiting response"
   )
+  const { data: client, isPending: isPendingClient } = useGetClientById(
+    opportunity?.clientId
+  )
+  const { data: project } = useGetProjectById(opportunity?.projectId)
 
   const { mutateAsync: updateOpportunity } = useUpdateOpportunity()
   const { mutateAsync: updateProject } = useUpdateProject()
@@ -76,7 +81,7 @@ const Opportunities = () => {
         status: "accepted",
       })
 
-      if (acceptedOpportunity) {
+      if (acceptedOpportunity && project) {
         setShowAcceptModal(true)
       } else {
         toast.error("Error accepting opportunity. Please try again.")
@@ -84,9 +89,9 @@ const Opportunities = () => {
       }
 
       await updateProject({
-        projectId: opportunity.project.$id,
-        title: opportunity.project.title,
-        team: [...opportunity.project.team, member.id],
+        projectId: opportunity.projectId,
+        title: project.title,
+        team: [...project.team, member.id],
       })
     } catch (error) {
       toast.error("An error occurred. Please try again.")
@@ -124,7 +129,7 @@ const Opportunities = () => {
 
   return (
     <div className="pb-16">
-      {isPending ? (
+      {isPendingOpportunity && isPendingClient ? (
         <div>
           <div className="flex justify-between">
             <Skeleton className="mb-4 w-[18rem] h-7 rounded-md" />
@@ -155,25 +160,33 @@ const Opportunities = () => {
                       You have a new opportunity with
                     </div>
                     <div className="flex items-center gap-4">
-                      <img
-                        src={opportunity.client.logoUrl}
-                        alt="logo"
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full"
-                      />
-                      <h3 className="h3">{opportunity.client.name}</h3>
+                      {client?.logoUrl ? (
+                        <img
+                          src={client?.logoUrl}
+                          alt="logo"
+                          className="w-12 h-12 sm:w-14 sm:h-14 rounded-full"
+                        />
+                      ) : (
+                        <Skeleton className="w-12 h-12 sm:w-14 sm:h-14 rounded-full" />
+                      )}
+                      <h3 className="h3">{client?.name}</h3>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 mt-6 sm:mt-0">
                     <Button asChild variant="outline" size="sm">
-                      <Link to={opportunity.client.website}>
+                      <Link to={client?.website} target="_blank">
                         <LinkIcon className="h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <XLogo className="h-4 w-4" />
+                    <Button asChild variant="outline" size="sm">
+                      <Link to={client?.x} target="_blank">
+                        <XLogo className="h-4 w-4" />
+                      </Link>
                     </Button>
-                    <Button variant="outline" size="sm">
-                      <LinkedInLogo className="h-4 w-4" />
+                    <Button asChild variant="outline" size="sm">
+                      <Link to={client?.linkedin} target="_blank">
+                        <LinkedInLogo className="h-4 w-4" />
+                      </Link>
                     </Button>
                   </div>
                 </div>
@@ -204,37 +217,41 @@ const Opportunities = () => {
                         {opportunity.type}
                       </dd>
                     </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-primary">
-                        Estimated earnings
-                      </dt>
-                      <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-                        <div className="flex items-center gap-2">
-                          {opportunity.estimatedEarnings}
-                          <Tooltip delayDuration={100}>
-                            <TooltipTrigger>
-                              <CircleAlert className="h-4 w-4" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="max-w-xs p-2 leading-5">
-                                This estimation is based solely on your hourly
-                                rate and our initial project scope. It might
-                                change due to project variations or unforeseen
-                                circumstances.
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </div>
-                      </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-primary">
-                        Background
-                      </dt>
-                      <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
-                        {opportunity.background}
-                      </dd>
-                    </div>
+                    {opportunity.estimatedEarnings && (
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm font-medium leading-6 text-primary">
+                          Estimated earnings
+                        </dt>
+                        <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
+                          <div className="flex items-center gap-2">
+                            {opportunity.estimatedEarnings}
+                            <Tooltip delayDuration={100}>
+                              <TooltipTrigger>
+                                <CircleAlert className="h-4 w-4" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="max-w-xs p-2 leading-5">
+                                  This estimation is based solely on your hourly
+                                  rate and our initial project scope. It might
+                                  change due to project variations or unforeseen
+                                  circumstances.
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </div>
+                        </dd>
+                      </div>
+                    )}
+                    {opportunity.background && (
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm font-medium leading-6 text-primary">
+                          Background
+                        </dt>
+                        <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
+                          {opportunity.background}
+                        </dd>
+                      </div>
+                    )}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt className="text-sm font-medium leading-6 text-primary">
                         Description
@@ -253,46 +270,48 @@ const Opportunities = () => {
                     </div>
                   </dl>
                 </Card>
-              </FadeIn>
-
-              <div className="flex flex-col-reverse sm:flex-row gap-4 items-center justify-between mt-10">
-                <p className="text-sm mt-4 sm:mt-0">
-                  Questions? Contact us{" "}
-                  <a href="mailto:hello@sparkandmint.com" className="underline">
-                    here
-                  </a>{" "}
-                  or on Slack.
-                </p>
-                <div className="flex gap-4">
-                  <Button
-                    disabled={decliningOpportunity}
-                    variant="secondary"
-                    onClick={handleDecline}
-                  >
-                    {decliningOpportunity ? (
-                      <div className="flex items-center gap-2">
-                        <RotateCw className="h-4 w-4 animate-spin" />
-                        Declining...
-                      </div>
-                    ) : (
-                      "Decline"
-                    )}
-                  </Button>
-                  <Button
-                    disabled={acceptingOpportunity}
-                    onClick={handleAccept}
-                  >
-                    {acceptingOpportunity ? (
-                      <div className="flex items-center gap-2">
-                        <RotateCw className="h-4 w-4 animate-spin" />
-                        Accepting...
-                      </div>
-                    ) : (
-                      "Accept opportunity"
-                    )}
-                  </Button>
+                <div className="flex flex-col-reverse sm:flex-row gap-4 items-center justify-between mt-10">
+                  <p className="text-sm mt-4 sm:mt-0">
+                    Questions? Contact us{" "}
+                    <a
+                      href="mailto:hello@sparkandmint.com"
+                      className="underline"
+                    >
+                      here
+                    </a>{" "}
+                    or on Slack.
+                  </p>
+                  <div className="flex gap-4">
+                    <Button
+                      disabled={decliningOpportunity}
+                      variant="secondary"
+                      onClick={handleDecline}
+                    >
+                      {decliningOpportunity ? (
+                        <div className="flex items-center gap-2">
+                          <RotateCw className="h-4 w-4 animate-spin" />
+                          Declining...
+                        </div>
+                      ) : (
+                        "Decline"
+                      )}
+                    </Button>
+                    <Button
+                      disabled={acceptingOpportunity}
+                      onClick={handleAccept}
+                    >
+                      {acceptingOpportunity ? (
+                        <div className="flex items-center gap-2">
+                          <RotateCw className="h-4 w-4 animate-spin" />
+                          Accepting...
+                        </div>
+                      ) : (
+                        "Accept opportunity"
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              </FadeIn>
             </>
           ) : (
             <FadeIn>
@@ -317,25 +336,25 @@ const Opportunities = () => {
               We just wanted to say
             </DialogDescription>
             <div className="flex items-center justify-center">
-              <ConfettiExplosion {...largeProps} />
+              <ConfettiExplosion {...confettiProps} />
             </div>
-            <DialogTitle className="text-center">
-              <h4 className="h4 -mt-1.5 tracking-wide">CONGRATS!</h4>
+            <DialogTitle className="h4 -mt-1.5 tracking-wide text-center">
+              <div className="h4 -mt-1.5 tracking-wide">CONGRATS!</div>
             </DialogTitle>
           </DialogHeader>
           <FadeIn delay={100}>
             <img
               src="/assets/prize-cup.webp"
               alt="cup"
-              className="h-[14rem] mx-auto opacity-80"
+              className="h-[8rem] sm:h-[14rem] mx-auto opacity-80"
             />
             <div className="mt-6 mb-8">
-              <p className="mb-1.5 text-center text-lg">
+              <p className="mb-1.5 text-center text-base sm:text-lg">
                 You just accepted your{" "}
                 <span className="font-semibold text-blue-300">first</span>{" "}
                 opportunity – way to go!
               </p>
-              <p className="text-center text-muted-foreground">
+              <p className="text-center text-muted-foreground text-sm lg:text-base">
                 Now you can view the project details and start creating updates.
               </p>
             </div>

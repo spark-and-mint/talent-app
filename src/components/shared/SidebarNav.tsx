@@ -9,16 +9,17 @@ import {
   Gift,
 } from "lucide-react"
 import FadeIn from "react-fade-in"
-import { useGetMemberOpportunity } from "@/lib/react-query/queries"
+import { useGetMemberOpportunities } from "@/lib/react-query/queries"
 import { useMemberContext } from "@/context/AuthContext"
 
 export function SidebarNav() {
   const { member } = useMemberContext()
-  const { data: opportunityData } = useGetMemberOpportunity(member.id)
+  const { data: opportunityData } = useGetMemberOpportunities(member.id)
 
   const opportunity = opportunityData?.documents.find(
     (document) => document.status === "awaiting response"
   )
+
   const navLinks = [
     {
       title: "Home",

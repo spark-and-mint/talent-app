@@ -49,8 +49,6 @@ const EmailVerification = () => {
     verifyEmail()
   }, [secret, userId])
 
-  if (isVerifying) return null
-
   return (
     <div className="container h-full">
       <div className="flex flex-col gap-4 mt-24 text-center">

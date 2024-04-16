@@ -1,8 +1,6 @@
 import {
-  IClient,
   IFeedback,
   IMilestone,
-  INewClient,
   INewMember,
   INewUpdate,
   IOpportunity,
@@ -12,24 +10,25 @@ import {
 } from "@/types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  createClient,
   createMemberAccount,
   createUpdate,
-  deleteClient,
   deleteUpdate,
   getClientById,
   getClients,
   getMemberById,
-  getMemberOpportunity,
+  getMemberOpportunities,
   getMemberProjects,
   getMemberUpdates,
   getMembers,
   getMilestoneById,
+  getMilestoneUpdates,
   getProjectById,
+  getProjectMilestones,
+  getProjectTeam,
   getTypeFormAnswersByEmail,
+  getUpdateFeedback,
   signInAccount,
   signOutAccount,
-  updateClient,
   updateFeedback,
   updateMember,
   updateMilestone,
@@ -38,23 +37,10 @@ import {
   updateUpdate,
 } from "../appwrite/api"
 import { QUERY_KEYS } from "./queryKeys"
-import { useParams } from "react-router-dom"
 
 export const useCreateMemberAccount = () => {
   return useMutation({
     mutationFn: (member: INewMember) => createMemberAccount(member),
-  })
-}
-
-export const useCreateClient = () => {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: (client: INewClient) => createClient(client),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_CLIENTS],
-      })
-    },
   })
 }
 
@@ -116,34 +102,6 @@ export const useGetClientById = (clientId?: string) => {
   })
 }
 
-export const useUpdateClient = () => {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: (client: IClient) => updateClient(client),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_CLIENTS],
-      })
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_CLIENT_BY_ID, data?.$id],
-      })
-    },
-  })
-}
-
-export const useDeleteClient = () => {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: ({ clientId, logoId }: { clientId?: string; logoId: string }) =>
-      deleteClient(clientId, logoId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_CLIENTS],
-      })
-    },
-  })
-}
-
 export const useGetTypeFormAnswersByEmail = (
   email: string,
   importedAnswers: boolean
@@ -161,7 +119,7 @@ export const useCreateUpdate = () => {
     mutationFn: (update: INewUpdate) => createUpdate(update),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, data?.milestone.$id],
+        queryKey: [QUERY_KEYS.GET_MILESTONE_UPDATES, data?.milestoneId],
       })
     },
   })
@@ -173,7 +131,7 @@ export const useUpdateUpdate = () => {
     mutationFn: (update: IUpdate) => updateUpdate(update),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, data?.milestone.$id],
+        queryKey: [QUERY_KEYS.GET_UPDATE_BY_ID, data?.$id],
       })
     },
   })
@@ -181,12 +139,11 @@ export const useUpdateUpdate = () => {
 
 export const useDeleteUpdate = () => {
   const queryClient = useQueryClient()
-  const { projectId } = useParams()
   return useMutation({
     mutationFn: ({ updateId }: { updateId?: string }) => deleteUpdate(updateId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_PROJECT_BY_ID, projectId],
+        queryKey: [QUERY_KEYS.GET_MILESTONE_UPDATES],
       })
     },
   })
@@ -200,10 +157,10 @@ export const useGetMemberUpdates = (memberId?: string) => {
   })
 }
 
-export const useGetMemberOpportunity = (memberId?: string) => {
+export const useGetMemberOpportunities = (memberId?: string) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_MEMBER_OPPORTUNITY, memberId],
-    queryFn: () => getMemberOpportunity(memberId),
+    queryKey: [QUERY_KEYS.GET_MEMBER_OPPORTUNITIES, memberId],
+    queryFn: () => getMemberOpportunities(memberId),
     enabled: !!memberId,
   })
 }
@@ -214,7 +171,7 @@ export const useUpdateOpportunity = () => {
     mutationFn: (opportunity: IOpportunity) => updateOpportunity(opportunity),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_MEMBER_OPPORTUNITY, data?.member.$id],
+        queryKey: [QUERY_KEYS.GET_MEMBER_OPPORTUNITIES, data?.memberId],
       })
     },
   })
@@ -262,14 +219,46 @@ export const useUpdateMilestone = () => {
   })
 }
 
+export const useGetUpdateFeedback = (updateId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_UPDATE_FEEDBACK, updateId],
+    queryFn: () => getUpdateFeedback(updateId),
+    enabled: !!updateId,
+  })
+}
+
 export const useUpdateFeedback = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (feedback: IFeedback) => updateFeedback(feedback),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID],
+        queryKey: [QUERY_KEYS.GET_UPDATE_FEEDBACK, data?.updateId],
       })
     },
+  })
+}
+
+export const useGetProjectTeam = (projectId?: string, memberIds?: string[]) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_PROJECT_TEAM, memberIds],
+    queryFn: () => getProjectTeam(projectId, memberIds),
+    enabled: !!memberIds,
+  })
+}
+
+export const useGetProjectMilestones = (projectId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_PROJECT_MILESTONES, projectId],
+    queryFn: () => getProjectMilestones(projectId),
+    enabled: !!projectId,
+  })
+}
+
+export const useGetMilestoneUpdates = (milestoneId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_MILESTONE_UPDATES, milestoneId],
+    queryFn: () => getMilestoneUpdates(milestoneId),
+    enabled: !!milestoneId,
   })
 }

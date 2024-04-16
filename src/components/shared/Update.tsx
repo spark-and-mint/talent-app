@@ -13,7 +13,12 @@ import {
 } from "../ui/dialog"
 import { TableRow, TableCell } from "../ui/table"
 import { useConfirm } from "./AlertDialogProvider"
-import { useDeleteUpdate, useUpdateFeedback } from "@/lib/react-query/queries"
+import {
+  useDeleteUpdate,
+  useGetMemberById,
+  useGetUpdateFeedback,
+  useUpdateFeedback,
+} from "@/lib/react-query/queries"
 import { toast } from "sonner"
 import {
   Tooltip,
@@ -35,6 +40,8 @@ import { useMemberContext } from "@/context/AuthContext"
 
 const Update = ({ update }: { update: Models.Document }) => {
   const { member } = useMemberContext()
+  const { data: creator } = useGetMemberById(update.creatorId)
+  const { data: feedback } = useGetUpdateFeedback(update.$id)
   const { mutateAsync: deleteUpdate } = useDeleteUpdate()
   const confirm = useConfirm()
   const [openEdit, setOpenEdit] = useState(false)
@@ -59,20 +66,23 @@ const Update = ({ update }: { update: Models.Document }) => {
   }
 
   const handleViewFeedback = async () => {
-    if (!update.feedback || update.feedback.viewedBy.includes(member.id)) return
+    if (
+      !feedback ||
+      (feedback &&
+        feedback.length > 0 &&
+        feedback[0].viewedBy.includes(member.id))
+    )
+      return
 
     try {
       await updateFeedback({
-        feedbackId: update.feedback.$id,
-        text: update.feedback.text,
-        viewedBy: [...update.feedback.viewedBy, member.id],
+        feedbackId: feedback[0].$id,
+        viewedBy: [...feedback[0].viewedBy, member.id],
       })
     } catch (error) {
       console.error(error)
     }
   }
-
-  console.log(update)
 
   return (
     <TableRow key={update.$id}>
@@ -81,12 +91,12 @@ const Update = ({ update }: { update: Models.Document }) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Avatar className="w-9 h-9 mx-auto">
-                <AvatarImage src={update.creator.avatarUrl} />
+                <AvatarImage src={creator?.avatarUrl} />
               </Avatar>
             </TooltipTrigger>
             <TooltipContent>
               <p>
-                {update.creator.firstName} {update.creator.lastName}
+                {creator?.firstName} {creator?.lastName}
               </p>
             </TooltipContent>
           </Tooltip>
@@ -115,15 +125,18 @@ const Update = ({ update }: { update: Models.Document }) => {
               size="sm"
               variant="secondary"
               className="relative w-full"
-              disabled={!update.feedback}
+              disabled={feedback && feedback.length === 0}
               onClick={handleViewFeedback}
             >
-              {update.feedback ? "View feedback" : "No feedback"}
-              {update.feedback &&
-                !update.feedback?.viewedBy.includes(member.id) && (
+              {feedback && feedback.length > 0
+                ? "View feedback"
+                : "No feedback"}
+              {feedback &&
+                feedback.length > 0 &&
+                !feedback[0].viewedBy.includes(member.id) && (
                   <span className="absolute flex h-3 w-3 -top-1.5 -right-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500" />
                   </span>
                 )}
             </Button>
@@ -134,7 +147,11 @@ const Update = ({ update }: { update: Models.Document }) => {
             </DialogHeader>
             <div className="mt-5 mb-4">
               <blockquote className="relative">
-                <p>{update.feedback?.text ?? "No feedback added yet."}</p>
+                <p>
+                  {feedback && feedback.length > 0 && feedback[0]?.text
+                    ? feedback[0]?.text
+                    : "No feedback added yet."}
+                </p>
               </blockquote>
             </div>
             <DialogFooter>

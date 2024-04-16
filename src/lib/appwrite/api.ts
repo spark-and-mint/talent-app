@@ -1,10 +1,8 @@
-import { ID, Query } from "appwrite"
+import { ID, Models, Query } from "appwrite"
 import { appwriteConfig, account, databases, storage, avatars } from "./config"
 import {
-  IClient,
   IFeedback,
   IMilestone,
-  INewClient,
   INewMember,
   INewUpdate,
   IOpportunity,
@@ -290,47 +288,6 @@ export async function getClients() {
   return clients
 }
 
-export async function createClient(client: INewClient) {
-  try {
-    let logoUrl
-    let uploadedFile
-
-    if (client.file[0]) {
-      uploadedFile = await uploadFile(client.file[0])
-
-      if (!uploadedFile) throw Error
-
-      logoUrl = getFilePreview(uploadedFile.$id)
-      if (!logoUrl) {
-        await deleteFile(uploadedFile.$id)
-        throw Error
-      }
-    } else {
-      logoUrl = avatars.getInitials(client.name)
-    }
-
-    const newClient = await databases.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.clientCollectionId,
-      ID.unique(),
-      {
-        name: client.name,
-        logoId: uploadedFile ? uploadedFile.$id : ID.unique(),
-        logoUrl,
-      }
-    )
-
-    if (!newClient && uploadedFile) {
-      await deleteFile(uploadedFile.$id)
-      throw Error
-    }
-
-    return newClient
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 export async function getClientById(clientId?: string) {
   if (!clientId) throw Error
 
@@ -380,79 +337,6 @@ export function getFilePreview(fileId: string) {
   }
 }
 
-export async function updateClient(client: IClient) {
-  const hasFileToUpdate = client.file.length > 0
-
-  try {
-    let logo = {
-      logoUrl: client.logoUrl,
-      logoId: client.logoId,
-    }
-
-    if (hasFileToUpdate) {
-      const uploadedFile = await uploadFile(client.file[0])
-      if (!uploadedFile) throw Error
-
-      const fileUrl = getFilePreview(uploadedFile.$id)
-      if (!fileUrl) {
-        await deleteFile(uploadedFile.$id)
-        throw Error
-      }
-
-      logo = { ...logo, logoUrl: fileUrl, logoId: uploadedFile.$id }
-    }
-
-    const updatedClient = await databases.updateDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.clientCollectionId,
-      client.id,
-      {
-        name: client.name,
-        description: client.description,
-        resources: client.resources,
-        logoUrl: logo.logoUrl,
-        logoId: logo.logoId,
-      }
-    )
-
-    if (!updatedClient) {
-      if (hasFileToUpdate) {
-        await deleteFile(logo.logoId)
-      }
-
-      throw Error
-    }
-
-    if (hasFileToUpdate) {
-      await deleteFile(client.logoId)
-    }
-
-    return updatedClient
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-export async function deleteClient(clientId?: string, logoId?: string) {
-  if (!clientId || !logoId) return
-
-  try {
-    const statusCode = await databases.deleteDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.clientCollectionId,
-      clientId
-    )
-
-    if (!statusCode) throw Error
-
-    await deleteFile(logoId)
-
-    return { status: "Ok" }
-  } catch (error) {
-    console.log(error)
-  }
-}
-
 export async function deleteFile(fileId: string) {
   try {
     await storage.deleteFile(appwriteConfig.storageId, fileId)
@@ -485,12 +369,12 @@ export async function createUpdate(update: INewUpdate) {
       appwriteConfig.updateCollectionId,
       ID.unique(),
       {
+        creatorId: update.memberId,
+        milestoneId: update.milestoneId,
         title: update.title,
         type: update.type,
         link: update.link,
         description: update.description,
-        milestone: update.milestoneId,
-        creator: update.memberId,
       }
     )
 
@@ -524,7 +408,7 @@ export async function updateUpdate(update: IUpdate) {
   }
 }
 
-export async function deleteUpdate(updateId?: string) {
+export async function deleteUpdate(updateId?: string, milestoneId?: string) {
   if (!updateId) return
 
   try {
@@ -536,7 +420,7 @@ export async function deleteUpdate(updateId?: string) {
 
     if (!statusCode) throw Error
 
-    return { status: "Ok" }
+    return { status: "Ok", updateId, milestoneId }
   } catch (error) {
     console.log(error)
   }
@@ -560,19 +444,19 @@ export async function getMemberUpdates(memberId?: string) {
   }
 }
 
-export async function getMemberOpportunity(memberId?: string) {
+export async function getMemberOpportunities(memberId?: string) {
   if (!memberId) return
 
   try {
-    const opportunity = await databases.listDocuments(
+    const opportunities = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.opportunityCollectionId,
-      [Query.equal("member", memberId)]
+      [Query.equal("memberId", memberId)]
     )
 
-    if (!opportunity) throw Error
+    if (!opportunities) throw Error
 
-    return opportunity
+    return opportunities
   } catch (error) {
     console.log(error)
   }
@@ -601,19 +485,70 @@ export async function updateOpportunity(opportunity: IOpportunity) {
   }
 }
 
+export async function getProjectTeam(
+  projectId?: string,
+  memberIds: string[] = []
+) {
+  if (!projectId || !memberIds.length)
+    throw Error("Invalid project ID or member IDs")
+
+  try {
+    const opportunities = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.opportunityCollectionId,
+      [Query.equal("projectId", projectId)]
+    )
+
+    // Extract roles for each member based on the opportunities linked to projectId
+    const memberRoles = opportunities.documents.reduce((acc, doc) => {
+      if (memberIds.includes(doc.memberId)) {
+        acc[doc.memberId] = doc.role
+      }
+      return acc
+    }, {})
+
+    const teamMembers = await Promise.all(
+      memberIds.map(async (memberId) => {
+        const memberDetails = await databases.getDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.memberCollectionId,
+          memberId
+        )
+
+        return {
+          id: memberId,
+          firstName: memberDetails.firstName,
+          lastName: memberDetails.lastName,
+          avatarUrl: memberDetails.avatarUrl,
+          role: memberRoles[memberId] || "Team member",
+        }
+      })
+    )
+
+    return teamMembers
+  } catch (error) {
+    console.error("Failed to fetch project team: ", error)
+    throw new Error("Error fetching project team")
+  }
+}
+
 export async function getMemberProjects(memberId?: string) {
   if (!memberId) return
 
   try {
     const projects = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.projectCollectionId,
-      [Query.equal("member", memberId)]
+      appwriteConfig.projectCollectionId
     )
 
     if (!projects) throw Error
 
-    return projects
+    const memberProjects = projects.documents.filter(
+      (project: Models.Document) =>
+        project.team.some((id: string) => id === memberId)
+    )
+
+    return memberProjects
   } catch (error) {
     console.log(error)
   }
@@ -656,6 +591,27 @@ export async function getProjectById(projectId?: string) {
     if (!project) throw Error
 
     return project
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getProjectMilestones(projectId?: string) {
+  if (!projectId) return
+
+  try {
+    const milestones = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.milestoneCollectionId
+    )
+
+    if (!milestones) throw Error
+
+    const projectMilestones = milestones.documents.filter(
+      (milestone: Models.Document) => milestone.projectId === projectId
+    )
+
+    return projectMilestones
   } catch (error) {
     console.log(error)
   }
@@ -718,6 +674,48 @@ export async function updateFeedback(feedback: IFeedback) {
     }
 
     return updatedFeedback
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getMilestoneUpdates(milestoneId?: string) {
+  if (!milestoneId) return
+
+  try {
+    const updates = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.updateCollectionId
+    )
+
+    if (!updates) throw Error
+
+    const milestoneUpdates = updates.documents.filter(
+      (update: Models.Document) => update.milestoneId === milestoneId
+    )
+
+    return milestoneUpdates
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getUpdateFeedback(updateId?: string) {
+  if (!updateId) return
+
+  try {
+    const feedback = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.feedbackCollectionId
+    )
+
+    if (!feedback) throw Error
+
+    const feedbackUpdate = feedback.documents.filter(
+      (feedback: Models.Document) => feedback.updateId === updateId
+    )
+
+    return feedbackUpdate
   } catch (error) {
     console.log(error)
   }

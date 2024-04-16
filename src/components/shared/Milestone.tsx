@@ -6,16 +6,15 @@ import { Card, CardContent, CardHeader } from "../ui/card"
 import { Models } from "appwrite"
 import Update from "./Update"
 import {
-  useGetMilestoneById,
+  useGetMilestoneUpdates,
   useUpdateMilestone,
 } from "@/lib/react-query/queries"
-import { Skeleton } from "../ui/skeleton"
 import { toast } from "sonner"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 import { useState } from "react"
 
-const Milestone = ({ milestoneId }: { milestoneId: string }) => {
-  const { data: milestone, isPending } = useGetMilestoneById(milestoneId)
+const Milestone = ({ milestone }: { milestone: Models.Document }) => {
+  const { data: updates } = useGetMilestoneUpdates(milestone.$id)
   const { mutateAsync: updateMilestone } = useUpdateMilestone()
   const [requestLoading, setRequestLoading] = useState(false)
   const [withdrawLoading, setWithdrawLoading] = useState(false)
@@ -110,85 +109,81 @@ const Milestone = ({ milestoneId }: { milestoneId: string }) => {
 
   return (
     <Card className="p-2">
-      {!milestone || isPending ? (
-        <Skeleton className="w-full h-[16rem]" />
-      ) : (
-        <>
-          <CardHeader>
-            <div className="flex flex-col gap-4 justify-between lg:flex-row lg:items-center mb-4">
-              <div className="flex items-center">
-                <h5 className="h5">{milestone.title}</h5>
-                <div className="flex items-center gap-2 ml-4">
-                  {getMilestoneStatus(milestone.status)}
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                {milestone.status !== "approval requested" && (
-                  <Button
-                    disabled={
-                      requestLoading ||
-                      !milestone ||
-                      milestone.status === "approved" ||
-                      milestone.updates.length === 0
-                    }
-                    variant="outline"
-                    onClick={requestApproval}
-                  >
-                    {requestLoading ? (
-                      <div className="flex items-center gap-2">
-                        <RotateCw className="h-4 w-4 animate-spin" />
-                        Requesting...
-                      </div>
-                    ) : (
-                      "Request approval"
-                    )}
-                  </Button>
-                )}
-                <CreateUpdate
-                  milestone={milestone}
-                  disabled={
-                    milestone.status === "approved" ||
-                    milestone.status === "approval requested"
-                  }
-                />
-              </div>
+      <CardHeader>
+        <div className="flex flex-col gap-4 justify-between lg:flex-row lg:items-center mb-4">
+          <div className="flex items-center">
+            <h5 className="h5">{milestone.title}</h5>
+            <div className="flex items-center gap-2 ml-4">
+              {getMilestoneStatus(milestone.status)}
             </div>
-          </CardHeader>
+          </div>
 
-          <CardContent>
-            {milestone.updates.length === 0 ? (
-              <Card className="flex flex-col items-center justify-center h-full pt-14 pb-16">
-                <h4 className="h4 text-[1.325rem] mt-3 text-center">
-                  No updates added
-                </h4>
-                <p className="mt-2 text-muted-foreground text-center">
-                  When updates are added by the team, they will be listed here.
-                </p>
-              </Card>
-            ) : (
-              <>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-center">Creator</TableHead>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Link</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead>Feedback</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {milestone.updates.map((update: Models.Document) => (
-                      <Update key={update.$id} update={update} />
-                    ))}
-                  </TableBody>
-                </Table>
-              </>
+          <div className="flex gap-4">
+            {milestone.status !== "approval requested" && (
+              <Button
+                disabled={
+                  requestLoading ||
+                  !milestone ||
+                  milestone.status === "approved" ||
+                  (updates && updates.length === 0)
+                }
+                variant="outline"
+                onClick={requestApproval}
+              >
+                {requestLoading ? (
+                  <div className="flex items-center gap-2">
+                    <RotateCw className="h-4 w-4 animate-spin" />
+                    Requesting...
+                  </div>
+                ) : (
+                  "Request approval"
+                )}
+              </Button>
             )}
-          </CardContent>
-        </>
-      )}
+            <CreateUpdate
+              milestone={milestone}
+              disabled={
+                milestone.status === "approved" ||
+                milestone.status === "approval requested"
+              }
+            />
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        {updates && updates.length === 0 ? (
+          <Card className="flex flex-col items-center justify-center h-full pt-14 pb-16">
+            <h4 className="h4 text-[1.325rem] mt-3 text-center">
+              No updates added
+            </h4>
+            <p className="mt-2 text-muted-foreground text-center">
+              When updates are added by the team, they will be listed here.
+            </p>
+          </Card>
+        ) : (
+          <>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-center">Creator</TableHead>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Link</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Feedback</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {updates &&
+                  updates.length > 0 &&
+                  updates.map((update: Models.Document) => (
+                    <Update key={update.$id} update={update} />
+                  ))}
+              </TableBody>
+            </Table>
+          </>
+        )}
+      </CardContent>
     </Card>
   )
 }

@@ -168,6 +168,6 @@ export type INewFeedback = {
 
 export type IFeedback = {
   feedbackId: string
-  text: string
+  text?: string
   viewedBy?: string[]
 }

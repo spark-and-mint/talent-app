@@ -49,10 +49,10 @@ const UpdateForm = ({
   const form = useForm<z.infer<typeof UpdateValidation>>({
     resolver: zodResolver(UpdateValidation),
     defaultValues: {
-      title: update?.title,
-      type: update?.type,
-      link: update?.link,
-      description: update?.description,
+      title: update?.title ?? "",
+      type: update?.type ?? "",
+      link: update?.link ?? "",
+      description: update?.description ?? "",
       file: [],
     },
   })
@@ -99,7 +99,7 @@ const UpdateForm = ({
           status: "in progress",
         })
 
-        if (!newUpdate && !updatedMilestone) {
+        if (!newUpdate || !updatedMilestone) {
           toast.error("An error occured. Please try again.")
         } else {
           toast.success("Update created successfully.")

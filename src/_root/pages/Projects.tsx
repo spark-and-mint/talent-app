@@ -2,14 +2,14 @@ import ProjectCard from "@/components/shared/ProjectCard"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useMemberContext } from "@/context/AuthContext"
-import { useGetMemberOpportunity } from "@/lib/react-query/queries"
+import { useGetMemberOpportunities } from "@/lib/react-query/queries"
 import { Models } from "appwrite"
 import { TreePalm } from "lucide-react"
 import FadeIn from "react-fade-in"
 
 const Projects = () => {
   const { member } = useMemberContext()
-  const { data: opportunityData, isPending } = useGetMemberOpportunity(
+  const { data: opportunityData, isPending } = useGetMemberOpportunities(
     member.id
   )
 
@@ -60,7 +60,8 @@ const Projects = () => {
               {opportunities.map((opportunity: Models.Document) => (
                 <div key={opportunity.$id}>
                   <ProjectCard
-                    project={opportunity.project}
+                    projectId={opportunity.projectId}
+                    clientId={opportunity.clientId}
                     role={opportunity.role}
                   />
                 </div>
