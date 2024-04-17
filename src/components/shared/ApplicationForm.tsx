@@ -28,25 +28,11 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
 
   const form = useForm<z.infer<typeof ApplicationValidation>>({
     resolver: zodResolver(ApplicationValidation),
-    defaultValues: {
-      workStatus: member.profile.workStatus,
-      seniority: member.profile.seniority,
-      roles: member.profile.roles?.map((role: string) => ({
-        value: role,
-        label: role,
-      })),
-      skills: member.profile.skills?.map((skill: string) => ({
-        value: skill,
-        label: skill,
-      })),
-      domains: member.profile.domains?.map((domain: string) => ({
-        value: domain,
-        label: domain,
-      })),
-      website: member.profile.website ?? undefined,
-      linkedin: member.profile.linkedin ?? undefined,
-    },
   })
+
+  const {
+    formState: { errors },
+  } = form
 
   const { mutateAsync: updateMember, isPending: isLoadingUpdate } =
     useUpdateMember()
@@ -78,7 +64,6 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
     setMember({
       ...member,
       ...updatedMember,
-      // status: "form completed",
     })
 
     setShowApplicationForm(false)
@@ -115,7 +100,7 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
               <DomainsField />
               <WebsiteField />
               <LinkedInField />
-              <div className="flex justify-center">
+              <div className="flex flex-col items-center justify-center">
                 <div className="flex gap-6 pt-8">
                   <Button type="submit" disabled={isLoadingUpdate}>
                     {isLoadingUpdate ? (
@@ -128,6 +113,17 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
                     )}
                   </Button>
                 </div>
+                {Object.keys(errors).length > 0 && (
+                  <div className="mt-4 space-y-2 text-center">
+                    {Object.keys(errors).map((key) => (
+                      <div key={key}>
+                        <p className="text-sm text-destructive font-medium">
+                          {errors[key]?.message}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </FadeIn>
           </form>
