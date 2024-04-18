@@ -13,16 +13,21 @@ import {
 } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import StarSvg from "@/svg/StarSvg"
+import { cn } from "@/lib/utils"
 
 const Header = () => {
-  const { isAuthenticated, isLoading } = useMemberContext()
+  const { member, isAuthenticated, isLoading } = useMemberContext()
 
   return (
     <Section className="!px-0 !py-0 flex items-center min-h-24">
-      <div className="container flex justify-between items-center gap-10">
+      <div className="relative container flex justify-between items-center gap-10">
         <Sheet>
           <SheetTrigger asChild>
-            <Button size="icon" variant="outline" className="sm:hidden">
+            <Button
+              size="icon"
+              variant="outline"
+              className={cn("sm:hidden", !member.emailVerification && "hidden")}
+            >
               <PanelLeft className="h-5 w-5" />
               <span className="sr-only">Toggle Menu</span>
             </Button>

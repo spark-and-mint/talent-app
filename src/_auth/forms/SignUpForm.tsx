@@ -79,7 +79,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <div>
+    <div className="mt-8 sm:mt-0">
       <Form {...form}>
         <h1 className="h5 mb-8 text-center">Create your account</h1>
         <form onSubmit={form.handleSubmit(handleSignUp)} className="space-y-4">

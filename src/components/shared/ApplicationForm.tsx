@@ -82,9 +82,11 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
   return (
     <FadeIn delay={200} className="container pb-24">
       <div className="space-y-4">
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          <h3 className="h3 mb-4">Welcome to Spark + Mint</h3>
-          <p className="max-w-md mb-8 text-center text-muted-foreground">
+        <div className="flex flex-col items-center justify-center w-full h-full mt-4 sm:mt-0 text-center">
+          <h3 className="text-2xl font-semibold sm:h3 mb-4">
+            Welcome to Spark + Mint
+          </h3>
+          <p className="max-w-md sm:mb-6 text-center text-muted-foreground">
             We're very excited to have you join our talent network. Please fill
             out the application form to get started.
           </p>

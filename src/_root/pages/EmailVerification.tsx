@@ -18,6 +18,8 @@ const EmailVerification = () => {
   useEffect(() => {
     if (!userId || !secret) return
 
+    window.scrollTo(0, 0)
+
     const verifyEmail = async () => {
       try {
         await account.updateVerification(userId, secret)
