@@ -57,8 +57,8 @@ const ProjectCard = ({
         <Card className="flex flex-col justify-between h-full p-2">
           <CardHeader>
             <CardTitle>
-              <div className="flex items-center justify-between">
-                <h4 className="h4">{project?.title}</h4>
+              <div className="flex flex-col-reverse items-start justify-between sm:flex-row sm:items-center">
+                <h4 className="h4 mt-4 sm:mt-0">{project?.title}</h4>
                 {client?.logoUrl ? (
                   <img
                     src={client?.logoUrl.toString()}

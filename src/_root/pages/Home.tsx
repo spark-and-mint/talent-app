@@ -28,7 +28,10 @@ const Home = () => {
               : "Thank you for applying. Feel free to add any additional information to your profile – this will be really helpful when we review your application."}
           </p>
         </div>
-        <img src="/assets/stars-multiple.svg" className="w-14 h-14 mr-3" />
+        <img
+          src="/assets/stars-multiple.svg"
+          className="hidden sm:block w-14 h-14 mr-3"
+        />
       </div>
 
       {accepted ? (
@@ -40,11 +43,13 @@ const Home = () => {
           <Card className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
             <div className="flex items-center gap-6">
               <img src="/assets/slack.webp" className="w-10 h-10 ml-1.5" />
-              <div>
+              <div className="flex-1">
                 <h6 className="h6 text-lg mb-1 group-hover:text-white transition-colors duration-100">
                   Join our Slack!
                 </h6>
-                <p>Connect with other members and mentors in our network.</p>
+                <p className="pr-2 sm:pr-0">
+                  Connect with other members and mentors in our network.
+                </p>
               </div>
             </div>
             <div className="flex items-center">
@@ -61,7 +66,7 @@ const Home = () => {
               <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
                 <User strokeWidth={2} className="w-6 h-6" />
               </div>
-              <div>
+              <div className="flex-1">
                 <h6 className="h6 text-lg mb-1 group-hover:text-white transition-colors duration-100">
                   Complete your Profile
                 </h6>
