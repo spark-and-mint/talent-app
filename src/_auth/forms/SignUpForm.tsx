@@ -19,7 +19,7 @@ import {
 } from "@/lib/react-query/queries"
 import { SignUpValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
-import { RotateCw } from "lucide-react"
+import { ArrowRight, RotateCw } from "lucide-react"
 import { account } from "@/lib/appwrite/config"
 
 const SignUpForm = () => {
@@ -79,7 +79,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <div className="mt-8 sm:mt-0">
+    <div className="mt-8 sm:mt-0 pb-16">
       <Form {...form}>
         <h1 className="h5 mb-8 text-center">Create your account</h1>
         <form onSubmit={form.handleSubmit(handleSignUp)} className="space-y-4">
@@ -157,15 +157,19 @@ const SignUpForm = () => {
               )}
             </Button>
           </div>
-
-          <p className="text-sm text-center">
-            Already have an account?
-            <Link to="/sign-in" className="font-semibold ml-1">
-              Log in
-            </Link>
-          </p>
         </form>
       </Form>
+      <Link to="/sign-in" className="group">
+        <div className="mt-10 py-3 border border-border rounded-md text-primary transition-colors group-hover:border-accent">
+          <p className="text-sm text-center transition-colors group-hover:text-white">
+            Already have an account?
+            <span className="font-semibold ml-1">
+              Log in{" "}
+              <ArrowRight className="h-4 w-4 inline transition group-hover:translate-x-0.5 group-hover:text-white" />
+            </span>
+          </p>
+        </div>
+      </Link>
     </div>
   )
 }

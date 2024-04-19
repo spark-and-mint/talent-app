@@ -1,7 +1,7 @@
 import { useMemberContext } from "@/context/AuthContext"
 import { Button } from "../ui/button"
 import Section from "./Section"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { UserNav } from "./UserNav"
 import {
   BriefcaseBusiness,
@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils"
 
 const Header = () => {
   const { member, isAuthenticated, isLoading } = useMemberContext()
+  const location = useLocation()
 
   return (
     <Section className="!px-0 !py-0 flex items-center min-h-24">
@@ -93,7 +94,17 @@ const Header = () => {
                 <StarSvg className="w-5 h-5" />
               </div>
             ) : (
-              <Button variant="outline">Log in</Button>
+              <>
+                {location.pathname === "/sign-up" ? (
+                  <Button asChild variant="outline">
+                    <Link to="/sign-in">Log in</Link>
+                  </Button>
+                ) : (
+                  <Button asChild variant="outline">
+                    <Link to="/sign-up">Sign up</Link>
+                  </Button>
+                )}
+              </>
             )}
           </>
         )}
