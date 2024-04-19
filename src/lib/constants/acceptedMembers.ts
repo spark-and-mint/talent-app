@@ -4,4 +4,5 @@ export default [
   "jason@sparkandmint.com",
   "hello+accept@kevinivan.com",
   "wil@wilschmor.ca",
+  "hello+bottle@kevinivan.com",
 ]
