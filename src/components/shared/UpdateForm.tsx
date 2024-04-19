@@ -28,7 +28,7 @@ import {
 } from "@/lib/react-query/queries"
 import { RotateCw } from "lucide-react"
 import { Textarea } from "../ui/textarea"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type UpdateFormProps = {
   update?: Models.Document
@@ -45,6 +45,8 @@ const UpdateForm = ({
 }: UpdateFormProps) => {
   const { member } = useMemberContext()
   const [isLoadingCreate, setIsLoadingCreate] = useState(false)
+  const [disableUpload, setDisableUpload] = useState(false)
+  const [disableLink, setDisableLink] = useState(false)
 
   const form = useForm<z.infer<typeof UpdateValidation>>({
     resolver: zodResolver(UpdateValidation),
@@ -71,6 +73,8 @@ const UpdateForm = ({
         ...values,
         updateId: update.$id,
         title: values.title,
+        fileId: update.fileId,
+        fileUrl: update.fileUrl,
       })
 
       if (!updatedUpdate) {
@@ -112,6 +116,25 @@ const UpdateForm = ({
       }
     }
   }
+
+  const { getValues, setValue } = form
+
+  const { link, file } = getValues()
+
+  useEffect(() => {
+    if (link) {
+      setDisableUpload(true)
+    } else {
+      setDisableUpload(false)
+    }
+
+    if (file.length > 0) {
+      setValue("link", "")
+      setDisableLink(true)
+    } else {
+      setDisableLink(false)
+    }
+  }, [link, file, setValue])
 
   return (
     <Form {...form}>
@@ -181,6 +204,7 @@ const UpdateForm = ({
                     placeholder="https://example.com/lofi-wireframes"
                     {...field}
                     value={field.value || ""}
+                    disabled={disableLink}
                   />
                 </FormControl>
                 <FormMessage />
@@ -196,7 +220,12 @@ const UpdateForm = ({
             render={() => (
               <FormItem className="relative w-full">
                 <FormLabel>File upload</FormLabel>
-                <Input type="file" className="cursor-pointer" {...fileRef} />
+                <Input
+                  type="file"
+                  className="cursor-pointer"
+                  disabled={disableUpload}
+                  {...fileRef}
+                />
                 <FormDescription className="absolute -bottom-6 right-0 text-xs text-end">
                   Max file size: 25MB
                 </FormDescription>

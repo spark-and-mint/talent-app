@@ -170,7 +170,7 @@ const Milestone = ({ milestone }: { milestone: Models.Document }) => {
                   <TableHead>Title</TableHead>
                   <TableHead>Link</TableHead>
                   <TableHead>Description</TableHead>
-                  <TableHead>Feedback</TableHead>
+                  <TableHead className="text-center">Feedback</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

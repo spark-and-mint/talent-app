@@ -67,7 +67,7 @@ const Project = () => {
                   {project?.briefLink && project?.roadmapLink && (
                     <div className="flex items-center gap-4 mt-8">
                       {project?.briefLink && (
-                        <Link to={project?.briefLink}>
+                        <Link to={project?.briefLink} target="_blank">
                           <Button variant="outline" size="sm">
                             <LinkIcon className="h-4 w-4 mr-2 pb-0.25" />
                             Project brief
@@ -75,7 +75,7 @@ const Project = () => {
                         </Link>
                       )}
                       {project?.roadmapLink && (
-                        <Link to={project?.roadmapLink}>
+                        <Link to={project?.roadmapLink} target="_blank">
                           <Button variant="outline" size="sm">
                             <Waypoints className="h-4 w-4 mr-2 pb-0.25" />
                             Roadmap

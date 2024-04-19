@@ -104,27 +104,31 @@ const Update = ({ update }: { update: Models.Document }) => {
       </TableCell>
       <TableCell className="font-medium text-sm">{update.title}</TableCell>
       <TableCell className="text-sm">
-        <Button asChild variant="link" className="p-0">
-          <Link
-            to={update.link ?? update.fileUrl ?? "#"}
-            target="_blank"
-            className="flex items-center gap-2"
-          >
-            Open
-            <ExternalLink className="h-4 w-4" />
-          </Link>
-        </Button>
+        {update.link || update.fileUrl ? (
+          <Button asChild variant="link" className="p-0">
+            <Link
+              to={update.link ? update.link : update.fileUrl}
+              target="_blank"
+              className="flex items-center gap-2"
+            >
+              Open
+              <ExternalLink className="h-4 w-4" />
+            </Link>
+          </Button>
+        ) : (
+          "No link"
+        )}
       </TableCell>
       <TableCell className="max-w-[16rem] text-sm truncate">
-        {update.description}
+        {update.description ? <>{update.description}</> : "No description"}
       </TableCell>
-      <TableCell>
+      <TableCell className="flex justify-center">
         <Dialog>
           <DialogTrigger asChild>
             <Button
               size="sm"
               variant="secondary"
-              className="relative w-full"
+              className="relative w-full max-w-[8rem]"
               disabled={feedback && feedback.length === 0}
               onClick={handleViewFeedback}
             >

@@ -320,6 +320,18 @@ export async function uploadFile(file: File) {
   }
 }
 
+export function getFileView(fileId: string) {
+  try {
+    const fileUrl = storage.getFileView(appwriteConfig.storageId, fileId)
+
+    if (!fileUrl) throw Error
+
+    return fileUrl
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function getFilePreview(fileId: string) {
   try {
     const fileUrl = storage.getFilePreview(
@@ -364,6 +376,21 @@ export async function getTypeFormAnswersByEmail(email: string) {
 
 export async function createUpdate(update: INewUpdate) {
   try {
+    let fileUrl
+    let uploadedFile
+
+    if (update.file[0]) {
+      uploadedFile = await uploadFile(update.file[0])
+
+      if (!uploadedFile) throw Error
+
+      fileUrl = getFileView(uploadedFile.$id)
+      if (!fileUrl) {
+        await deleteFile(uploadedFile.$id)
+        throw Error
+      }
+    }
+
     const newUpdate = await databases.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.updateCollectionId,
@@ -375,8 +402,15 @@ export async function createUpdate(update: INewUpdate) {
         type: update.type,
         link: update.link,
         description: update.description,
+        fileId: uploadedFile ? uploadedFile.$id : nanoid(),
+        fileUrl,
       }
     )
+
+    if (!newUpdate && uploadedFile) {
+      await deleteFile(uploadedFile.$id)
+      throw Error
+    }
 
     return newUpdate
   } catch (error) {
@@ -385,7 +419,27 @@ export async function createUpdate(update: INewUpdate) {
 }
 
 export async function updateUpdate(update: IUpdate) {
+  const hasFileToUpdate = update.file.length > 0
+
   try {
+    let file = {
+      fileUrl: update.fileUrl,
+      fileId: update.fileId,
+    }
+
+    if (hasFileToUpdate) {
+      const uploadedFile = await uploadFile(update.file[0])
+      if (!uploadedFile) throw Error
+
+      const fileUrl = getFileView(uploadedFile.$id)
+      if (!fileUrl) {
+        await deleteFile(uploadedFile.$id)
+        throw Error
+      }
+
+      file = { ...file, fileUrl: fileUrl, fileId: uploadedFile.$id }
+    }
+
     const updatedUpdate = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.updateCollectionId,
@@ -395,6 +449,8 @@ export async function updateUpdate(update: IUpdate) {
         type: update.type,
         link: update.link,
         description: update.description,
+        fileUrl: file.fileUrl,
+        fileId: file.fileId,
       }
     )
 

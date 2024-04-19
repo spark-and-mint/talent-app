@@ -144,7 +144,7 @@ export type INewUpdate = {
   title: string
   type?: string
   link?: string
-  file?: File[]
+  file: File[]
   description?: string
 }
 
@@ -153,7 +153,9 @@ export type IUpdate = {
   title: string
   type?: string
   link?: string
-  file?: File[]
+  file: File[]
+  fileId: string
+  fileUrl: URL | string
   description?: string
   isViewed?: boolean
   milestone?: IMilestone
