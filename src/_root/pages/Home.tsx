@@ -93,7 +93,7 @@ const Home = () => {
           </div>
           <div className="mt-2">
             <Button asChild variant="secondary">
-              <Link to="/community" className="flex items-center">
+              <Link to="#" className="flex items-center">
                 Open manifesto <ExternalLink className="w-4 h-4 ml-2" />
               </Link>
             </Button>

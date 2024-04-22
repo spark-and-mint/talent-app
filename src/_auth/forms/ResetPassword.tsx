@@ -13,7 +13,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ResetValidation, PasswordsValidation } from "@/lib/validation"
-import { ArrowLeft, ArrowRight, CircleCheck, MailIcon } from "lucide-react"
+import {
+  ArrowLeft,
+  ArrowRight,
+  CircleCheck,
+  MailIcon,
+  RotateCw,
+} from "lucide-react"
 import StarSvg from "@/svg/StarSvg"
 import { account } from "@/lib/appwrite/config"
 import { useState } from "react"
@@ -37,7 +43,7 @@ const ResetPassword = () => {
   const handleReset = async (email: z.infer<typeof ResetValidation>) => {
     const resetPassword = await account.createRecovery(
       email.email,
-      "https://members.sparkandmint.com"
+      "https://members.sparkandmint.com/reset"
     )
 
     if (resetPassword) setEmailSent(true)
@@ -49,14 +55,14 @@ const ResetPassword = () => {
 
   if (passwordIsReset) {
     return (
-      <div className="container h-full">
+      <div>
         <div className="flex flex-col gap-4 mt-24 text-center">
           <CircleCheck
             strokeWidth={1.3}
             className="w-12 h-12 mx-auto text-primary"
           />
           <h4 className="h4">Password reset</h4>
-          <Button asChild variant="link">
+          <Button asChild variant="link" className="text-lg font-medium">
             <Link to="/sign-in">
               Return to sign in
               <ArrowRight className="h-4 w-4 ml-1.5 inline" />
@@ -89,7 +95,7 @@ const ResetPassword = () => {
       <div className="mt-16 sm:mt-3">
         <Form {...passwordForm}>
           <StarSvg className="w-8 h-8 mb-8 mx-auto" />
-          <h5 className="h5 mb-2 text-center">Reset your password</h5>
+          <h5 className="h5 mb-8 text-center">Reset your password</h5>
 
           <form
             onSubmit={passwordForm.handleSubmit(handleNewPw)}
@@ -124,10 +130,19 @@ const ResetPassword = () => {
             />
 
             <div>
-              <Button type="submit" className="mt-2 w-full">
-                {isResettingPassword
-                  ? "Resetting password..."
-                  : "Reset password"}
+              <Button
+                disabled={isResettingPassword}
+                type="submit"
+                className="mt-2 w-full"
+              >
+                {isResettingPassword ? (
+                  <div className="flex items-center gap-2">
+                    <RotateCw className="h-4 w-4 animate-spin" />
+                    Resetting password...
+                  </div>
+                ) : (
+                  "Reset password"
+                )}
               </Button>
             </div>
           </form>
@@ -139,7 +154,7 @@ const ResetPassword = () => {
   return (
     <>
       {emailSent ? (
-        <div className="container h-full">
+        <div>
           <div className="flex flex-col gap-4 mt-24 text-center">
             <MailIcon
               strokeWidth={1.3}
@@ -147,7 +162,7 @@ const ResetPassword = () => {
             />
             <h4 className="h4">Email sent</h4>
             <p className="leading-6 text-muted-foreground">
-              Check your email and open the link we sent to continue
+              Check your email and open the link we sent to continue.
             </p>
           </div>
         </div>
