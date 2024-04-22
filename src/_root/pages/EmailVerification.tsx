@@ -11,7 +11,7 @@ const EmailVerification = () => {
   const { member, setMember } = useMemberContext()
   const { mutateAsync: updateMember } = useUpdateMember()
   const [searchParams] = useSearchParams()
-  const [isVerifying, setIsVerifying] = useState(true)
+  const [isVerifying, setIsVerifying] = useState(false)
   const secret = searchParams.get("secret")
   const userId = searchParams.get("userId")
 
