@@ -20,6 +20,17 @@ export const SignInValidation = z.object({
     .min(6, { message: "Password must be at least 6 characters long" }),
 })
 
+export const ResetValidation = z.object({
+  email: z.string().email(),
+})
+
+export const PasswordsValidation = z.object({
+  newPassword: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
+  confirmPassword: z.string(),
+})
+
 export const ClientValidation = z.object({
   name: z
     .string()
