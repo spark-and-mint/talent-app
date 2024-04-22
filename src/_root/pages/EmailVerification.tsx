@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { account } from "@/lib/appwrite/config"
 import { MailIcon } from "lucide-react"
@@ -11,14 +11,12 @@ const EmailVerification = () => {
   const { member, setMember } = useMemberContext()
   const { mutateAsync: updateMember } = useUpdateMember()
   const [searchParams] = useSearchParams()
+  const [isVerifying, setIsVerifying] = useState(true)
   const secret = searchParams.get("secret")
   const userId = searchParams.get("userId")
-  const isVerifying = userId && secret
 
   useEffect(() => {
-    if (!userId || !secret) return
-
-    window.scrollTo(0, 0)
+    if (!isVerifying || !userId || !secret) return
 
     const verifyEmail = async () => {
       try {
@@ -49,7 +47,11 @@ const EmailVerification = () => {
     }
 
     verifyEmail()
-  }, [secret, userId])
+  }, [isVerifying, userId, secret])
+
+  useEffect(() => {
+    if (userId && secret) setIsVerifying(true)
+  }, [userId, secret])
 
   return (
     <div className="container h-full">
