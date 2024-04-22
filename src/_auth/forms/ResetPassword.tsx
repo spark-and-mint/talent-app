@@ -37,7 +37,7 @@ const ResetPassword = () => {
   const handleReset = async (email: z.infer<typeof ResetValidation>) => {
     const resetPassword = await account.createRecovery(
       email.email,
-      "https://talent-spark-and-mint.netlify.app"
+      "https://members.sparkandmint.com"
     )
 
     if (resetPassword) setEmailSent(true)

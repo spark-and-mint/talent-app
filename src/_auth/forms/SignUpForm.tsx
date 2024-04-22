@@ -60,9 +60,7 @@ const SignUpForm = () => {
         return
       }
 
-      account.createVerification(
-        "https://talent-spark-and-mint.netlify.app/verify"
-      )
+      account.createVerification("https://members.sparkandmint.com/verify")
 
       const isLoggedIn = await checkAuthMember()
 
