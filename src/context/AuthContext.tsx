@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { createContext, useContext, useEffect, useState } from "react"
 import { IMember } from "@/types"
 import { getCurrentMember } from "@/lib/appwrite/api"
@@ -62,6 +62,7 @@ const AuthContext = createContext<IContextType>(INITIAL_STATE)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [member, setMember] = useState<IMember>(INITIAL_MEMBER)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -132,9 +133,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const cookieFallback = localStorage.getItem("cookieFallback")
     if (
-      cookieFallback === "[]" ||
-      cookieFallback === null ||
-      cookieFallback === undefined
+      (cookieFallback === "[]" ||
+        cookieFallback === null ||
+        cookieFallback === undefined) &&
+      location.pathname !== "/reset" &&
+      location.pathname !== "/verify"
     ) {
       navigate("/sign-in")
     }
