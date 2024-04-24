@@ -49,7 +49,7 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
       file: [],
-      status: "form completed",
+      status: "in review",
       profile: {
         workStatus: values.workStatus,
         seniority: values.seniority,

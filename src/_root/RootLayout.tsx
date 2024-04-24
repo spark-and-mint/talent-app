@@ -20,7 +20,7 @@ const RootLayout = () => {
   const location = useLocation()
   const projectPage = location.pathname.includes("/project/")
   const goToDashboard =
-    member.status === "form completed" || member.status === "accepted"
+    member.status === "in review" || member.status === "accepted"
 
   const checkMemberStatus = async () => {
     try {

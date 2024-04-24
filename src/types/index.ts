@@ -14,7 +14,7 @@ export type IMember = {
   importedAnswers: boolean
   name: string
   timezone: string
-  status: "form completed" | "1on1 done" | "accepted" | "rejected" | null
+  status: "in review" | "1on1 done" | "accepted" | "rejected" | null
   profileId: string
   profile: {
     workStatus: string
@@ -68,7 +68,7 @@ export type IUpdateMember = {
   emailVerification?: boolean
   avatarUrl?: URL | string
   timezone?: string | null
-  status?: "form completed" | "1on1 done" | "accepted" | "rejected" | null
+  status?: "in review" | "1on1 done" | "accepted" | "rejected" | null
   contractSigned?: boolean
   projects?: IProject[]
 }

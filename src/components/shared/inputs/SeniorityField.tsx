@@ -34,6 +34,7 @@ const SeniorityField = () => {
             </FormControl>
             <SelectContent>
               <SelectItem value="Executive">Executive</SelectItem>
+              <SelectItem value="Principal">Principal</SelectItem>
               <SelectItem value="Senior">Senior</SelectItem>
               <SelectItem value="Intermediate">Intermediate</SelectItem>
               <SelectItem value="Junior">Junior</SelectItem>
