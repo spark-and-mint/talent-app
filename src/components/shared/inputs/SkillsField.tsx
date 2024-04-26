@@ -32,6 +32,7 @@ const SkillsField = () => {
                 const res = await mockSearch(value, skillOptions)
                 return res
               }}
+              groupBy="group"
               hidePlaceholderWhenSelected
               triggerSearchOnFocus
               placeholder="Search and select your skills"
