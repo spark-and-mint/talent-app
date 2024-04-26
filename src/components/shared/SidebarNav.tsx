@@ -16,8 +16,12 @@ export function SidebarNav() {
   const { member } = useMemberContext()
   const { data: opportunityData } = useGetMemberOpportunities(member.id)
 
-  const opportunity = opportunityData?.documents.find(
+  const newOpportunity = opportunityData?.documents.find(
     (document) => document.status === "awaiting response"
+  )
+
+  const acceptedOpportunities = opportunityData?.documents.filter(
+    (document) => document.status === "accepted"
   )
 
   const navLinks = [
@@ -35,12 +39,16 @@ export function SidebarNav() {
       title: "Opportunities",
       icon: Rocket,
       to: "/opportunities",
-      badge: opportunity ? "1" : false,
+      badge: newOpportunity ? "New" : false,
     },
     {
       title: "My Projects",
       icon: BriefcaseBusinessIcon,
       to: "/projects",
+      badge:
+        acceptedOpportunities && acceptedOpportunities.length > 0
+          ? `${acceptedOpportunities.length}`
+          : false,
     },
     {
       title: "Refer and Earn",
@@ -68,7 +76,14 @@ export function SidebarNav() {
           <link.icon className="w-4 h-4 mr-2" />
           {link.title}
           {link.badge && (
-            <span className="ml-3 px-2 py-0.5 text-xs font-semibold text-black bg-primary rounded-full">
+            <span
+              className={cn(
+                "ml-3 px-2.5 py-0.5 text-xs font-semibold rounded-full",
+                link.title === "My Projects"
+                  ? "text-white bg-gray-700"
+                  : "text-black bg-primary"
+              )}
+            >
               {link.badge}
             </span>
           )}

@@ -20,7 +20,6 @@ import { useMemberContext } from "@/context/AuthContext"
 import {
   useUpdateOpportunity,
   useGetMemberOpportunities,
-  useUpdateProject,
   useGetClientById,
   useGetProjectById,
 } from "@/lib/react-query/queries"
@@ -54,6 +53,7 @@ const Opportunities = () => {
     useGetMemberOpportunities(member.id)
   const [acceptingOpportunity, setAcceptingOpportunity] = useState(false)
   const [decliningOpportunity, setDecliningOpportunity] = useState(false)
+  const [showAcceptModal, setShowAcceptModal] = useState(false)
 
   const opportunity = opportunityData?.documents.find(
     (document) => document.status === "awaiting response"
@@ -62,11 +62,7 @@ const Opportunities = () => {
     opportunity?.clientId
   )
   const { data: project } = useGetProjectById(opportunity?.projectId)
-
   const { mutateAsync: updateOpportunity } = useUpdateOpportunity()
-  const { mutateAsync: updateProject } = useUpdateProject()
-
-  const [showAcceptModal, setShowAcceptModal] = useState(false)
 
   const handleAccept = async () => {
     try {
@@ -87,12 +83,6 @@ const Opportunities = () => {
         toast.error("Error accepting opportunity. Please try again.")
         return
       }
-
-      await updateProject({
-        projectId: opportunity.projectId,
-        title: project.title,
-        team: [...project.team, member.id],
-      })
     } catch (error) {
       toast.error("An error occurred. Please try again.")
       console.error({ error })
@@ -173,21 +163,27 @@ const Opportunities = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 mt-6 sm:mt-0">
-                    <Button asChild variant="outline" size="sm">
-                      <Link to={client?.website} target="_blank">
-                        <LinkIcon className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button asChild variant="outline" size="sm">
-                      <Link to={client?.x} target="_blank">
-                        <XLogo className="h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button asChild variant="outline" size="sm">
-                      <Link to={client?.linkedin} target="_blank">
-                        <LinkedInLogo className="h-4 w-4" />
-                      </Link>
-                    </Button>
+                    {client?.website && (
+                      <Button asChild variant="outline" size="sm">
+                        <Link to={client?.website} target="_blank">
+                          <LinkIcon className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    )}
+                    {client?.x && (
+                      <Button asChild variant="outline" size="sm">
+                        <Link to={client?.x} target="_blank">
+                          <XLogo className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    )}
+                    {client?.linkedin && (
+                      <Button asChild variant="outline" size="sm">
+                        <Link to={client?.linkedin} target="_blank">
+                          <LinkedInLogo className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    )}
                   </div>
                 </div>
 
