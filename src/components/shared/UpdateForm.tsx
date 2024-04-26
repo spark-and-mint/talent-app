@@ -73,6 +73,7 @@ const UpdateForm = ({
         ...values,
         updateId: update.$id,
         title: values.title,
+        fileName: update.fileName,
         fileId: update.fileId,
         fileUrl: update.fileUrl,
       })
@@ -222,7 +223,7 @@ const UpdateForm = ({
                 <FormLabel>File upload</FormLabel>
                 <Input
                   type="file"
-                  className="cursor-pointer"
+                  className="cursor-pointer file:cursor-pointer"
                   disabled={disableUpload}
                   {...fileRef}
                 />

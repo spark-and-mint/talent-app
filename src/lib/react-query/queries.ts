@@ -133,6 +133,9 @@ export const useUpdateUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_UPDATE_BY_ID, data?.$id],
       })
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_MILESTONE_UPDATES, data?.milestoneId],
+      })
     },
   })
 }

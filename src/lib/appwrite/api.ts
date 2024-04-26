@@ -377,6 +377,7 @@ export async function getTypeFormAnswersByEmail(email: string) {
 export async function createUpdate(update: INewUpdate) {
   try {
     let fileUrl
+    let fileName
     let uploadedFile
 
     if (update.file[0]) {
@@ -385,6 +386,8 @@ export async function createUpdate(update: INewUpdate) {
       if (!uploadedFile) throw Error
 
       fileUrl = getFileView(uploadedFile.$id)
+      fileName = uploadedFile.name
+
       if (!fileUrl) {
         await deleteFile(uploadedFile.$id)
         throw Error
@@ -403,6 +406,7 @@ export async function createUpdate(update: INewUpdate) {
         link: update.link,
         description: update.description,
         fileId: uploadedFile ? uploadedFile.$id : nanoid(),
+        fileName,
         fileUrl,
       }
     )
@@ -423,6 +427,7 @@ export async function updateUpdate(update: IUpdate) {
 
   try {
     let file = {
+      fileName: update.fileName,
       fileUrl: update.fileUrl,
       fileId: update.fileId,
     }
@@ -437,7 +442,12 @@ export async function updateUpdate(update: IUpdate) {
         throw Error
       }
 
-      file = { ...file, fileUrl: fileUrl, fileId: uploadedFile.$id }
+      file = {
+        ...file,
+        fileName: uploadedFile.name,
+        fileUrl: fileUrl,
+        fileId: uploadedFile.$id,
+      }
     }
 
     const updatedUpdate = await databases.updateDocument(
@@ -449,6 +459,7 @@ export async function updateUpdate(update: IUpdate) {
         type: update.type,
         link: update.link,
         description: update.description,
+        fileName: file.fileName,
         fileUrl: file.fileUrl,
         fileId: file.fileId,
       }

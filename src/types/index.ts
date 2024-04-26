@@ -156,6 +156,7 @@ export type IUpdate = {
   file: File[]
   fileId: string
   fileUrl: URL | string
+  fileName: string
   description?: string
   isViewed?: boolean
   milestone?: IMilestone
