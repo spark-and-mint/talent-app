@@ -15,6 +15,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import StarSvg from "@/svg/StarSvg"
 import FormLoader from "@/components/shared/FormLoader"
 import {
+  FirstNameField,
+  LastNameField,
   SeniorityField,
   WorkStatusField,
   RateField,
@@ -31,6 +33,7 @@ import {
   FarcasterField,
   DribbbleField,
   BehanceField,
+  AvatarField,
 } from "@/components/shared/inputs"
 import FadeIn from "react-fade-in/lib/FadeIn"
 import { useState } from "react"
@@ -51,6 +54,9 @@ const ProfilePage = () => {
   const form = useForm<z.infer<typeof ProfileValidation>>({
     resolver: zodResolver(ProfileValidation),
     defaultValues: {
+      firstName: member.firstName,
+      lastName: member.lastName,
+      file: [],
       workStatus: member.profile.workStatus,
       seniority: member.profile.seniority,
       roles: member.profile.roles?.map((role: string) => ({
@@ -84,13 +90,9 @@ const ProfilePage = () => {
       memberId: member.id,
       profileId: member.profileId,
       email: member.email,
-      firstName: member.firstName,
-      lastName: member.lastName,
       avatarUrl: member.avatarUrl,
       avatarId: member.avatarId,
-      file: [],
       importedAnswers: member.importedAnswers || importedAnswers,
-      timezone: values.timezone,
       profile: {
         workStatus: values.workStatus,
         seniority: values.seniority,
@@ -108,6 +110,7 @@ const ProfilePage = () => {
         dribbble: values.dribbble,
         behance: values.behance,
       },
+      ...values,
     })
 
     if (!updatedMember) {
@@ -242,6 +245,25 @@ const ProfilePage = () => {
             <FadeIn className="space-y-8 lg:space-y-14">
               <div className="mb-12">
                 <h3 className="text-lg font-medium mb-2">
+                  Personal information
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Update your personal profile settings.
+                </p>
+              </div>
+
+              <AvatarField member={member} />
+              <div className="grid gap-8 lg:grid-cols-2 lg:gap-y-14 lg:gap-x-12">
+                <FirstNameField />
+                <LastNameField />
+              </div>
+
+              <TimezoneField />
+
+              <Separator />
+
+              <div className="mb-12">
+                <h3 className="text-lg font-medium mb-2">
                   Professional details
                 </h3>
                 <p className="text-sm text-muted-foreground">
@@ -255,7 +277,6 @@ const ProfilePage = () => {
               <RolesField />
               <SkillsField />
               <DomainsField />
-              <TimezoneField />
 
               <Separator />
 

@@ -125,7 +125,6 @@ export async function getCurrentMember() {
 
     return { member, error: null }
   } catch (error) {
-    console.log(error)
     return { member: null, error }
   }
 }

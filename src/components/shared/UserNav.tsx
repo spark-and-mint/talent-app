@@ -45,9 +45,6 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link to="/account">
-            <DropdownMenuItem>Account settings</DropdownMenuItem>
-          </Link>
           <Link to="/support">
             <DropdownMenuItem>Support</DropdownMenuItem>
           </Link>

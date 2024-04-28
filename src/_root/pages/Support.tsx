@@ -19,11 +19,6 @@ const faq = [
   {
     question: "How will I get paid?",
     answer:
-      "Once you complete assigned projects and your work is approved by the client, payment will be released. Payments are usually processed through direct bank transfers or via online platforms like PayPal. Be sure to have set up your payment mode in the 'Payment' section of your account.",
-  },
-  {
-    question: "How often do I get paid?",
-    answer:
       "Payments are typically made upon completion of a project. Depending on the length and nature of the project, milestones payments may also be arranged. Details will be outlined in your contract for each project.",
   },
 ]
@@ -42,8 +37,8 @@ const Support = () => {
 
         <div className="flex items-center gap-20 my-12">
           <div>
-            <div className="flex items-center gap-2 text-primary tracking-[0.05em] font-semibold">
-              <MailIcon className="h-4 w-4" />
+            <div className="flex items-center gap-2 text-primary text-lg tracking-[0.05em] font-semibold">
+              <MailIcon className="h-5 w-5" />
               Email
             </div>
             <p>
@@ -61,8 +56,8 @@ const Support = () => {
 
           {accepted && (
             <div>
-              <div className="flex items-center gap-2 text-primary tracking-[0.05em] font-semibold">
-                <SlackSvg className="h-4 w-4" />
+              <div className="flex items-center gap-2 text-primary text-lg tracking-[0.05em] font-semibold">
+                <SlackSvg className="h-5 w-5" />
                 Slack
               </div>
               <p>
