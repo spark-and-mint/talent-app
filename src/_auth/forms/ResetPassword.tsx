@@ -31,6 +31,7 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams()
   const secret = searchParams.get("secret")
   const userId = searchParams.get("userId")
+
   const isResetting = userId && secret
 
   const resetForm = useForm<z.infer<typeof ResetValidation>>({
@@ -52,6 +53,9 @@ const ResetPassword = () => {
   const passwordForm = useForm<z.infer<typeof PasswordsValidation>>({
     resolver: zodResolver(PasswordsValidation),
   })
+
+  const passwordsNotMatching =
+    passwordForm.watch("newPassword") !== passwordForm.watch("confirmPassword")
 
   if (passwordIsReset) {
     return (
@@ -131,7 +135,7 @@ const ResetPassword = () => {
 
             <div>
               <Button
-                disabled={isResettingPassword}
+                disabled={isResettingPassword || passwordsNotMatching}
                 type="submit"
                 className="mt-2 w-full"
               >

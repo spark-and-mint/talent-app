@@ -70,79 +70,76 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkAuthMember = async () => {
     setIsLoading(true)
-
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { member, error }: { member: Models.Document | null; error: any } =
-        await getCurrentMember()
+      const { member, error } = await getCurrentMember()
 
-      if (
-        error &&
-        error.message &&
-        !error.message.includes("User (role: guests) missing scope (account)")
-      ) {
+      if (!member || error) {
+        console.error("Failed to fetch member:", error)
+        setIsAuthenticated(false)
         setServerError(true)
+        return false
       }
 
-      if (member) {
-        setMember({
-          id: member.$id,
-          importedAnswers: member.importedAnswers,
-          emailVerification: member.emailVerification,
-          email: member.email,
-          name: member.name,
-          firstName: member.firstName,
-          lastName: member.lastName,
-          status: member.status,
-          avatarUrl: member.avatarUrl,
-          avatarId: member.avatarId,
-          contractSigned: member.contractSigned,
-          projects: member.projects,
-          timezone: member.timezone,
-          profileId: member.profileId,
-          profile: {
-            workStatus: member.profile?.workStatus,
-            seniority: member.profile?.seniority,
-            roles: member.profile?.roles,
-            skills: member.profile?.skills,
-            domains: member.profile?.domains,
-            lookingFor: member.profile?.lookingFor,
-            availability: member.profile?.availability,
-            rate: member.profile?.rate,
-            website: member.profile?.website,
-            linkedin: member.profile?.linkedin,
-            github: member.profile?.github,
-            x: member.profile?.x,
-            farcaster: member.profile?.farcaster,
-            dribbble: member.profile?.dribbble,
-            behance: member.profile?.behance,
-          },
-        })
-        setIsAuthenticated(true)
-        return true
-      }
-      return false
+      setMember(serverResponseToMemberModel(member))
+      setIsAuthenticated(true)
+      setServerError(false)
+      return true
     } catch (error) {
-      console.error(error)
+      console.error("Error checking authentication:", error)
+      setIsAuthenticated(false)
+      setServerError(true)
       return false
     } finally {
       setIsLoading(false)
     }
   }
 
-  useEffect(() => {
-    const cookieFallback = localStorage.getItem("cookieFallback")
-    if (
-      (cookieFallback === "[]" ||
-        cookieFallback === null ||
-        cookieFallback === undefined) &&
-      location.pathname !== "/reset" &&
-      location.pathname !== "/verify"
-    ) {
-      navigate("/sign-in")
+  const serverResponseToMemberModel = (member: Models.Document) => {
+    return {
+      id: member.$id,
+      importedAnswers: member.importedAnswers,
+      emailVerification: member.emailVerification,
+      email: member.email,
+      name: member.name,
+      firstName: member.firstName,
+      lastName: member.lastName,
+      status: member.status,
+      avatarUrl: member.avatarUrl,
+      avatarId: member.avatarId,
+      contractSigned: member.contractSigned,
+      projects: member.projects,
+      timezone: member.timezone,
+      profileId: member.profileId,
+      profile: {
+        workStatus: member.profile?.workStatus,
+        seniority: member.profile?.seniority,
+        roles: member.profile?.roles,
+        skills: member.profile?.skills,
+        domains: member.profile?.domains,
+        lookingFor: member.profile?.lookingFor,
+        availability: member.profile?.availability,
+        rate: member.profile?.rate,
+        website: member.profile?.website,
+        linkedin: member.profile?.linkedin,
+        github: member.profile?.github,
+        x: member.profile?.x,
+        farcaster: member.profile?.farcaster,
+        dribbble: member.profile?.dribbble,
+        behance: member.profile?.behance,
+      },
     }
+  }
 
-    checkAuthMember()
+  useEffect(() => {
+    checkAuthMember().then((authenticated) => {
+      if (
+        !authenticated &&
+        location.pathname !== "/reset" &&
+        location.pathname !== "/verify"
+      ) {
+        navigate("/sign-in")
+      }
+    })
   }, [])
 
   const value = {

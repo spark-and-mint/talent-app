@@ -220,7 +220,11 @@ const UpdateForm = ({
             name="file"
             render={() => (
               <FormItem className="relative w-full">
-                <FormLabel>File upload</FormLabel>
+                <FormLabel>
+                  {update?.fileName
+                    ? `Uploaded: ${update.fileName}`
+                    : "File upload"}
+                </FormLabel>
                 <Input
                   type="file"
                   className="cursor-pointer file:cursor-pointer"

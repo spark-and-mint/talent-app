@@ -95,17 +95,18 @@ export async function signInAccount(member: {
 
 export async function getCurrentMember() {
   try {
-    const currentAccount = await getAccount()
+    const session = await account.getSession("current")
 
-    if (!currentAccount) throw Error
+    if (!session || !session.userId) throw new Error("No active session.")
 
     const currentMember = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.memberCollectionId,
-      [Query.equal("accountId", currentAccount.$id)]
+      [Query.equal("accountId", session.userId)]
     )
 
-    if (!currentMember) throw Error
+    if (!currentMember || currentMember.documents.length === 0)
+      throw new Error("Member not found.")
 
     const profile = await databases.getDocument(
       appwriteConfig.databaseId,
@@ -113,7 +114,7 @@ export async function getCurrentMember() {
       currentMember.documents[0].profileId
     )
 
-    if (!profile) throw Error
+    if (!profile) throw new Error("Profile not found.")
 
     const member = {
       ...currentMember.documents[0],
