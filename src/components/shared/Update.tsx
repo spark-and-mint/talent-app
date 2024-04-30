@@ -1,5 +1,5 @@
 import { Models } from "appwrite"
-import { ExternalLink, MoreHorizontal } from "lucide-react"
+import { ExternalLink, MoreHorizontal, RotateCw } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "../ui"
 import {
@@ -37,11 +37,14 @@ import {
 import { useState } from "react"
 import UpdateForm from "./UpdateForm"
 import { useMemberContext } from "@/context/AuthContext"
+import { Separator } from "../ui/separator"
 
 const Update = ({ update }: { update: Models.Document }) => {
   const { member } = useMemberContext()
   const { data: creator } = useGetMemberById(update.creatorId)
-  const { data: feedback } = useGetUpdateFeedback(update.$id)
+  const { data: feedback, isPending: isPendingFeedback } = useGetUpdateFeedback(
+    update.$id
+  )
   const { mutateAsync: deleteUpdate } = useDeleteUpdate()
   const confirm = useConfirm()
   const [openEdit, setOpenEdit] = useState(false)
@@ -132,9 +135,17 @@ const Update = ({ update }: { update: Models.Document }) => {
               disabled={feedback && feedback.length === 0}
               onClick={handleViewFeedback}
             >
-              {feedback && feedback.length > 0
-                ? "View feedback"
-                : "No feedback"}
+              {feedback && feedback.length > 0 ? (
+                "View feedback"
+              ) : (
+                <>
+                  {isPendingFeedback ? (
+                    <RotateCw className="h-4 w-4 animate-spin" />
+                  ) : (
+                    "No feedback yet"
+                  )}
+                </>
+              )}
               {feedback &&
                 feedback.length > 0 &&
                 !feedback[0].viewedBy.includes(member.id) && (
@@ -151,11 +162,17 @@ const Update = ({ update }: { update: Models.Document }) => {
             </DialogHeader>
             <div className="mt-5 mb-4">
               <blockquote className="relative">
-                <p>
-                  {feedback && feedback.length > 0 && feedback[0]?.text
-                    ? feedback[0]?.text
-                    : "No feedback added yet."}
-                </p>
+                {feedback && feedback.length > 0 && feedback[0]?.label && (
+                  <>
+                    <p>{feedback[0]?.label}</p>
+                    {feedback && feedback.length > 0 && feedback[0]?.text && (
+                      <Separator className="my-4" />
+                    )}
+                  </>
+                )}
+                {feedback && feedback.length > 0 && feedback[0]?.text && (
+                  <p>{feedback[0]?.text}</p>
+                )}
               </blockquote>
             </div>
             <DialogFooter>
