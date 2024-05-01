@@ -4,7 +4,7 @@ import { SidebarNav } from "@/components/shared/SidebarNav"
 import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
 import { useState } from "react"
-import { Outlet, useLocation } from "react-router-dom"
+import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { EmailVerification } from "./pages"
 import { AnnoyedIcon, RefreshCcw } from "lucide-react"
 import { Button } from "@/components/ui"
@@ -61,7 +61,7 @@ const RootLayout = () => {
   }
 
   if (!member.id) {
-    return null
+    return <Navigate to="/sign-in" />
   }
 
   if (!member.emailVerification) {

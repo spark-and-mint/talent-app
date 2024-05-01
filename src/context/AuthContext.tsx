@@ -71,19 +71,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const checkAuthMember = async () => {
     setIsLoading(true)
     try {
-      const { member, error } = await getCurrentMember()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { member, error }: { member: Models.Document | null; error: any } =
+        await getCurrentMember()
 
-      if (!member || error) {
-        console.error("Failed to fetch member:", error)
-        setIsAuthenticated(false)
+      if (
+        error &&
+        error.message &&
+        !error.message.includes("User (role: guests) missing scope (account)")
+      ) {
         setServerError(true)
-        return false
       }
 
-      setMember(serverResponseToMemberModel(member))
-      setIsAuthenticated(true)
-      setServerError(false)
-      return true
+      if (member) {
+        setMember(serverResponseToMemberModel(member))
+        setIsAuthenticated(true)
+        setServerError(false)
+        return true
+      }
+
+      setIsAuthenticated(false)
+      return false
     } catch (error) {
       console.error("Error checking authentication:", error)
       setIsAuthenticated(false)
