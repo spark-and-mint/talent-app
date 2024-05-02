@@ -98,14 +98,16 @@ const UpdateForm = ({
           milestoneId: milestone.$id,
         })
 
-        const updatedMilestone = await updateMilestone({
-          milestoneId: milestone.$id,
-          title: milestone.title,
-          status: "in progress",
-        })
+        if (!milestone.status) {
+          await updateMilestone({
+            milestoneId: milestone.$id,
+            title: milestone.title,
+            status: "in progress",
+          })
+        }
 
-        if (!newUpdate || !updatedMilestone) {
-          toast.error("An error occured. Please try again.")
+        if (!newUpdate) {
+          toast.error("Could not create update. Please try again.")
         } else {
           toast.success("Update created successfully.")
           setOpen(false)
