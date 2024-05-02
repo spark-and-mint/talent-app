@@ -218,6 +218,9 @@ export const useUpdateMilestone = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_MILESTONE_BY_ID, data?.$id],
       })
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_PROJECT_MILESTONES],
+      })
     },
   })
 }
