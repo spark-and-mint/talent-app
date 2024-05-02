@@ -177,7 +177,11 @@ const Milestone = ({ milestone }: { milestone: Models.Document }) => {
                 {updates &&
                   updates.length > 0 &&
                   updates.map((update: Models.Document) => (
-                    <Update key={update.$id} update={update} />
+                    <Update
+                      key={update.$id}
+                      update={update}
+                      milestoneApproved={milestone.status === "approved"}
+                    />
                   ))}
               </TableBody>
             </Table>

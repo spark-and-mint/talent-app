@@ -39,7 +39,13 @@ import UpdateForm from "./UpdateForm"
 import { useMemberContext } from "@/context/AuthContext"
 import { Separator } from "../ui/separator"
 
-const Update = ({ update }: { update: Models.Document }) => {
+const Update = ({
+  update,
+  milestoneApproved,
+}: {
+  update: Models.Document
+  milestoneApproved: boolean
+}) => {
   const { member } = useMemberContext()
   const { data: creator } = useGetMemberById(update.creatorId)
   const { data: feedback, isPending: isPendingFeedback } = useGetUpdateFeedback(
@@ -185,42 +191,44 @@ const Update = ({ update }: { update: Models.Document }) => {
           </DialogContent>
         </Dialog>
       </TableCell>
-      <TableCell>
-        <div className="flex justify-end mr-4">
-          <Dialog open={openEdit} onOpenChange={setOpenEdit}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-6 w-6" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DialogTrigger asChild>
-                  <DropdownMenuItem>Edit update</DropdownMenuItem>
-                </DialogTrigger>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => handleDeleteUpdate(update.title, update.$id)}
-                >
-                  <span className="font-medium text-[#e40808]">Delete</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DialogContent className="sm:max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>Edit update</DialogTitle>
-              </DialogHeader>
+      {milestoneApproved ? null : (
+        <TableCell>
+          <div className="flex justify-end mr-4">
+            <Dialog open={openEdit} onOpenChange={setOpenEdit}>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal className="h-6 w-6" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DialogTrigger asChild>
+                    <DropdownMenuItem>Edit update</DropdownMenuItem>
+                  </DialogTrigger>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => handleDeleteUpdate(update.title, update.$id)}
+                  >
+                    <span className="font-medium text-[#e40808]">Delete</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DialogContent className="sm:max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>Edit update</DialogTitle>
+                </DialogHeader>
 
-              <UpdateForm
-                action="update"
-                setOpen={setOpenEdit}
-                update={update}
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
-      </TableCell>
+                <UpdateForm
+                  action="update"
+                  setOpen={setOpenEdit}
+                  update={update}
+                />
+              </DialogContent>
+            </Dialog>
+          </div>
+        </TableCell>
+      )}
     </TableRow>
   )
 }
