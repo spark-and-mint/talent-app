@@ -16,10 +16,13 @@ const EmailVerification = () => {
   const userId = searchParams.get("userId")
 
   useEffect(() => {
-    if (!isVerifying || !userId || !secret) return
-
     const verifyEmail = async () => {
+      if (!userId || !secret) {
+        return
+      }
+
       try {
+        setIsVerifying(true)
         await account.updateVerification(userId, secret)
         const updatedMember = await updateMember({
           memberId: member.id,
@@ -47,10 +50,6 @@ const EmailVerification = () => {
     }
 
     verifyEmail()
-  }, [isVerifying, userId, secret])
-
-  useEffect(() => {
-    if (userId && secret) setIsVerifying(true)
   }, [userId, secret])
 
   return (
@@ -63,7 +62,7 @@ const EmailVerification = () => {
         <h4 className="h4">
           {isVerifying ? "Verifying your email..." : "Check your inbox!"}
         </h4>
-        <p className="leading-6 text-muted-foreground">
+        <div className="leading-6 text-muted-foreground">
           {isVerifying ? (
             "Hang tight."
           ) : (
@@ -77,7 +76,7 @@ const EmailVerification = () => {
               </a>
             </div>
           )}
-        </p>
+        </div>
       </div>
     </div>
   )

@@ -119,7 +119,7 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
                   <div className="mt-4 space-y-2 text-center">
                     {Object.keys(errors).map((key) => (
                       <div key={key}>
-                        <p className="text-sm text-destructive font-medium">
+                        <p className="text-sm font-medium">
                           {errors[key]?.message}
                         </p>
                       </div>

@@ -61,7 +61,7 @@ const RootLayout = () => {
   }
 
   if (!member.id) {
-    return <Navigate to="/sign-in" />
+    return null
   }
 
   if (!member.emailVerification) {
