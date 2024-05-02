@@ -1,3 +1,4 @@
+import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import {
   ArrowRight,
@@ -213,6 +214,16 @@ const Opportunities = () => {
                         {opportunity.type}
                       </dd>
                     </div>
+                    {opportunity.startDate && (
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm font-medium leading-6 text-primary">
+                          Estimated start date
+                        </dt>
+                        <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
+                          {format(opportunity.startDate, "PPP")}
+                        </dd>
+                      </div>
+                    )}
                     {opportunity.estimatedEarnings && (
                       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-primary">
