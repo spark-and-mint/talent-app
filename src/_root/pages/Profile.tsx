@@ -225,7 +225,7 @@ const ProfilePage = () => {
             <AlertDescription>
               Click to import some of your previous answers from TypeForm.
             </AlertDescription>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+            <div className="mt-4 sm:mt-0 sm:absolute sm:right-4 sm:top-1/2 sm:-translate-y-1/2">
               <Button disabled={loadingImport} onClick={handleImport}>
                 {loadingImport ? (
                   <div className="flex items-center gap-2">
