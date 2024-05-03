@@ -1,5 +1,4 @@
 import {
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -26,11 +25,9 @@ const RateField = () => {
             value={field.value ?? undefined}
             onValueChange={field.onChange}
           >
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select your hourly rate" />
-              </SelectTrigger>
-            </FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder="Select your hourly rate" />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="50-75">50-75</SelectItem>
               <SelectItem value="75-100">75-100</SelectItem>

@@ -1,5 +1,4 @@
 import {
-  FormControl,
   FormDescription,
   FormField,
   FormItem,
@@ -27,11 +26,9 @@ const SeniorityField = () => {
             value={field.value ?? undefined}
             onValueChange={field.onChange}
           >
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a level" />
-              </SelectTrigger>
-            </FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a level" />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="Executive">Executive</SelectItem>
               <SelectItem value="Principal">Principal</SelectItem>

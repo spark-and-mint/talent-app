@@ -1,5 +1,4 @@
 import {
-  FormControl,
   FormDescription,
   FormField,
   FormItem,
@@ -27,11 +26,9 @@ const AvailabilityField = () => {
             value={field.value ?? undefined}
             onValueChange={field.onChange}
           >
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select your availability" />
-              </SelectTrigger>
-            </FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder="Select your availability" />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="10 hrs/week">10 hrs/week</SelectItem>
               <SelectItem value="20 hrs/week">20 hrs/week</SelectItem>

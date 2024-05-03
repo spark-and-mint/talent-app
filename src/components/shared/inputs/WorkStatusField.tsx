@@ -1,5 +1,4 @@
 import {
-  FormControl,
   FormDescription,
   FormField,
   FormItem,
@@ -27,11 +26,9 @@ const WorkStatusField = () => {
             value={field.value ?? undefined}
             onValueChange={field.onChange}
           >
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select your work status" />
-              </SelectTrigger>
-            </FormControl>
+            <SelectTrigger>
+              <SelectValue placeholder="Select your work status" />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="Freelancer/Consultant">
                 Freelancer/Consultant
