@@ -47,9 +47,7 @@ const RootLayout = () => {
           ...updatedMember,
         })
 
-        setTimeout(() => {
-          setLoading(false)
-        }, 3000)
+        setLoading(false)
       }
     } catch (error) {
       console.log(error)
@@ -73,7 +71,7 @@ const RootLayout = () => {
   }
 
   if (loading) {
-    return <Loader text="Cosmic calibration underway..." />
+    return <Loader />
   }
 
   if (member.status === null) {
