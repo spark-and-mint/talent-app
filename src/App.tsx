@@ -23,7 +23,7 @@ import ResetPassword from "./_auth/forms/ResetPassword"
 
 const App = () => {
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col sm:h-screen">
       <div className="absolute inset-x-0 h-[480px] bg-gradient-to-b from-[#06374e] to-transparent opacity-40" />
 
       <Header />
