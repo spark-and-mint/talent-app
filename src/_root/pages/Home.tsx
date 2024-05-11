@@ -39,7 +39,7 @@ const Home = () => {
         />
       </div>
 
-      {!accepted && !member.importedAnswers ? (
+      {accepted && member.importedAnswers ? (
         <Link
           to="https://sparkmintfractional.slack.com/"
           target="_blank"
