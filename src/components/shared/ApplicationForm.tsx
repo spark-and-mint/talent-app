@@ -18,6 +18,7 @@ import {
   WebsiteField,
   LinkedInField,
 } from "@/components/shared/inputs"
+import { useEffect } from "react"
 
 interface ApplicationFormProps {
   setShowApplicationForm: (value: boolean) => void
@@ -68,6 +69,10 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
 
     setShowApplicationForm(false)
   }
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   if (isLoading) {
     return (
