@@ -20,7 +20,6 @@ import {
 import { SignUpValidation } from "@/lib/validation"
 import { useMemberContext } from "@/context/AuthContext"
 import { ArrowRight, RotateCw } from "lucide-react"
-import { account } from "@/lib/appwrite/config"
 
 const SignUpForm = () => {
   const navigate = useNavigate()
@@ -59,8 +58,6 @@ const SignUpForm = () => {
         toast.error("Something went wrong. Please try again.")
         return
       }
-
-      account.createVerification("https://members.sparkandmint.com/verify")
 
       const isLoggedIn = await checkAuthMember()
 

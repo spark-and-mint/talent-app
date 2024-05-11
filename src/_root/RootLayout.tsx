@@ -5,7 +5,6 @@ import { useMemberContext } from "@/context/AuthContext"
 import { useUpdateMember } from "@/lib/react-query/queries"
 import { useState } from "react"
 import { Outlet, useLocation } from "react-router-dom"
-import { EmailVerification } from "./pages"
 import { AnnoyedIcon, RefreshCcw } from "lucide-react"
 import { Button } from "@/components/ui"
 import { cn } from "@/lib/utils"
@@ -60,10 +59,6 @@ const RootLayout = () => {
 
   if (!member.id) {
     return null
-  }
-
-  if (!member.emailVerification) {
-    return <EmailVerification />
   }
 
   if (showApplicationForm) {

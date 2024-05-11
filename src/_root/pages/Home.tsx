@@ -34,14 +34,14 @@ const Home = () => {
         />
       </div>
 
-      {accepted && member.importedAnswers ? (
+      {!accepted && !member.importedAnswers ? (
         <Link
           to="https://sparkmintfractional.slack.com/"
           target="_blank"
           className="block"
         >
-          <Card className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
-            <div className="flex items-center gap-6">
+          <Card className="flex flex-col sm:flex-row gap-5 sm:gap-0 items-start sm:items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
               <img src="/assets/slack.webp" className="w-10 h-10 ml-1.5" />
               <div className="flex-1">
                 <h6 className="h6 text-lg mb-1 group-hover:text-white transition-colors duration-100">
@@ -53,7 +53,14 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
+              <div className="mt-2 sm:hidden">
+                <Link to="/profile">
+                  <Button>
+                    Open Slack <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+              <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
                 <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
               </div>
             </div>
@@ -61,8 +68,8 @@ const Home = () => {
         </Link>
       ) : (
         <Link to="/profile" className="block">
-          <Card className="flex items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
-            <div className="flex items-center gap-6">
+          <Card className="flex flex-col sm:flex-row gap-5 sm:gap-0 items-start sm:items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
               <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
                 <User strokeWidth={2} className="w-6 h-6" />
               </div>
@@ -74,7 +81,14 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
+              <div className="mt-2 sm:hidden">
+                <Link to="/profile">
+                  <Button>
+                    Go to Profile <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+              <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
                 <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
               </div>
             </div>

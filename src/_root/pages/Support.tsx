@@ -37,7 +37,7 @@ const Support = () => {
 
         <div className="flex items-center gap-20 my-12">
           <div>
-            <div className="flex items-center gap-2 text-primary text-lg tracking-[0.05em] font-semibold">
+            <div className="flex items-center gap-2 text-primary text-lg tracking-[0.05em] font-medium">
               <MailIcon className="h-5 w-5" />
               Email
             </div>
@@ -56,7 +56,7 @@ const Support = () => {
 
           {accepted && (
             <div>
-              <div className="flex items-center gap-2 text-primary text-lg tracking-[0.05em] font-semibold">
+              <div className="flex items-center gap-2 text-primary text-lg tracking-[0.05em] font-medium">
                 <SlackSvg className="h-5 w-5" />
                 Slack
               </div>
