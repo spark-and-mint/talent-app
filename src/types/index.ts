@@ -14,7 +14,13 @@ export type IMember = {
   importedAnswers: boolean
   name: string
   timezone: string
-  status: "in review" | "1on1 done" | "accepted" | "rejected" | null
+  status:
+    | "in review"
+    | "1on1 done"
+    | "invite shared"
+    | "accepted"
+    | "rejected"
+    | null
   profileId: string
   profile: {
     workStatus: string
