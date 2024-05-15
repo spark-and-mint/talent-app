@@ -1,1 +1,1 @@
-# Spark + Mint Talent App
+# TeamSpark Talent App

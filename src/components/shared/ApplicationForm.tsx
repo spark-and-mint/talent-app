@@ -89,7 +89,7 @@ const ApplicationForm = ({ setShowApplicationForm }: ApplicationFormProps) => {
       <div className="space-y-4">
         <div className="flex flex-col items-center justify-center w-full h-full mt-4 sm:mt-0 text-center">
           <h3 className="text-2xl font-semibold sm:h3 mb-4">
-            Welcome to Spark + Mint
+            Welcome to TeamSpark
           </h3>
           <p className="max-w-md sm:mb-6 text-center text-muted-foreground">
             We're very excited to have you join our talent network. Please fill

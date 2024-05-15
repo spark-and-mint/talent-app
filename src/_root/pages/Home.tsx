@@ -29,7 +29,7 @@ const Home = () => {
             )}
           >
             {accepted
-              ? "Welcome to the Spark + Mint talent network."
+              ? "Welcome to the TeamSpark talent network."
               : "Thank you for applying. Feel free to add any additional information to your profile – this will be really helpful when we review your application."}
           </p>
         </div>
