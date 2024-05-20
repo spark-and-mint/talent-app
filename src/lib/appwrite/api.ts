@@ -67,6 +67,7 @@ export async function saveMemberToDB(member: {
       ID.unique(),
       {
         ...member,
+        status: "in review",
         avatarId: nanoid(),
         profileId: newProfile.$id,
       }
