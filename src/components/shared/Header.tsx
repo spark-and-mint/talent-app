@@ -86,7 +86,11 @@ const Header = () => {
         </Sheet>
 
         <Link to={isAuthenticated ? "/" : "/sign-in"}>
-          <img src="/assets/logo.svg" alt="logo" className="w-[7.25rem]" />
+          <img
+            src="/assets/logo.svg"
+            alt="logo"
+            className="w-[7.25rem] lg:translate-x-5"
+          />
         </Link>
 
         {import.meta.env.DEV && (

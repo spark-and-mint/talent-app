@@ -70,7 +70,7 @@ const Milestone = ({ milestone }: { milestone: Models.Document }) => {
           <span className="flex items-center pl-2 py-0 text-cyan-400 font-medium text-sm bg-muted border border-cyan-400/30 rounded-md">
             Approval requested
             <Tooltip delayDuration={100}>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Button
                   size="icon"
                   variant="link"
