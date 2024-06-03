@@ -35,14 +35,14 @@ const Section = ({
           opacity: member.id ? 1 : 0,
           transition: "opacity .5s ease-in-out",
         }}
-        className="hidden absolute top-0 left-5 w-0.25 h-full bg-accent/40 pointer-events-none md:block lg:left-7.5 xl:left-40"
+        className="hidden absolute top-0 left-5 w-0.25 h-full bg-accent/40 pointer-events-none md:block lg:left-[5.75rem] 2xl:left-[10rem]"
       />
       <div
         style={{
           opacity: member.id ? 1 : 0,
           transition: "opacity .5s ease-in-out",
         }}
-        className="hidden absolute top-0 right-5 w-0.25 h-full bg-accent/40 pointer-events-none md:block lg:right-7.5 xl:right-40"
+        className="hidden absolute top-0 right-5 w-0.25 h-full bg-accent/40 pointer-events-none md:block lg:right-[5.75rem] 2xl:right-[10rem]"
       />
       {crosses && (
         <div
@@ -54,7 +54,7 @@ const Section = ({
           <div
             className={`hidden absolute top-0 -left-7.5 right-8.5 h-0.25 bg-accent/40 ${
               crossesOffset && crossesOffset
-            } pointer-events-none lg:block xl:left0- right-0`}
+            } pointer-events-none lg:block right-0`}
           />
           <SectionSvg crossesOffset={crossesOffset} />
         </div>

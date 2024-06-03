@@ -5,6 +5,12 @@ export type INewMember = {
   lastName: string
 }
 
+export type INewOAuthMember = {
+  email: string
+  firstName: string
+  lastName: string
+}
+
 export type IMember = {
   id: string
   email: string

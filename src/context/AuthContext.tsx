@@ -144,7 +144,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         !authenticated &&
         location.pathname !== "/sign-up" &&
         location.pathname !== "/reset" &&
-        location.pathname !== "/verify"
+        location.pathname !== "/verify" &&
+        location.pathname !== "/oauth2callback"
       ) {
         navigate("/sign-in")
       }

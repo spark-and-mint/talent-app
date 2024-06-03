@@ -1224,6 +1224,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.5.tgz#a6ce3e556e00fd9895dd872dd172ad0d4bd687f4"
   integrity sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==
 
+"@types/humanparser@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@types/humanparser/-/humanparser-1.1.8.tgz#e1edd41513d2948258c304ccc6f4404fa3fbd0d5"
+  integrity sha512-C2toRY48y3JPb+dbhXQC8N3BNMFC4glWAoY/lv1/9yooso/TB3hhPuDhJJ/CgQ4D+SFHU91lrz446m/epV0dwg==
+
 "@types/json-schema@^7.0.12":
   version "7.0.15"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
@@ -2119,6 +2124,11 @@ hoist-non-react-statics@^3.2.0, hoist-non-react-statics@^3.3.0:
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
+
+humanparser@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/humanparser/-/humanparser-2.7.0.tgz#cc017c8bf7f1dad36330a5edfd760c941c9955fd"
+  integrity sha512-SyuUACd48ey150QUZHVPMcGZwbn48naoJCN80LVA6RHZ5i7iQO9FcXvsOpqi2DEGGtymyp+SenaqaGQ3ik7dvA==
 
 hyphenate-style-name@^1.0.3:
   version "1.0.4"

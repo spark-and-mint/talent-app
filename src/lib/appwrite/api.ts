@@ -4,6 +4,7 @@ import {
   IFeedback,
   IMilestone,
   INewMember,
+  INewOAuthMember,
   INewUpdate,
   IOpportunity,
   IProject,
@@ -11,6 +12,31 @@ import {
   IUpdateMember,
 } from "@/types"
 import { nanoid } from "nanoid"
+
+export async function createOAuthMemberAccount(
+  member: INewOAuthMember,
+  userId: string
+) {
+  try {
+    const avatarUrl = avatars.getInitials(
+      `${member.firstName} ${member.lastName}`
+    )
+
+    const newMember = await saveMemberToDB({
+      accountId: userId,
+      email: member.email,
+      name: `${member.firstName} ${member.lastName}`,
+      firstName: member.firstName,
+      lastName: member.lastName,
+      avatarUrl,
+    })
+
+    return newMember
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+}
 
 export async function createMemberAccount(member: INewMember) {
   try {
@@ -768,5 +794,24 @@ export async function getUpdateFeedback(updateId?: string) {
     return feedback.documents
   } catch (error) {
     console.log(error)
+  }
+}
+
+export async function checkIfUserExists(email: string) {
+  try {
+    const userDoc = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.memberCollectionId,
+      [Query.equal("email", email)]
+    )
+
+    if (userDoc.total > 0) {
+      return userDoc.documents[0]
+    } else {
+      return null
+    }
+  } catch (error) {
+    console.error("Error checking user existence:", error)
+    return null
   }
 }

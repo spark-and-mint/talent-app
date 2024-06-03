@@ -20,6 +20,7 @@ import "./globals.css"
 import Header from "./components/shared/Header"
 import Section from "./components/shared/Section"
 import ResetPassword from "./_auth/forms/ResetPassword"
+import OAuth2Callback from "./_auth/OAuth2Callback"
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/sign-in" element={<SignInForm />} />
             <Route path="/sign-up" element={<SignUpForm />} />
             <Route path="/reset" element={<ResetPassword />} />
+            <Route path="/oauth2callback" element={<OAuth2Callback />} />
           </Route>
 
           <Route element={<RootLayout />}>
