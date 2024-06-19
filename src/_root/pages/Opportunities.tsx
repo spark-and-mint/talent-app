@@ -147,7 +147,7 @@ const Opportunities = () => {
               <FadeIn>
                 <div className="flex flex-col sm:flex-row items-start justify-between">
                   <div>
-                    <div className="mb-4 text-primary tracking-[0.08em] uppercase text-sm font-semibold">
+                    <div className="mb-4 text-white tracking-[0.08em] uppercase text-sm font-semibold">
                       You have a new opportunity with
                     </div>
                     <div className="flex items-center gap-4">
@@ -191,7 +191,7 @@ const Opportunities = () => {
                 <Card className="mt-8 py-2">
                   <dl className="divide-y divide-stroke-1">
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-primary">
+                      <dt className="text-sm font-semibold leading-6">
                         Your role
                       </dt>
                       <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -199,7 +199,7 @@ const Opportunities = () => {
                       </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-primary">
+                      <dt className="text-sm font-semibold leading-6">
                         Project duration
                       </dt>
                       <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -207,7 +207,7 @@ const Opportunities = () => {
                       </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-primary">
+                      <dt className="text-sm font-semibold leading-6">
                         Project type
                       </dt>
                       <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -216,7 +216,7 @@ const Opportunities = () => {
                     </div>
                     {opportunity.startDate && (
                       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-primary">
+                        <dt className="text-sm font-semibold leading-6">
                           Estimated start date
                         </dt>
                         <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -226,7 +226,7 @@ const Opportunities = () => {
                     )}
                     {opportunity.estimatedEarnings && (
                       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-primary">
+                        <dt className="text-sm font-semibold leading-6">
                           Estimated earnings
                         </dt>
                         <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -251,7 +251,7 @@ const Opportunities = () => {
                     )}
                     {opportunity.background && (
                       <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-primary">
+                        <dt className="text-sm font-semibold leading-6">
                           Background
                         </dt>
                         <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -260,7 +260,7 @@ const Opportunities = () => {
                       </div>
                     )}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-primary">
+                      <dt className="text-sm font-semibold leading-6">
                         Description
                       </dt>
                       <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -268,7 +268,7 @@ const Opportunities = () => {
                       </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                      <dt className="text-sm font-medium leading-6 text-primary">
+                      <dt className="text-sm font-semibold leading-6">
                         Your responsibilities
                       </dt>
                       <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">
@@ -337,7 +337,7 @@ const Opportunities = () => {
       )}
 
       <Dialog open={showAcceptModal} onOpenChange={setShowAcceptModal}>
-        <DialogContent className="max-w-[40rem] p-12">
+        <DialogContent className="max-w-[40rem] p-12 bg-gray-950">
           <DialogHeader>
             <DialogDescription className="block text-primary tracking-[0.1em] uppercase text-sm font-semibold text-center">
               We just wanted to say
@@ -345,8 +345,8 @@ const Opportunities = () => {
             <div className="flex items-center justify-center">
               <ConfettiExplosion {...confettiProps} />
             </div>
-            <DialogTitle className="h4 -mt-1.5 tracking-wide text-center">
-              <div className="h4 -mt-1.5 tracking-wide">CONGRATS!</div>
+            <DialogTitle className="h4 -mt-3 tracking-wide text-center">
+              <div className="h4 -mt-3 tracking-wide">CONGRATS!</div>
             </DialogTitle>
           </DialogHeader>
           <FadeIn delay={100}>
@@ -358,7 +358,7 @@ const Opportunities = () => {
             <div className="mt-6 mb-8">
               <p className="mb-1.5 text-center text-base sm:text-lg">
                 You just accepted your{" "}
-                <span className="font-semibold text-blue-300">first</span>{" "}
+                <span className="font-semibold text-primary">first</span>{" "}
                 opportunity – way to go!
               </p>
               <p className="text-center text-muted-foreground text-sm lg:text-base">

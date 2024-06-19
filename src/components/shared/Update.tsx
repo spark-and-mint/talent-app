@@ -156,15 +156,15 @@ const Update = ({
                 feedback.length > 0 &&
                 !feedback[0].viewedBy.includes(member.id) && (
                   <span className="absolute flex h-3 w-3 -top-1.5 -right-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500" />
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500" />
                   </span>
                 )}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>{update.title} feedback</DialogTitle>
+              <DialogTitle>Feedback on {update.title}</DialogTitle>
             </DialogHeader>
             <div className="mt-5 mb-4">
               <blockquote className="relative">
@@ -172,7 +172,7 @@ const Update = ({
                   <>
                     <p>{feedback[0]?.label}</p>
                     {feedback && feedback.length > 0 && feedback[0]?.text && (
-                      <Separator className="my-4" />
+                      <Separator className="my-1 opacity-0" />
                     )}
                   </>
                 )}

@@ -33,10 +33,6 @@ const Home = () => {
               : "Thank you for applying. Feel free to add any additional information to your profile – this will be really helpful when we review your application."}
           </p>
         </div>
-        <img
-          src="/assets/stars-multiple.svg"
-          className="hidden sm:block w-14 h-14 mr-3"
-        />
       </div>
 
       {accepted && member.importedAnswers ? (
@@ -45,7 +41,7 @@ const Home = () => {
           target="_blank"
           className="block"
         >
-          <Card className="flex flex-col sm:flex-row gap-5 sm:gap-0 items-start sm:items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+          <Card className="flex flex-col sm:flex-row gap-5 sm:gap-0 items-start sm:items-center justify-between group hover:bg-slate-400/15 hover:border-primary transition-colors duration-100">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
               <img src="/assets/slack.webp" className="w-10 h-10 ml-1.5" />
               <div className="flex-1">
@@ -65,7 +61,7 @@ const Home = () => {
                   </Button>
                 </Link>
               </div>
-              <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
+              <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-black">
                 <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
               </div>
             </div>
@@ -73,7 +69,7 @@ const Home = () => {
         </Link>
       ) : (
         <Link to="/profile" className="block">
-          <Card className="flex flex-col sm:flex-row gap-5 sm:gap-0 items-start sm:items-center justify-between group hover:bg-slate-400/15 hover:border-cyan-400 transition-colors duration-100">
+          <Card className="flex flex-col sm:flex-row gap-5 sm:gap-0 items-start sm:items-center justify-between group hover:bg-slate-400/15 hover:border-primary transition-colors duration-100">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6">
               <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
                 <User strokeWidth={2} className="w-6 h-6" />
@@ -93,7 +89,7 @@ const Home = () => {
                   </Button>
                 </Link>
               </div>
-              <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-slate-600">
+              <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full transition-colors duration-100 bg-transparent border border-primary text-primary group-hover:bg-primary group-hover:text-black">
                 <ArrowRight strokeWidth={1.3} className="w-6 h-6" />
               </div>
             </div>
@@ -103,8 +99,8 @@ const Home = () => {
 
       <div className="grid grid-cols-1 gap-8 mt-8 md:grid-cols-2">
         <Card className="flex flex-col gap-5">
-          <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
-            <ScrollText className="w-6 h-6" />
+          <div className="flex items-center justify-center w-10 h-10 bg-secondary text-primary rounded-full transition-colors duration-100">
+            <ScrollText strokeWidth={1.5} className="w-6 h-6" />
           </div>
           <div>
             <h6 className="h6 mb-2">Read our Manifesto</h6>
@@ -124,8 +120,8 @@ const Home = () => {
         </Card>
 
         <Card className="relative flex flex-col gap-5">
-          <div className="flex items-center justify-center w-10 h-10 bg-primary text-slate-800 rounded-full transition-colors duration-100">
-            <Heart strokeWidth={2} className="w-6 h-6" />
+          <div className="flex items-center justify-center w-10 h-10 bg-secondary text-primary rounded-full transition-colors duration-100">
+            <Heart strokeWidth={1.5} className="w-6 h-6" />
           </div>
           <div>
             <h6 className="h6 mb-2">Stay in the Loop</h6>
@@ -133,7 +129,7 @@ const Home = () => {
           </div>
           <div className="mt-2">
             <Button asChild variant="secondary">
-              <Link to="https://x.com/sparkandmint" target="_blank">
+              <Link to="https://x.com/yourteamspark" target="_blank">
                 Connect with us <ExternalLink className="w-4 h-4 ml-2" />
               </Link>
             </Button>

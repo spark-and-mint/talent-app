@@ -78,9 +78,9 @@ export function SidebarNav() {
           {link.badge && (
             <span
               className={cn(
-                "ml-3 px-2.5 py-0.5 text-xs font-semibold rounded-full",
+                "ml-3 px-2.5 pt-0.25 pb-0.5 text-xs font-semibold rounded-full",
                 link.title === "My Projects"
-                  ? "text-white bg-gray-700"
+                  ? "text-white bg-secondary"
                   : "text-black bg-primary"
               )}
             >

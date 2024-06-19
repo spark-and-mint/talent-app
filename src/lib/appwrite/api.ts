@@ -768,7 +768,7 @@ export async function getMilestoneUpdates(milestoneId?: string) {
     const updates = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.updateCollectionId,
-      [Query.equal("milestoneId", milestoneId)]
+      [Query.equal("milestoneId", milestoneId), Query.orderDesc("$createdAt")]
     )
 
     if (!updates) throw Error
