@@ -53,10 +53,10 @@ const Referral = () => {
             className="h-auto p-0 text-base font-normal"
           >
             <a
-              href="mailto:hello@sparkandmint.com"
+              href="mailto:hello@teamspark.xyz"
               className="text-primary font-medium p-0"
             >
-              hello@sparkandmint.com
+              hello@teamspark.xyz
             </a>
           </Button>
         </p>

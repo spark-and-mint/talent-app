@@ -100,8 +100,8 @@ const RootLayout = () => {
         <h4 className="h4">Hmm, something went wrong.</h4>
         <p className="leading-6 text-muted-foreground">
           If this issue persists, please contact us on Slack or at{" "}
-          <a className="text-primary" href="mailto:hello@sparkandmint.com">
-            hello@sparkandmint.com
+          <a className="text-primary" href="mailto:hello@teamspark.xyz">
+            hello@teamspark.xyz
           </a>
         </p>
         <div className="mt-4">

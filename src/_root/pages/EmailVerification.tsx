@@ -71,7 +71,7 @@ const EmailVerification = () => {
               <span className="text-gray-200">{member.email}</span>
               <br />
               If you didn't receive it, please{" "}
-              <a className="text-primary" href="mailto:hello@sparkandmint.com">
+              <a className="text-primary" href="mailto:hello@teamspark.xyz">
                 email us.
               </a>
             </div>

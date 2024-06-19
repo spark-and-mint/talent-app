@@ -280,10 +280,7 @@ const Opportunities = () => {
                 <div className="flex flex-col-reverse sm:flex-row gap-4 items-center justify-between mt-10">
                   <p className="text-sm mt-4 sm:mt-0">
                     Questions? Contact us{" "}
-                    <a
-                      href="mailto:hello@sparkandmint.com"
-                      className="underline"
-                    >
+                    <a href="mailto:hello@teamspark.xyz" className="underline">
                       here
                     </a>{" "}
                     or on Slack.
