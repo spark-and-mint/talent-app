@@ -44,7 +44,7 @@ const OAuth2Callback = () => {
 
           const stakeholder = {
             firstName: firstName || name,
-            lastName: lastName || "N/A",
+            lastName: lastName || "n/a",
             email,
           }
 

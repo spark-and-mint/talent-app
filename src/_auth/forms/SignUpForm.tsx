@@ -52,7 +52,7 @@ const SignUpForm = () => {
     try {
       const stakeholder = {
         firstName: firstName || values.name,
-        lastName: lastName || "N/A",
+        lastName: lastName || "n/a",
         ...values,
       }
 
