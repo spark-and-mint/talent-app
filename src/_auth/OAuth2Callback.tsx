@@ -42,13 +42,13 @@ const OAuth2Callback = () => {
         } else {
           const { firstName, lastName } = human.parseName(name)
 
-          const stakeholder = {
+          const member = {
             firstName: firstName || name,
             lastName: lastName || "n/a",
             email,
           }
 
-          const newMember = await createOAuthMemberAccount(stakeholder, userId)
+          const newMember = await createOAuthMemberAccount(member, userId)
 
           if (!newMember) {
             toast.error("Sign up failed. Please try again.")
